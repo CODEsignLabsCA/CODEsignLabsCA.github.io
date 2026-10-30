@@ -43,12 +43,16 @@ const projectSlots = [
       </p>
     </div>
 
-    <div class="projects-grid">
-      {projectSlots.map((project) => (
-        <article class="project-card reveal">
+    <div class="projects-showcase" data-project-showcase>
+      <div class="projects-visual" aria-hidden="true">
+        {projectSlots.map((project, index) => (
           <div
-            class={`project-preview project-preview--${project.layout}`}
-            aria-hidden="true"
+            class:list={[
+              "project-preview",
+              `project-preview--${project.layout}`,
+              { "is-active": index === 0 },
+            ]}
+            data-project-preview={index}
           >
             <div class="preview-window">
               <div class="preview-toolbar">
@@ -106,18 +110,89 @@ const projectSlots = [
             )}
             <span class="preview-index">{project.number}</span>
           </div>
-          <div class="project-card__details">
-            <div>
-              <span class="project-type">{project.type}</span>
+        ))}
+      </div>
+
+      <div class="projects-grid">
+        {projectSlots.map((project, index) => (
+          <article
+            class:list={[
+              "project-card",
+              "reveal",
+              { "is-active": index === 0 },
+            ]}
+            data-project-card={index}
+          >
+            <div class="project-card__details">
+              <div class="project-card__heading">
+                <span class="project-number">{project.number}</span>
+                <span class="project-type">{project.type}</span>
+              </div>
               <h3>{project.title}</h3>
+              <span class="project-pending">CAPTURA PENDIENTE</span>
             </div>
-            <span class="project-pending">CAPTURA PENDIENTE</span>
-          </div>
-        </article>
-      ))}
+          </article>
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  const showcases = document.querySelectorAll<HTMLElement>(
+    "[data-project-showcase]",
+  );
+
+  showcases.forEach((showcase) => {
+    const cards = Array.from(
+      showcase.querySelectorAll<HTMLElement>("[data-project-card]"),
+    );
+    const previews = Array.from(
+      showcase.querySelectorAll<HTMLElement>("[data-project-preview]"),
+    );
+
+    if (!cards.length || cards.length !== previews.length) return;
+
+    const activateProject = (index: number) => {
+      cards.forEach((card, cardIndex) => {
+        card.classList.toggle("is-active", cardIndex === index);
+      });
+      previews.forEach((preview, previewIndex) => {
+        preview.classList.toggle("is-active", previewIndex === index);
+      });
+    };
+
+    activateProject(0);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntries = entries.filter((entry) => entry.isIntersecting);
+        if (!activeEntries.length) return;
+
+        const closestEntry = activeEntries.reduce((closest, entry) => {
+          const entryCenter =
+            entry.boundingClientRect.top + entry.boundingClientRect.height / 2;
+          const closestCenter =
+            closest.boundingClientRect.top +
+            closest.boundingClientRect.height / 2;
+
+          return Math.abs(entryCenter - window.innerHeight / 2) <
+            Math.abs(closestCenter - window.innerHeight / 2)
+            ? entry
+            : closest;
+        });
+
+        const activeIndex = Number(
+          closestEntry.target.getAttribute("data-project-card"),
+        );
+        if (Number.isInteger(activeIndex)) activateProject(activeIndex);
+      },
+      { rootMargin: "-38% 0px -38% 0px", threshold: 0 },
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  });
+</script>
 
 <style>
   .projects-heading {
@@ -135,23 +210,50 @@ const projectSlots = [
     line-height: 1.7;
   }
 
-  .projects-grid {
+  .projects-showcase {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 2rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .projects-visual {
+    position: sticky;
+    top: 7rem;
+    min-width: 0;
+    height: min(34rem, 58vh);
+    min-height: 22rem;
+    overflow: hidden;
+    border: 1px solid var(--white-icon-tr);
+    border-radius: 1.5rem;
+    background: #141318;
+    box-shadow: 0 24px 70px rgb(0 0 0 / 24%);
+  }
+
+  .projects-grid {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   .project-card {
     position: relative;
     min-width: 0;
+    min-height: min(42vh, 25rem);
+    display: flex;
+    align-items: center;
     overflow: hidden;
     isolation: isolate;
-    border: 1px solid var(--white-icon-tr);
+    border: 1px solid rgb(255 255 255 / 8%);
     border-radius: 1.5rem;
     background: #141318;
+    opacity: 0.64;
     transition:
-      border-color 350ms ease,
-      box-shadow 450ms ease;
+      border-color 400ms ease,
+      background-color 400ms ease,
+      box-shadow 450ms ease,
+      opacity 400ms ease;
   }
 
   .project-card::before {
@@ -173,15 +275,25 @@ const projectSlots = [
       transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
+  .project-card.is-active {
+    border-color: #a476ff80;
+    background-color: #19161f;
+    box-shadow: 0 18px 48px rgb(0 0 0 / 22%);
+    opacity: 1;
+  }
+
+  .project-card.is-active::before {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
   .project-preview {
-    position: relative;
-    z-index: 1;
     display: grid;
-    min-height: 17rem;
+    position: absolute;
+    inset: 0;
     place-items: center;
     overflow: hidden;
-    border: 1px solid var(--white-icon-tr);
-    border-radius: 1.5rem;
+    border: 0;
     background:
       radial-gradient(
         ellipse at 70% 20%,
@@ -189,9 +301,20 @@ const projectSlots = [
         transparent 48%
       ),
       linear-gradient(145deg, #1d1b25, #111);
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
     transition:
-      border-color 350ms ease,
-      transform 450ms cubic-bezier(0.2, 0.7, 0.2, 1);
+      opacity 450ms ease,
+      transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .project-preview.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .project-preview.is-active .preview-window {
+    transform: perspective(900px) rotateY(0) rotateX(0) scale(1.02);
   }
 
   .preview-window {
@@ -465,11 +588,23 @@ const projectSlots = [
   .project-card__details {
     position: relative;
     z-index: 1;
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    width: 100%;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .project-card__heading {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 0.2rem 0;
+    gap: 0.75rem;
+  }
+
+  .project-number {
+    color: var(--sec);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
   }
 
   .project-type {
@@ -480,49 +615,27 @@ const projectSlots = [
   }
 
   .project-card__details h3 {
-    margin-top: 0.25rem;
-    font-size: 1.2rem;
+    max-width: 18ch;
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
     font-weight: 500;
+    line-height: 1.25;
   }
 
   .project-pending {
-    flex: 0 0 auto;
     padding: 0.45rem 0.65rem;
     border: 1px solid #a476ff55;
     border-radius: 999px;
     color: var(--sec);
     font-size: 0.56rem;
     letter-spacing: 0.08em;
-    background: rgb(164 118 255 / 0%);
     transition:
       border-color 350ms ease,
       background-color 350ms ease;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    .project-card:hover {
-      border-color: #a476ff80;
-      box-shadow: 0 18px 48px rgb(0 0 0 / 28%);
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
-      transform: scaleY(1);
-    }
-
-    .project-card:hover .project-preview {
-      transform: translateY(-3px);
-      border-color: #a476ff80;
-    }
-
-    .project-card:hover .preview-window {
-      transform: perspective(900px) rotateY(0) rotateX(0) scale(1.02);
-    }
-
-    .project-card:hover .project-pending {
-      border-color: #a476ff99;
-      background: rgb(164 118 255 / 10%);
-    }
+  .project-card.is-active .project-pending {
+    border-color: #a476ff99;
+    background: rgb(164 118 255 / 10%);
   }
 
   @media (max-width: 767px) {
@@ -532,17 +645,31 @@ const projectSlots = [
       gap: 0.85rem;
     }
 
-    .projects-grid {
+    .projects-showcase {
       grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
     }
 
-    .project-preview {
+    .projects-visual {
+      top: 5.5rem;
+      height: 15rem;
+      min-height: 0;
+      border-radius: 1.1rem;
+    }
+
+    .project-card {
       min-height: 15rem;
+      border-radius: 1.1rem;
     }
 
     .project-pending {
-      max-width: 7rem;
-      text-align: center;
+      font-size: 0.52rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-preview {
+      transform: none;
     }
   }
 </style>
