@@ -1,0 +1,45 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+
+const testimonials = [
+  {
+    name: "Drew Feig",
+    quote:
+      "Working with this software development team has been a game-changer for our business",
+  },
+  {
+    name: "Estelle Darcy",
+    quote:
+      "The team's expertise and responsiveness were outstanding. They delivered our project on time",
+  },
+];
+---
+
+<section
+  id="testimonials"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading
+      eyebrow="Real feedback"
+      title="Real feedback from clients"
+    />
+    <div class="grid gap-5 md:grid-cols-2">
+      {testimonials.map((testimonial, index) => (
+        <figure
+          class:list={[
+            "reveal rounded-2xl p-7 md:p-8",
+            index === 1
+              ? "bg-[var(--sec)] text-[var(--background)]"
+              : "bg-[var(--component-bg)] text-[var(--white)]",
+          ]}
+        >
+          <blockquote class="text-xl leading-relaxed">
+            “{testimonial.quote}”
+          </blockquote>
+          <figcaption class="mt-6 font-medium">{testimonial.name}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

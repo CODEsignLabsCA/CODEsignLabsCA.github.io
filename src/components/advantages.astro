@@ -1,0 +1,45 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+
+const advantages = [
+  {
+    title: "Multiplatform Development",
+    description: "High-fidelity native and hybrid solutions.",
+  },
+  {
+    title: "Time-to-Market",
+    description: "AI-assisted code automation.",
+  },
+];
+---
+
+<section
+  id="advantages"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading eyebrow="Service" title="Discover the key advantages" />
+
+    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
+      <div class="grid gap-4">
+        {advantages.map((advantage) => (
+          <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6">
+            <h3 class="text-xl font-medium">{advantage.title}</h3>
+            <p class="mt-2 text-[var(--white-icon)]">{advantage.description}</p>
+          </article>
+        ))}
+      </div>
+      <div class="reveal border-l-2 border-[var(--sec)] pl-6 text-lg leading-relaxed text-[var(--white-icon)]">
+        <h3 class="mb-4 text-2xl font-medium text-[var(--white)]">
+          Core Advantages
+        </h3>
+        <p>
+          Software is the financial engine of your organization. We structure
+          databases in PostgreSQL and MySQL—powered by Supabase and Firebase—and
+          analyze consumption patterns in real time to unlock new recurring
+          revenue streams.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

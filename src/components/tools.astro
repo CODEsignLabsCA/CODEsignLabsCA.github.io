@@ -3,34 +3,29 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 
 const principles = [
   {
-    title: "Built around people",
+    title: "AI-Driven Engineering",
     description:
-      "Start with the people and purpose behind the product, then make the experience easy to understand.",
+      "Assisted programming using Argon in Antigravity, GitHub Copilot, and Gemini to maximize development speed.",
   },
   {
-    title: "Made with intention",
+    title: "High-Fidelity UI/UX",
     description:
-      "Choose tools and architecture to fit the problem, keeping quality and maintainability in view.",
-  },
-  {
-    title: "Ready to evolve",
-    description:
-      "Create a solid foundation that can grow as the product, its users, and its priorities change.",
+      "Modular prototyping structured in Figma according to the Stitch standard, designed for high-conversion interfaces.",
   },
 ];
 ---
 
 <section
-  id="approach"
+  id="tools"
   class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow="The difference"
-      title="Technology should move you forward."
+      eyebrow="Harnessing Cutting-Edge"
+      title="Advanced tools and technologies"
     />
 
-    <div class="grid gap-4 md:grid-cols-3">
+    <div class="grid gap-4 md:grid-cols-2">
       {principles.map((principle, index) => (
         <article class="approach-card reveal relative overflow-hidden rounded-2xl border border-[var(--white-icon-tr)] p-6 md:p-8">
           <span class="approach-card__number" aria-hidden="true">

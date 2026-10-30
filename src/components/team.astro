@@ -1,0 +1,64 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+---
+
+<section
+  id="team"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading
+      eyebrow="The brain behind the engineering"
+      title="The talented minds behind our software solutions"
+      headingClass="text-center"
+    />
+
+    <article class="reveal mx-auto grid max-w-4xl items-center gap-8 md:grid-cols-[minmax(16rem,0.8fr)_1.2fr] md:gap-12">
+      <div class="profile-frame mx-auto w-full max-w-sm">
+        <img
+          src="/images/Foto%20Perfil%20Portafoli.png"
+          alt="Jairo Fernando Ramos G"
+          class="aspect-square w-full rounded-2xl object-cover"
+          width="950"
+          height="712"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div>
+        <h3 class="text-2xl font-medium">Jairo Fernando Ramos G</h3>
+        <p class="mt-2 text-lg text-[var(--sec)]">
+          Lead Product & Full-Stack Architect
+        </p>
+        <ul class="mt-6 space-y-4 text-[var(--white-icon)]">
+          <li>
+            <strong class="text-[var(--white)]">Product Design:</strong>{" "}
+            Specialist in conceptualizing interactive MVPs in Figma using the
+            Stitch modular design system.
+          </li>
+          <li>
+            <strong class="text-[var(--white)]">
+              Cross-Platform Engineering:
+            </strong>{" "}
+            Architecture and native deployment using Kotlin Multiplatform,
+            Flutter, Dart, and Swift.
+          </li>
+          <li>
+            <strong class="text-[var(--white)]">Business Strategy:</strong>{" "}
+            Robust data integration (PostgreSQL / Supabase) and AI-driven
+            automation to unlock new revenue streams.
+          </li>
+        </ul>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .profile-frame {
+    padding: 0.45rem;
+    border-radius: 1.4rem;
+    background: var(--sec);
+    box-shadow: 0 0 50px #a476ff24;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+
+const outcomeGroups = [
+  {
+    title: "Enhanced Operational",
+    outcomes: [
+      {
+        title: "Advanced Automation",
+        description:
+          "Drastic reduction in operational costs through workflows and tool integration.",
+      },
+      {
+        title: "Margin Efficiency",
+        description:
+          "Lower technical expenditure translates directly into a higher corporate profit margin.",
+      },
+    ],
+  },
+  {
+    title: "Driving Revenue & New Business",
+    outcomes: [
+      {
+        title: "+30% Average Revenue",
+        description:
+          "Design and implementation of new transactional channels and active monetization strategies.",
+      },
+      {
+        title: "Consistent Cash Flow",
+        description:
+          "Automated cross-selling funnels and multi-tenant platforms that transform code into a profitable asset.",
+      },
+    ],
+  },
+];
+---
+
+<section
+  id="results"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading
+      eyebrow="Measurable success"
+      title="Measurable success through solutions"
+    />
+
+    <div class="grid gap-8 md:grid-cols-2">
+      {outcomeGroups.map((group) => (
+        <div>
+          <h3 class="mb-4 text-2xl font-medium">{group.title}</h3>
+          <div class="grid gap-4">
+            {group.outcomes.map((outcome) => (
+              <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6 transition-colors hover:border-[var(--sec)]">
+                <h4 class="text-xl font-medium text-[var(--sec)]">
+                  {outcome.title}
+                </h4>
+                <p class="mt-4 leading-relaxed text-[var(--white-icon)]">
+                  {outcome.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
