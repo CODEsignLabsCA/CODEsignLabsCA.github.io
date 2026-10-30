@@ -20,6 +20,31 @@ const advantages = [
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading eyebrow="Service" title="Discover the key advantages" />
 
+    <div class="mb-8 grid gap-5 sm:grid-cols-2">
+      <figure class="reveal reveal-media slide-diamond mx-auto w-full max-w-sm overflow-hidden">
+        <img
+          src="/images/presentation/advantage-design.webp"
+          alt="A designer reviewing a software interface with a laptop"
+          class="reveal-media__image aspect-square w-full object-cover"
+          width="480"
+          height="480"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <figure class="reveal reveal-media slide-diamond mx-auto w-full max-w-sm overflow-hidden">
+        <img
+          src="/images/presentation/advantage-data.webp"
+          alt="Development workstations displaying software"
+          class="reveal-media__image aspect-square w-full object-cover"
+          width="480"
+          height="480"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+
     <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
       <div class="grid gap-4">
         {advantages.map((advantage) => (
@@ -43,3 +68,9 @@ const advantages = [
     </div>
   </div>
 </section>
+
+<style>
+  .slide-diamond {
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+</style>

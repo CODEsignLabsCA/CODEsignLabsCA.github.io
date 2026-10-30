@@ -33,6 +33,31 @@ const steps = [
       title="Development process that guarantees excellence"
     />
 
+    <div class="mb-10 grid items-center gap-5 md:grid-cols-[1.25fr_0.75fr]">
+      <figure class="reveal reveal-media slide-diamond overflow-hidden">
+        <img
+          src="/images/presentation/process-engineering.webp"
+          alt="A developer working through software requirements"
+          class="reveal-media__image aspect-square w-full object-cover"
+          width="650"
+          height="650"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <figure class="reveal reveal-media overflow-hidden rounded-2xl">
+        <img
+          src="/images/presentation/process-team.webp"
+          alt="Colleagues collaborating on a project"
+          class="reveal-media__image aspect-[4/3] w-full object-cover"
+          width="650"
+          height="497"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    </div>
+
     <ol class="process-list grid gap-8 md:grid-cols-3">
       {steps.map((step, index) => (
         <li class="process-step reveal relative pt-6">
@@ -55,6 +80,10 @@ const steps = [
 </section>
 
 <style>
+  .slide-diamond {
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+
   .process-step {
     border-top: 1px solid #a476ff66;
   }

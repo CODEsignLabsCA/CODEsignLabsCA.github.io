@@ -45,24 +45,43 @@ const outcomeGroups = [
       title="Measurable success through solutions"
     />
 
-    <div class="grid gap-8 md:grid-cols-2">
-      {outcomeGroups.map((group) => (
-        <div>
-          <h3 class="mb-4 text-2xl font-medium">{group.title}</h3>
-          <div class="grid gap-4">
-            {group.outcomes.map((outcome) => (
-              <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6 transition-colors hover:border-[var(--sec)]">
-                <h4 class="text-xl font-medium text-[var(--sec)]">
-                  {outcome.title}
-                </h4>
-                <p class="mt-4 leading-relaxed text-[var(--white-icon)]">
-                  {outcome.description}
-                </p>
-              </article>
-            ))}
+    <div class="grid items-start gap-8 md:grid-cols-[0.8fr_1.2fr]">
+      <figure class="reveal reveal-media slide-diamond overflow-hidden">
+        <img
+          src="/images/presentation/results-engineering.webp"
+          alt="An engineer reviewing code on a computer"
+          class="reveal-media__image aspect-square w-full object-cover"
+          width="780"
+          height="780"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="grid gap-8 sm:grid-cols-2">
+        {outcomeGroups.map((group) => (
+          <div>
+            <h3 class="mb-4 text-2xl font-medium">{group.title}</h3>
+            <div class="grid gap-4">
+              {group.outcomes.map((outcome) => (
+                <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6 transition-colors hover:border-[var(--sec)]">
+                  <h4 class="text-xl font-medium text-[var(--sec)]">
+                    {outcome.title}
+                  </h4>
+                  <p class="mt-4 leading-relaxed text-[var(--white-icon)]">
+                    {outcome.description}
+                  </p>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .slide-diamond {
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+</style>
