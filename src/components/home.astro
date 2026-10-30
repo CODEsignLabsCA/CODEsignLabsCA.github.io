@@ -7,6 +7,13 @@ import SkillsList from "../React/SkillsList.tsx";
 <section class="text-[var(--white)] mt-12 md:mt-0" id="home">
   <div class="max-w-5xl mx-auto space-y-8 md:py-36 pb-14">
     <div class="text-left space-y-4">
+      <img
+        src="/svg/iso_codesignlabs_2x.png"
+        alt="Isotipo de CODEsignLabs"
+        width="72"
+        height="72"
+        class="brand-logo"
+      />
       <p class="text-md md:text-lg text-[var(--white-icon)] shiny-white">
         Hi, I'm Jairo Fernando
       </p>
@@ -108,6 +115,43 @@ import SkillsList from "../React/SkillsList.tsx";
     </div>
   </div>
 </section>
+
+<style>
+  .brand-logo {
+    display: block;
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 12px #a476ff55);
+    animation: logo-enter 700ms ease-out both;
+    transition:
+      filter 300ms ease,
+      transform 300ms ease;
+  }
+
+  .brand-logo:hover {
+    filter: drop-shadow(0 0 20px #a476ff99);
+    transform: scale(1.05);
+  }
+
+  @keyframes logo-enter {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-logo {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
 
 <style is:global>
   .shiny-sec {
