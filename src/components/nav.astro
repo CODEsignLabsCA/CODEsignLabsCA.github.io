@@ -2,6 +2,7 @@
 interface NavItem {
   label: string;
   href: string;
+  sections: string[];
   icon: string;
 }
 
@@ -9,56 +10,37 @@ const navItems: NavItem[] = [
   {
     label: "Home",
     href: "#home",
+    sections: ["home"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-6v-7h-4v7H4a1 1 0 0 1-1-1z"/></svg>`,
   },
   {
-    label: "About us",
+    label: "About",
     href: "#about",
+    sections: ["about", "services"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>`,
   },
   {
     label: "Service",
-    href: "#services",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>`,
-  },
-  {
-    label: "Advantages",
     href: "#advantages",
+    sections: ["advantages", "process", "tools", "results", "team"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/></svg>`,
-  },
-  {
-    label: "Process",
-    href: "#process",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="m7 11 10-5m-10 7 10 5"/></svg>`,
-  },
-  {
-    label: "Tools",
-    href: "#tools",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4L15 12l-3-3 2.7-2.7Z"/></svg>`,
-  },
-  {
-    label: "Results",
-    href: "#results",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 4 3 6-7"/></svg>`,
-  },
-  {
-    label: "Team",
-    href: "#team",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0m3-9a3 3 0 1 0-2-5.2M18 14a5 5 0 0 1 3 4.6"/></svg>`,
   },
   {
     label: "Testimonials",
     href: "#testimonials",
+    sections: ["testimonials"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg>`,
   },
   {
     label: "Projects",
     href: "#projects",
+    sections: ["projects"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h6"/></svg>`,
   },
   {
     label: "Contact",
     href: "#contact",
+    sections: ["contact"],
     icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>`,
   },
 ];
@@ -85,7 +67,7 @@ const navItems: NavItem[] = [
           <a
             href={item.href}
             class="nav-link"
-            data-section={item.href.slice(1)}
+            data-sections={item.sections.join(" ")}
             style={`--nav-index: ${navItems.indexOf(item)}`}
           >
             <span class="nav-link__icon" aria-hidden="true">
@@ -97,11 +79,6 @@ const navItems: NavItem[] = [
       ))}
     </ul>
   </nav>
-
-  <a href="#contact" class="nav-cta">
-    Let’s talk
-    <span aria-hidden="true">↗</span>
-  </a>
 </header>
 
 <style>
@@ -173,8 +150,7 @@ const navItems: NavItem[] = [
   }
 
   html.motion-enabled .nav-brand,
-  html.motion-enabled .nav-link,
-  html.motion-enabled .nav-cta {
+  html.motion-enabled .nav-link {
     animation: nav-enter 550ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
     animation-delay: calc(var(--nav-index, 0) * 55ms);
   }
@@ -224,33 +200,6 @@ const navItems: NavItem[] = [
     height: 1rem;
   }
 
-  .nav-cta {
-    display: inline-flex;
-    min-width: max-content;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.65rem 1rem;
-    border: 1px solid #a476ff80;
-    border-radius: 9999px;
-    color: var(--white);
-    font-size: 0.82rem;
-    text-decoration: none;
-    transition:
-      background-color 200ms ease,
-      border-color 200ms ease,
-      transform 200ms ease;
-  }
-
-  .nav-cta:hover {
-    transform: translateY(-1px);
-    border-color: var(--sec);
-    background: #a476ff1a;
-  }
-
-  .nav-cta span {
-    color: var(--sec);
-  }
-
   @media (max-width: 1050px) {
     .site-header {
       width: calc(100% - 2rem);
@@ -275,11 +224,6 @@ const navItems: NavItem[] = [
     .nav-link {
       font-size: 0.72rem;
     }
-
-    .nav-cta {
-      padding-inline: 0.75rem;
-      font-size: 0.75rem;
-    }
   }
 
   @media (max-width: 767px) {
@@ -300,8 +244,7 @@ const navItems: NavItem[] = [
       border-radius: 1rem 1rem 0 0;
     }
 
-    .nav-brand,
-    .nav-cta {
+    .nav-brand {
       display: none;
     }
 
@@ -388,8 +331,8 @@ const navItems: NavItem[] = [
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
 
-        const activeSection = Array.from(navLinks).find(
-          (link) => link.dataset.section === entry.target.id,
+        const activeSection = Array.from(navLinks).find((link) =>
+          link.dataset.sections?.split(" ").includes(entry.target.id),
         );
         if (!activeSection) return;
 
@@ -413,7 +356,9 @@ const navItems: NavItem[] = [
         }
 
         navLinks.forEach((link) => {
-          const isActive = link.dataset.section === entry.target.id;
+          const isActive = link.dataset.sections
+            ?.split(" ")
+            .includes(entry.target.id);
           link.classList.toggle("active", isActive);
           if (isActive) {
             link.setAttribute("aria-current", "location");
