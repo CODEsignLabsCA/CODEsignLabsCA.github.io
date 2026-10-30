@@ -59,11 +59,14 @@ const outcomeGroups = [
       </figure>
       <div class="grid gap-8 sm:grid-cols-2">
         {outcomeGroups.map((group) => (
-          <div>
+          <div class="outcome-group">
             <h3 class="mb-4 text-2xl font-medium">{group.title}</h3>
             <div class="grid gap-4">
-              {group.outcomes.map((outcome) => (
-                <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6 transition-colors hover:border-[var(--sec)]">
+              {group.outcomes.map((outcome, index) => (
+                <article class="outcome-card reveal">
+                  <span class="outcome-card__index">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                   <h4 class="text-xl font-medium text-[var(--sec)]">
                     {outcome.title}
                   </h4>
@@ -83,5 +86,69 @@ const outcomeGroups = [
 <style>
   .slide-diamond {
     clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+
+  .outcome-group {
+    display: grid;
+    align-content: start;
+    gap: 0.3rem;
+  }
+
+  .outcome-group > h3 {
+    min-height: 3.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+    line-height: 1.25;
+  }
+
+  .outcome-card {
+    position: relative;
+    display: flex;
+    min-height: 12.5rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    padding: 1.5rem;
+    border: 1px solid var(--white-icon-tr);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(
+        ellipse at 100% 0%,
+        rgb(164 118 255 / 13%),
+        transparent 58%
+      ),
+      var(--component-bg);
+    transition:
+      border-color 250ms ease,
+      transform 250ms ease,
+      box-shadow 250ms ease;
+  }
+
+  .outcome-card:hover {
+    transform: translateY(-4px);
+    border-color: #a476ff80;
+    box-shadow: 0 18px 40px rgb(0 0 0 / 22%);
+  }
+
+  .outcome-card__index {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.25rem;
+    color: rgb(164 118 255 / 70%);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+  }
+
+  .outcome-card > p {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 767px) {
+    .outcome-group > h3 {
+      min-height: auto;
+    }
+
+    .outcome-card {
+      min-height: 10.5rem;
+    }
   }
 </style>
