@@ -1,0 +1,66 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+
+const services = [
+  {
+    number: "01",
+    title: "Web & product experiences",
+    description:
+      "Responsive, accessible interfaces shaped around the people who use them and the goals they support.",
+    tags: ["Web apps", "UI/UX", "Prototyping"],
+  },
+  {
+    number: "02",
+    title: "Cross-platform applications",
+    description:
+      "Mobile and desktop experiences designed to feel at home on every platform.",
+    tags: ["Flutter", "React", "TypeScript"],
+  },
+  {
+    number: "03",
+    title: "Data & integrations",
+    description:
+      "Connected systems and reliable data foundations that bring products and workflows together.",
+    tags: ["PostgreSQL", "Supabase", "APIs"],
+  },
+];
+---
+
+<section
+  id="services"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading
+      eyebrow="What I do"
+      title="From first sketch to working software."
+    />
+    <p class="max-w-2xl mb-10 text-lg leading-relaxed text-[var(--white-icon)]">
+      A thoughtful mix of product design and engineering, tailored to the
+      challenge instead of a one-size-fits-all stack.
+    </p>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      {services.map((service) => (
+        <article class="service-card reveal group rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6 md:p-7 transition duration-300 hover:-translate-y-1 hover:border-[var(--sec)]">
+          <p class="text-sm tracking-[0.2em] text-[var(--sec)]">
+            {service.number}
+          </p>
+          <h3 class="mt-8 text-2xl font-medium leading-snug">
+            {service.title}
+          </h3>
+          <p class="mt-4 leading-relaxed text-[var(--white-icon)]">
+            {service.description}
+          </p>
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {service.tags.map((tag) => (
+              <li class="rounded-full border border-[var(--white-icon-tr)] px-3 py-1 text-xs text-[var(--white-icon)]">
+                {tag}
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

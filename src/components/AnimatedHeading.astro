@@ -1,0 +1,27 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  headingClass?: string;
+}
+
+const { eyebrow, title, headingClass = "" } = Astro.props;
+---
+
+<div class="mb-8">
+  <p class="text-lg text-[var(--sec)] mb-2 shiny-sec">{eyebrow}</p>
+  <h2
+    class={`display-heading text-4xl md:text-5xl font-medium text-[var(--white)] ${headingClass}`}
+    aria-label={title}
+  >
+    <span class="display-heading__visual" aria-hidden="true">
+      {Array.from(title).map((character, index) =>
+        character === " " ? (
+          " "
+        ) : (
+          <span style={`--char-index: ${index}`}>{character}</span>
+        ),
+      )}
+    </span>
+  </h2>
+</div>

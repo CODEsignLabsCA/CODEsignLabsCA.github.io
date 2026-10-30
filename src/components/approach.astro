@@ -1,0 +1,71 @@
+---
+import AnimatedHeading from "./AnimatedHeading.astro";
+
+const principles = [
+  {
+    title: "Built around people",
+    description:
+      "Start with the people and purpose behind the product, then make the experience easy to understand.",
+  },
+  {
+    title: "Made with intention",
+    description:
+      "Choose tools and architecture to fit the problem, keeping quality and maintainability in view.",
+  },
+  {
+    title: "Ready to evolve",
+    description:
+      "Create a solid foundation that can grow as the product, its users, and its priorities change.",
+  },
+];
+---
+
+<section
+  id="approach"
+  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+>
+  <div class="max-w-5xl mx-auto">
+    <AnimatedHeading
+      eyebrow="The difference"
+      title="Technology should move you forward."
+    />
+
+    <div class="grid gap-4 md:grid-cols-3">
+      {principles.map((principle, index) => (
+        <article class="approach-card reveal relative overflow-hidden rounded-2xl border border-[var(--white-icon-tr)] p-6 md:p-8">
+          <span class="approach-card__number" aria-hidden="true">
+            0{index + 1}
+          </span>
+          <h3 class="relative text-2xl font-medium">{principle.title}</h3>
+          <p class="relative mt-4 leading-relaxed text-[var(--white-icon)]">
+            {principle.description}
+          </p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach-card {
+    background: linear-gradient(145deg, #a476ff12, #1414149c 65%);
+  }
+
+  .approach-card__number {
+    position: absolute;
+    top: -1.5rem;
+    right: 0.75rem;
+    color: #a476ff15;
+    font-size: 7rem;
+    font-weight: 600;
+    line-height: 1;
+    transition:
+      color 300ms ease,
+      transform 300ms ease;
+  }
+
+  .approach-card:hover .approach-card__number {
+    color: #a476ff30;
+    transform: translateY(0.25rem);
+  }
+</style>

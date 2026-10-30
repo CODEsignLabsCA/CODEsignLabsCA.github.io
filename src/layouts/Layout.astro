@@ -9,6 +9,11 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
+    <script is:inline>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("motion-enabled");
+      }
+    </script>
     <meta charset="UTF-8" />
     <title>{title} | Portfolio</title>
     <meta
@@ -27,10 +32,7 @@ const { title } = Astro.props;
       crossorigin="anonymous"
     />
 
-    <meta
-      property="og:title"
-      content="Your Name | Software Developer"
-    />
+    <meta property="og:title" content="Your Name | Software Developer" />
     <meta
       property="og:description"
       content="Portfolio of Your Name, Software Developer specializing in frontend and interactive experiences."
@@ -41,10 +43,7 @@ const { title } = Astro.props;
     />
     <meta property="og:url" content="https://darkminimal.vercel.app" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:site_name"
-      content="Your Name Portfolio"
-    />
+    <meta property="og:site_name" content="Your Name Portfolio" />
 
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -55,10 +54,7 @@ const { title } = Astro.props;
         "alternateName": "Your Name",
         "url": "https://darkminimal.vercel.app",
         "image": "https://darkminimal.vercel.app/og.image.png",
-        "sameAs": [
-          "https://github.com",
-          "https://linkedin.com"
-        ],
+        "sameAs": ["https://github.com", "https://linkedin.com"],
         "jobTitle": "Software Developer",
         "description": "Software Developer building interactive and seamless digital experiences."
       }
@@ -81,10 +77,16 @@ const { title } = Astro.props;
 
   :root {
     --background: #101010;
+    --component-bg: #171717;
     --sec: #a476ff;
     --white: #dfdfdf;
     --white-icon: #f3f3f398;
     --white-icon-tr: #f3f3f310;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
   }
 
   * {
@@ -127,5 +129,58 @@ const { title } = Astro.props;
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--line) var(--container);
+  }
+
+  html.motion-enabled .display-heading__visual > span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.35em) rotate(8deg);
+    transition:
+      opacity 450ms ease,
+      transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--char-index) * 22ms);
+  }
+
+  html.motion-enabled
+    .display-heading.is-visible
+    .display-heading__visual
+    > span {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+
+  html.motion-enabled .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity 600ms ease,
+      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  html.motion-enabled .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    html.motion-enabled .display-heading__visual > span,
+    html.motion-enabled .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
