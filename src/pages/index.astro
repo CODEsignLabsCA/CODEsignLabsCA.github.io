@@ -77,8 +77,8 @@ import Footer from "@/components/footer.astro";
     const shouldStack =
       window.matchMedia("(min-width: 768px)").matches &&
       !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const enterPoint = window.innerHeight * 0.88;
-    const stackPoint = Math.min(Math.max(window.innerHeight * 0.12, 80), 112);
+    const enterPoint = window.innerHeight * 0.68;
+    const stackPoint = Math.min(Math.max(window.innerHeight * 0.1, 72), 104);
 
     serviceSections.forEach((section, index) => {
       const nextSection = serviceSections[index + 1];
