@@ -33,56 +33,129 @@ import AnimatedHeading from "./AnimatedHeading.astro";
         </a>
       </div>
 
-      <div class="about-visual relative min-h-64 md:min-h-80 flex items-center justify-center">
-        <div class="about-visual__halo" aria-hidden="true"></div>
-        <figure class="about-visual__frame reveal reveal-media relative z-10">
+      <div class="about-visual" aria-label="Our engineering team">
+        <figure class="about-visual__image about-visual__image--primary">
           <img
-            src="/images/presentation/about-vision.webp"
-            alt="Product engineers collaborating around a computer"
-            class="reveal-media__image h-full w-full object-cover"
-            width="700"
-            height="835"
+            src="/images/service-sections/Get to Know the Visionaries_1.webp"
+            alt="Product engineers collaborating around a computer, framed by a green and violet diamond"
+            width="619"
+            height="640"
             loading="lazy"
             decoding="async"
           />
         </figure>
-        <div class="about-visual__dots" aria-hidden="true"></div>
+        <figure class="about-visual__image about-visual__image--secondary">
+          <img
+            src="/images/service-sections/Get to Know the Visionaries_2.webp"
+            alt="Two colleagues working together, framed by a violet diamond"
+            width="1237"
+            height="1237"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .about-visual__halo {
+  .about-visual {
+    position: relative;
+    min-height: 33rem;
+    isolation: isolate;
+  }
+
+  .about-visual__image {
     position: absolute;
-    width: 15rem;
-    height: 15rem;
-    border-radius: 50%;
-    background: var(--sec);
-    opacity: 0.15;
-    filter: blur(70px);
+    display: block;
+    width: min(78%, 23rem);
+    margin: 0;
+    opacity: 0;
+    transition:
+      opacity 650ms ease,
+      transform 800ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
   }
 
-  .about-visual__frame {
-    width: min(100%, 22rem);
-    height: 20rem;
-    overflow: hidden;
-    border-radius: 2rem;
-    transform: rotate(4deg);
-  }
-
-  .about-visual__frame img {
+  .about-visual__image img {
+    display: block;
+    width: 100%;
+    height: auto;
     object-fit: contain;
   }
 
-  .about-visual__dots {
-    position: absolute;
-    right: 4%;
-    top: 8%;
-    width: 6rem;
-    height: 6rem;
-    background-image: radial-gradient(var(--sec) 1.5px, transparent 1.5px);
-    background-size: 13px 13px;
-    opacity: 0.5;
+  .about-visual__image--primary {
+    z-index: 2;
+    top: 0;
+    left: 0;
+    transform: translate3d(-2rem, -1rem, 0) rotate(-7deg) scale(0.88);
+    transition-delay: 80ms;
+  }
+
+  .about-visual__image--secondary {
+    z-index: 1;
+    right: -5%;
+    bottom: 0;
+    transform: translate3d(2rem, 1.5rem, 0) rotate(7deg) scale(0.88);
+    transition-delay: 180ms;
+  }
+
+  .about-visual__image--primary.is-visible,
+  .about-visual__image--secondary.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  }
+
+  @media (max-width: 1023px) {
+    .about-visual {
+      min-height: 27rem;
+    }
+
+    .about-visual__image {
+      width: min(78%, 20rem);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .about-visual {
+      min-height: 24rem;
+    }
+
+    .about-visual__image {
+      width: min(72%, 18rem);
+    }
+
+    .about-visual__image--secondary {
+      right: -1%;
+      bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-visual__image,
+    .about-visual__image--primary,
+    .about-visual__image--secondary {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      will-change: auto;
+    }
   }
 </style>
+
+<script>
+  const visionaryImages = document.querySelectorAll<HTMLElement>(
+    ".about-visual__image",
+  );
+  const visionaryImageObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.12 },
+  );
+
+  visionaryImages.forEach((image) => visionaryImageObserver.observe(image));
+</script>
