@@ -8,17 +8,17 @@ const visionariesAccordions = [
       {
         title: "Domain-Driven Design (DDD)",
         description:
-          "Separación radical de la lógica de negocio y el núcleo técnico. Permite escalar el sistema e introducir funciones complejas sin romper la estabilidad actual.",
+          "A radical separation of business logic from the technical core. This enables system scaling and the introduction of complex features without compromising existing stability.",
       },
       {
-        title: "Clean Architecture & SOLID",
+        title: "Clean and SOLID Architecture",
         description:
-          "Código desacoplado e independiente de la base de datos y la interfaz. Garantiza pruebas unitarias automatizadas y migraciones tecnológicas sin fricción.",
+          "Decoupled code, independent of both the database and the user interface. This ensures robust automated unit testing and seamless technology migrations.",
       },
       {
         title: "Kotlin Multiplatform (KMP)",
         description:
-          "Centralización de algoritmos y flujos de datos en un único núcleo lógico compartido, inyectando rendimiento nativo directo a iOS, Android y Web.",
+          "Centralization of algorithms and data flows into a single, shared logical core, delivering native-level performance across iOS, Android, and the Web.",
       },
     ],
   },
@@ -28,17 +28,17 @@ const visionariesAccordions = [
       {
         title: "AI-Augmented Development",
         description:
-          "Programación asistida con Argon en Antigravity y GitHub Copilot. Automatizamos el código repetitivo para acelerar el lanzamiento al mercado (Time-to-Market).",
+          "Programming assisted by tools like Argon (within the Antigravity ecosystem) and GitHub Copilot. We automate repetitive coding tasks to accelerate time-to-market.",
       },
       {
         title: "Automated CI/CD Pipelines",
         description:
-          "Despliegue automatizado. Cada cambio en el repositorio se compila, prueba y sube a producción en servidores y tiendas (App Store/Play Store) sin error humano.",
+          "Fully automated deployment. Every change to the repository is compiled, tested, and pushed to production—whether on servers or app stores (App Store/Play Store)—eliminating the risk of human error.",
       },
       {
-        title: "BaaS & Serverless Infrastructure",
+        title: "BaaS and Serverless Infrastructure",
         description:
-          "Arquitectura ágil con Supabase y Firebase. Reducción del tiempo de configuración de backend a minutos para activar bases de datos y pasarelas de pago de inmediato.",
+          "An agile architecture leveraging Supabase and Firebase. Backend setup time is reduced to minutes, allowing for the immediate activation of databases and payment gateways.",
       },
     ],
   },
@@ -60,11 +60,10 @@ const visionariesAccordions = [
           create highly profitable software assets.
         </p>
         <div class="visionaries-accordions" aria-label="Engineering and automation details">
-          {visionariesAccordions.map((accordion, index) => (
+          {visionariesAccordions.map((accordion) => (
             <details
               class="visionary-accordion"
               name="visionaries-accordion"
-              open={index === 0}
             >
               <summary class="visionary-accordion__trigger">
                 <span>{accordion.title}</span>
