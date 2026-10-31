@@ -85,6 +85,17 @@ import Footer from "@/components/footer.astro";
       section.style.setProperty("--service-section-layer", String(index + 1));
 
       if (!shouldStack || !nextSection) {
+        if (
+          section.id === "services" &&
+          section.classList.contains("service-is-stacking")
+        ) {
+          section.classList.remove("service-is-stacking");
+          section.dispatchEvent(
+            new CustomEvent("service-stack-state", {
+              detail: { isStacking: false },
+            }),
+          );
+        }
         section.style.setProperty("--service-section-scale", "1");
         section.style.setProperty("--service-section-opacity", "1");
         return;
@@ -95,6 +106,20 @@ import Footer from "@/components/footer.astro";
         1,
         Math.max(0, (enterPoint - nextTop) / (enterPoint - stackPoint)),
       );
+
+      if (section.id === "services") {
+        const isStacking = progress > 0.01;
+        const wasStacking = section.classList.contains("service-is-stacking");
+
+        if (isStacking !== wasStacking) {
+          section.classList.toggle("service-is-stacking", isStacking);
+          section.dispatchEvent(
+            new CustomEvent("service-stack-state", {
+              detail: { isStacking },
+            }),
+          );
+        }
+      }
 
       section.style.setProperty(
         "--service-section-scale",
