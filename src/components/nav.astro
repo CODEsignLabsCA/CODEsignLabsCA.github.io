@@ -56,7 +56,6 @@ const navItems: NavItem[] = [
           data-sections={item.sections.join(" ")}
           style={`--nav-index: ${index}`}
         >
-          <span class="nav-link__indicator" aria-hidden="true"></span>
           <span class="nav-link__icon" aria-hidden="true">
             <fragment set:html={item.icon} />
           </span>
@@ -115,40 +114,30 @@ const navItems: NavItem[] = [
     align-items: center;
     gap: 0.45rem;
     color: var(--white-icon);
-    font-size: clamp(0.66rem, 0.9vw, 0.88rem);
+    font-size: 1rem;
     text-decoration: none;
     transition:
-      color 250ms ease,
-      text-shadow 250ms ease;
-  }
-
-  .nav-link__indicator {
-    position: absolute;
-    top: 50%;
-    left: -0.85rem;
-    width: 0.35rem;
-    height: 0.35rem;
-    border-radius: 50%;
-    background: var(--sec);
-    opacity: 0;
-    transform: translateY(-50%) scale(0.4);
-    transition:
-      opacity 250ms ease,
-      transform 250ms ease;
+      color 250ms ease;
   }
 
   .nav-link:hover,
   .nav-link.active {
-    color: var(--white);
+    color: var(--sec);
   }
 
-  .nav-link.active {
-    text-shadow: 0 0 18px #a476ff66;
+  .nav-link__label {
+    display: inline-block;
+    font-size: inherit;
+    font-weight: 400;
+    transition:
+      font-size 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      font-weight 250ms ease;
   }
 
-  .nav-link.active .nav-link__indicator {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
+  .nav-link.active .nav-link__label {
+    font-size: 1.16em;
+    font-weight: 700;
+    animation: focus-in-expand 650ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
   .nav-link__icon {
@@ -179,8 +168,18 @@ const navItems: NavItem[] = [
       gap: clamp(0.5rem, 1.3vw, 1rem);
     }
 
-    .nav-link {
-      font-size: 0.72rem;
+  }
+
+  @keyframes focus-in-expand {
+    0% {
+      letter-spacing: -0.5em;
+      filter: blur(12px);
+      opacity: 0;
+    }
+
+    100% {
+      filter: blur(0);
+      opacity: 1;
     }
   }
 
@@ -220,24 +219,18 @@ const navItems: NavItem[] = [
       white-space: nowrap;
     }
 
-    .nav-link__indicator {
-      top: 0.1rem;
-      left: 50%;
-      width: 0.28rem;
-      height: 0.28rem;
-      transform: translateX(-50%) scale(0.4);
-    }
-
-    .nav-link.active .nav-link__indicator {
-      transform: translateX(-50%) scale(1);
-    }
-
     .nav-link__icon {
       display: block;
     }
 
     body {
       padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link.active .nav-link__label {
+      animation: none;
     }
   }
 </style>
