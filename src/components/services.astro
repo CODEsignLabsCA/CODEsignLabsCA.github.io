@@ -206,8 +206,12 @@ const services = [
     ".service-overview__image",
   );
   if ("IntersectionObserver" in window && serviceOverviewImage) {
+    let hasEnteredViewport = false;
     const serviceOverviewImageObserver = new IntersectionObserver(
       ([entry]) => {
+        if (!entry.isIntersecting && !hasEnteredViewport) return;
+        if (entry.isIntersecting) hasEnteredViewport = true;
+
         serviceOverviewImage.classList.toggle(
           "is-visible",
           entry.isIntersecting,
