@@ -17,7 +17,7 @@ import SkillsList from "../React/SkillsList.tsx";
       <p class="text-md md:text-lg text-[var(--white-icon)] shiny-white">
         Hi, I'm Jairo Fernando
       </p>
-      <div class="flex flex-col space-y-4">
+      <div class="hero-headline">
         <h1 class="hero-title text-[var(--white)] font-medium text-pretty leading-none">
           Software <br /> Developer
         </h1>
@@ -113,6 +113,13 @@ import SkillsList from "../React/SkillsList.tsx";
     min-width: 0;
   }
 
+  .hero-headline {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+    align-items: end;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+
   .hero-title {
     font-size: clamp(4rem, 7.5vw, 7rem);
     letter-spacing: -0.075em;
@@ -120,7 +127,8 @@ import SkillsList from "../React/SkillsList.tsx";
   }
 
   .hero-description {
-    max-width: 43rem;
+    max-width: 38rem;
+    margin-bottom: 0.35rem;
     padding-left: 1.25rem;
     border-left: 2px solid #a476ff80;
     line-height: 1.75;
@@ -166,8 +174,18 @@ import SkillsList from "../React/SkillsList.tsx";
   }
 
   @media (max-width: 767px) {
+    .hero-headline {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
     .hero-title {
       font-size: clamp(3.8rem, 16vw, 5.5rem);
+    }
+
+    .hero-description {
+      max-width: 43rem;
+      margin-bottom: 0;
     }
   }
 </style>
