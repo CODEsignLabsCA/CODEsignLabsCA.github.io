@@ -149,6 +149,7 @@ const navItems: NavItem[] = [
   .nav-link.active .nav-link__label > span:first-child {
     animation: focus-in-expand-fwd 650ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     transform-style: preserve-3d;
+    transform-origin: center;
   }
 
   .nav-link__icon {
@@ -184,13 +185,13 @@ const navItems: NavItem[] = [
   @keyframes focus-in-expand-fwd {
     0% {
       letter-spacing: -0.5em;
-      transform: translateZ(-800px);
+      transform: translateZ(-800px) scaleX(0.65);
       filter: blur(12px);
       opacity: 0;
     }
 
     100% {
-      transform: translateZ(0);
+      transform: translateZ(0) scaleX(1);
       letter-spacing: normal;
       filter: blur(0);
       opacity: 1;
@@ -369,4 +370,17 @@ const navItems: NavItem[] = [
   );
 
   sections.forEach((section) => sectionObserver.observe(section));
+
+  const motionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
+      });
+    },
+    { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+  );
+
+  document
+    .querySelectorAll(".display-heading, .reveal, .reveal-media")
+    .forEach((element) => motionObserver.observe(element));
 </script>
