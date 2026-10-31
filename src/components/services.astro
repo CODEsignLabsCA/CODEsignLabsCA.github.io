@@ -227,6 +227,7 @@ const services = [
   }
 
   let countAnimationFrame: number | null = null;
+  let countWasVisible = false;
 
   if (countUpElement && Number.isFinite(countTarget)) {
     renderCount(0);
@@ -240,6 +241,7 @@ const services = [
     const countObserver = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) {
+          if (!countWasVisible) return;
           if (countAnimationFrame !== null) {
             cancelAnimationFrame(countAnimationFrame);
             countAnimationFrame = null;
@@ -248,6 +250,7 @@ const services = [
           return;
         }
 
+        countWasVisible = true;
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           renderCount(countTarget);
           return;
@@ -257,6 +260,7 @@ const services = [
           cancelAnimationFrame(countAnimationFrame);
         }
 
+        renderCount(0);
         const duration = 1400;
         const startTime = performance.now();
         const animateCount = (now: number) => {
