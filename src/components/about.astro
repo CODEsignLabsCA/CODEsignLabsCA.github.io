@@ -24,13 +24,6 @@ import AnimatedHeading from "./AnimatedHeading.astro";
           <strong class="text-[var(--white)]">Philosophy:</strong> Maximum
           efficiency through advanced automation.
         </p>
-        <a
-          href="#services"
-          class="inline-flex items-center gap-2 text-[var(--sec)] font-medium transition-colors hover:text-[var(--white)]"
-        >
-          Learn More..
-          <span aria-hidden="true">→</span>
-        </a>
       </div>
 
       <div class="about-visual" aria-label="Our engineering team">
@@ -95,8 +88,9 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 
   .about-visual__image--secondary {
     z-index: 1;
-    right: -5%;
+    right: -30%;
     bottom: 0;
+    width: min(100%, 29rem);
     transform: translate3d(2rem, 1.5rem, 0) rotate(7deg) scale(0.88);
     transition-delay: 180ms;
   }
@@ -127,8 +121,24 @@ import AnimatedHeading from "./AnimatedHeading.astro";
     }
 
     .about-visual__image--secondary {
-      right: -1%;
+      right: -18%;
       bottom: 0;
+      width: min(92%, 23rem);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-visual {
+      min-height: 21rem;
+    }
+
+    .about-visual__image--primary {
+      left: -4%;
+    }
+
+    .about-visual__image--secondary {
+      right: -12%;
+      width: min(88%, 20rem);
     }
   }
 
