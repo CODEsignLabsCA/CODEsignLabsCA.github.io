@@ -59,7 +59,10 @@ const navItems: NavItem[] = [
           <span class="nav-link__icon" aria-hidden="true">
             <fragment set:html={item.icon} />
           </span>
-          <span class="nav-link__label">{item.label}</span>
+          <span class="nav-link__label">
+            <span>{item.label}</span>
+            <span class="nav-link__label-reserve" aria-hidden="true">{item.label}</span>
+          </span>
         </a>
       </li>
     ))}
@@ -126,17 +129,21 @@ const navItems: NavItem[] = [
   }
 
   .nav-link__label {
-    display: inline-block;
-    font-size: inherit;
+    display: grid;
     font-weight: 400;
-    transition:
-      font-size 300ms cubic-bezier(0.2, 0.7, 0.2, 1),
-      font-weight 250ms ease;
   }
 
-  .nav-link.active .nav-link__label {
+  .nav-link__label > span {
+    grid-area: 1 / 1;
+  }
+
+  .nav-link__label-reserve {
     font-size: 1.16em;
     font-weight: 700;
+    visibility: hidden;
+  }
+
+  .nav-link.active .nav-link__label > span:first-child {
     animation: focus-in-expand 650ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
 
@@ -178,6 +185,7 @@ const navItems: NavItem[] = [
     }
 
     100% {
+      letter-spacing: normal;
       filter: blur(0);
       opacity: 1;
     }
@@ -229,7 +237,7 @@ const navItems: NavItem[] = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .nav-link.active .nav-link__label {
+    .nav-link.active .nav-link__label > span:first-child {
       animation: none;
     }
   }
@@ -237,7 +245,34 @@ const navItems: NavItem[] = [
 
 <script>
   const mainNav = document.getElementById("main-nav");
+  const navList = mainNav?.querySelector<HTMLElement>(".nav-links");
+  const navItems = Array.from(
+    navList?.querySelectorAll<HTMLElement>("li") ?? [],
+  );
   let rafId: number | null = null;
+
+  function getRequiredNavWidth() {
+    if (!mainNav || !navList || navItems.length === 0) return 528;
+
+    const navStyle = getComputedStyle(mainNav);
+    const listStyle = getComputedStyle(navList);
+    const itemWidth = navItems.reduce(
+      (width, item) => width + item.getBoundingClientRect().width,
+      0,
+    );
+    const gap = Number.parseFloat(listStyle.columnGap) || 0;
+    const horizontalPadding =
+      (Number.parseFloat(navStyle.paddingLeft) || 0) +
+      (Number.parseFloat(navStyle.paddingRight) || 0);
+    const borderWidth =
+      (Number.parseFloat(navStyle.borderLeftWidth) || 0) +
+      (Number.parseFloat(navStyle.borderRightWidth) || 0);
+
+    return Math.max(
+      528,
+      itemWidth + gap * Math.max(0, navItems.length - 1) + horizontalPadding + borderWidth,
+    );
+  }
 
   function updateNav() {
     const scrollY = window.scrollY;
@@ -245,11 +280,16 @@ const navItems: NavItem[] = [
     mainNav?.classList.toggle("scrolling", isScrolled);
 
     if (mainNav && window.innerWidth >= 768 && isScrolled) {
-      const startWidth = window.innerWidth * 0.8;
+      const maxWidth = window.innerWidth - 32;
+      const endWidth = Math.min(getRequiredNavWidth(), maxWidth);
+      const startWidth = Math.min(
+        Math.max(window.innerWidth * 0.8, endWidth),
+        maxWidth,
+      );
       const progress = window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ? 1
         : 1 - (1 - Math.min(scrollY / 1000, 1)) ** 4;
-      const width = startWidth - (startWidth - 528) * progress;
+      const width = startWidth - (startWidth - endWidth) * progress;
       mainNav.style.width = `${width}px`;
     } else {
       mainNav?.style.removeProperty("width");
@@ -287,6 +327,8 @@ const navItems: NavItem[] = [
         link.removeAttribute("aria-current");
       }
     });
+
+    scheduleNavUpdate();
   }
 
   function chooseActiveSection() {
