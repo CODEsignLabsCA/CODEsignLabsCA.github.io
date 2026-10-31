@@ -51,7 +51,7 @@ const navItems: NavItem[] = [
     <a class="nav-brand" href="#home" aria-label="CODEsignLabs, home">
       <span class="nav-brand__mark">
         <img
-          src="/svg/iso_codesignlabs_2x.png"
+          src="/svg/logo_codesignlabs_fondo_transp.png"
           alt=""
           width="40"
           height="40"
@@ -133,8 +133,8 @@ const navItems: NavItem[] = [
   .nav-brand__mark {
     position: relative;
     display: grid;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 4.25rem;
+    height: 2.7rem;
     flex: 0 0 auto;
     overflow: hidden;
     place-items: center;
@@ -144,7 +144,8 @@ const navItems: NavItem[] = [
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center 24%;
     transition: filter 250ms ease;
   }
 
@@ -174,10 +175,7 @@ const navItems: NavItem[] = [
   }
 
   .nav-brand__wordmark {
-    color: var(--white);
-    font-size: 0.92rem;
-    font-weight: 600;
-    white-space: nowrap;
+    display: none;
   }
 
   .nav-brand__wordmark span {
