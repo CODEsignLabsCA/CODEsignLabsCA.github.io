@@ -4,7 +4,7 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 
 <section
   id="about"
-  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+  class="about-section scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading eyebrow="About us" title="Get to know the visionaries" />
@@ -41,8 +41,8 @@ import AnimatedHeading from "./AnimatedHeading.astro";
           <img
             src="/images/service-sections/Get to Know the Visionaries_2.webp"
             alt="Two colleagues working together, framed by a violet diamond"
-            width="1237"
-            height="1237"
+            width="642"
+            height="619"
             loading="lazy"
             decoding="async"
           />
@@ -88,7 +88,7 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 
   .about-visual__image--secondary {
     z-index: 1;
-    right: -12%;
+    right: -32%;
     bottom: 0;
     width: min(78%, 23rem);
     transform: translate3d(2rem, 1.5rem, 0) rotate(7deg) scale(0.88);
@@ -121,10 +121,11 @@ import AnimatedHeading from "./AnimatedHeading.astro";
     }
 
     .about-visual__image--secondary {
-      right: -10%;
+      right: -20%;
       bottom: 0;
       width: min(78%, 20rem);
     }
+
   }
 
   @media (max-width: 480px) {
@@ -137,8 +138,15 @@ import AnimatedHeading from "./AnimatedHeading.astro";
     }
 
     .about-visual__image--secondary {
-      right: -8%;
+      right: -12%;
       width: min(72%, 18rem);
+    }
+
+  }
+
+  @media (min-width: 768px) {
+    .about-section {
+      overflow-x: clip;
     }
   }
 
