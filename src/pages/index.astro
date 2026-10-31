@@ -52,6 +52,10 @@ import Footer from "@/components/footer.astro";
     will-change: transform, opacity;
   }
 
+  :global(.service-section-stack > section:not(#services)::before) {
+    display: none;
+  }
+
   @media (max-width: 767px), (prefers-reduced-motion: reduce) {
     :global(.service-section-stack > section) {
       position: relative;
