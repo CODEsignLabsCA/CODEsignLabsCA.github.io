@@ -99,12 +99,13 @@ const services = [
     object-fit: contain;
   }
 
-  .service-overview__image.is-visible {
+  .service-overview__image.is-visible > img {
     animation: service-image-enter 850ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
-  .service-overview__image.is-hidden {
-    animation: service-image-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  .service-overview__image.is-visible .service-overview__stat {
+    animation: service-stat-enter 700ms 180ms cubic-bezier(0.2, 0.7, 0.2, 1)
+      both;
   }
 
   @keyframes service-image-enter {
@@ -121,17 +122,15 @@ const services = [
     }
   }
 
-  @keyframes service-image-exit {
+  @keyframes service-stat-enter {
     from {
-      clip-path: inset(0);
-      opacity: 1;
-      transform: translateX(0);
+      opacity: 0;
+      transform: translateX(-2rem);
     }
 
     to {
-      clip-path: inset(0 100% 0 0);
-      opacity: 0;
-      transform: translateX(-1.5rem);
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
@@ -139,7 +138,8 @@ const services = [
     position: absolute;
     z-index: 1;
     top: 13%;
-    left: -1.25rem;
+    right: -1.25rem;
+    left: auto;
     width: 10.75rem;
     min-height: 7rem;
     padding: 1rem 1.15rem;
@@ -179,7 +179,7 @@ const services = [
 
     .service-overview__stat {
       top: 12%;
-      left: 0;
+      right: 0;
       width: 10rem;
       min-height: 0;
       padding: 0.85rem 1rem;
@@ -191,8 +191,8 @@ const services = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .service-overview__image.is-visible,
-    .service-overview__image.is-hidden {
+    .service-overview__image.is-visible > img,
+    .service-overview__image.is-visible .service-overview__stat {
       clip-path: none;
       opacity: 1;
       transform: none;
@@ -206,20 +206,11 @@ const services = [
     ".service-overview__image",
   );
   if ("IntersectionObserver" in window && serviceOverviewImage) {
-    let hasEnteredViewport = false;
     const serviceOverviewImageObserver = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting && !hasEnteredViewport) return;
-        if (entry.isIntersecting) hasEnteredViewport = true;
-
-        serviceOverviewImage.classList.toggle(
-          "is-visible",
-          entry.isIntersecting,
-        );
-        serviceOverviewImage.classList.toggle(
-          "is-hidden",
-          !entry.isIntersecting,
-        );
+        if (!entry.isIntersecting) return;
+        serviceOverviewImage.classList.add("is-visible");
+        serviceOverviewImageObserver.disconnect();
       },
       { threshold: 0.15 },
     );
