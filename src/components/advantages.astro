@@ -18,46 +18,40 @@ const advantages = [
   class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
 >
   <div class="max-w-5xl mx-auto">
-    <AnimatedHeading eyebrow="Service" title="Discover the key advantages" />
+    <div class="advantages-layout">
+      <div class="advantages-heading">
+        <AnimatedHeading
+          eyebrow="Service"
+          title="Discover the key advantages"
+          headingClass="uppercase"
+        />
+      </div>
 
-    <div class="mb-8 grid items-center gap-5 sm:grid-cols-2">
-      <figure class="reveal mx-auto w-full max-w-sm">
+      <article class="advantages-core rounded-2xl bg-[var(--component-bg)] p-6 md:p-8">
+        <h3 class="mb-4 text-xl font-medium">Core Advantages</h3>
+        <div class="grid gap-5">
+          {advantages.map((advantage) => (
+            <p class="leading-relaxed text-[var(--white-icon)]">
+              <strong class="text-[var(--white)]">{advantage.title}:</strong>{" "}
+              {advantage.description}
+            </p>
+          ))}
+        </div>
+      </article>
+
+      <figure class="advantages-primary reveal reveal-media">
         <img
           src="/images/service-sections/Discover the Key Advantages_1.webp"
           alt="A software developer working at a laptop inside a neon diamond frame"
-          class="h-auto w-full object-contain"
+          class="reveal-media__image h-auto w-full object-contain"
           width="583"
           height="583"
           loading="lazy"
           decoding="async"
         />
       </figure>
-      <figure class="reveal mx-auto w-full max-w-sm">
-        <img
-          src="/images/service-sections/Discover the Key Advantages_2.webp"
-          alt="A developer reviewing software architecture and code on a workstation"
-          class="h-auto w-full object-contain"
-          width="302"
-          height="276"
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-    </div>
 
-    <div class="grid items-start gap-8 md:grid-cols-2 md:gap-12">
-      <div class="grid gap-4">
-        {advantages.map((advantage) => (
-          <article class="reveal rounded-2xl border border-[var(--white-icon-tr)] bg-[var(--component-bg)] p-6">
-            <h3 class="text-xl font-medium">{advantage.title}</h3>
-            <p class="mt-2 text-[var(--white-icon)]">{advantage.description}</p>
-          </article>
-        ))}
-      </div>
-      <div class="reveal border-l-2 border-[var(--sec)] pl-6 text-lg leading-relaxed text-[var(--white-icon)]">
-        <h3 class="mb-4 text-2xl font-medium text-[var(--white)]">
-          Core Advantages
-        </h3>
+      <div class="advantages-description reveal border-l-2 border-[var(--sec)] pl-6 text-base leading-relaxed text-[var(--white-icon)] md:text-lg">
         <p>
           Software is the financial engine of your organization. We structure
           databases in PostgreSQL and MySQL—powered by Supabase and Firebase—and
@@ -65,6 +59,90 @@ const advantages = [
           revenue streams.
         </p>
       </div>
+
+      <figure class="advantages-secondary reveal reveal-media">
+        <img
+          src="/images/service-sections/Discover the Key Advantages_2.webp"
+          alt="A developer reviewing software architecture and code on a workstation"
+          class="reveal-media__image h-auto w-full object-contain"
+          width="302"
+          height="276"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
     </div>
   </div>
 </section>
+
+<style>
+  .advantages-layout {
+    display: grid;
+    align-items: start;
+    gap: 1.5rem;
+  }
+
+  .advantages-primary,
+  .advantages-secondary {
+    margin: 0;
+  }
+
+  .advantages-primary img,
+  .advantages-secondary img {
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .advantages-layout {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-areas:
+        "heading heading heading heading heading core core core core core core core"
+        "primary primary primary primary primary description description description description description secondary secondary";
+      column-gap: 1.5rem;
+      row-gap: 1rem;
+      align-items: center;
+    }
+
+    .advantages-heading {
+      grid-area: heading;
+      align-self: center;
+    }
+
+    .advantages-core {
+      grid-area: core;
+    }
+
+    .advantages-primary {
+      grid-area: primary;
+      align-self: start;
+      width: min(100%, 19rem);
+      margin-top: -0.5rem;
+    }
+
+    .advantages-description {
+      grid-area: description;
+      align-self: center;
+      padding-left: 1.25rem;
+    }
+
+    .advantages-secondary {
+      grid-area: secondary;
+      align-self: center;
+      width: 100%;
+      margin-left: -0.5rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .advantages-primary {
+      width: min(100%, 24rem);
+      justify-self: center;
+    }
+
+    .advantages-secondary {
+      width: min(65%, 15rem);
+      justify-self: end;
+      margin-top: -1rem;
+    }
+  }
+</style>
