@@ -21,7 +21,7 @@ import SkillsList from "../React/SkillsList.tsx";
         <h1 class="hero-title text-[var(--white)] font-medium text-pretty leading-none">
           Software <br /> Developer
         </h1>
-        <p class="hero-description text-md md:text-xl text-[var(--white-icon)]">
+        <p class="hero-description text-md md:text-2xl text-[var(--white-icon)]">
           We transform ideas into{" "}
           <span class="text-[var(--sec)] shiny-sec">
             interactive and seamless digital experiences
@@ -115,19 +115,19 @@ import SkillsList from "../React/SkillsList.tsx";
 
   .hero-headline {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+    max-width: 64rem;
+    grid-template-columns: max-content minmax(0, 1fr);
     align-items: start;
-    gap: clamp(2rem, 5vw, 5rem);
+    gap: clamp(2rem, 4vw, 3rem);
   }
 
   .hero-title {
-    font-size: clamp(4rem, 7.5vw, 7rem);
+    font-size: clamp(3rem, 4.2vw, 3.75rem);
     letter-spacing: -0.075em;
     line-height: 0.92;
   }
 
   .hero-description {
-    max-width: 38rem;
     padding-left: 1.25rem;
     border-left: 2px solid #a476ff80;
     line-height: 1.75;
@@ -172,7 +172,7 @@ import SkillsList from "../React/SkillsList.tsx";
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
     .hero-headline {
       grid-template-columns: minmax(0, 1fr);
       gap: 1.5rem;
