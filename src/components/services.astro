@@ -103,6 +103,10 @@ const services = [
     animation: service-image-enter 850ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
+  .service-overview__image.is-hidden {
+    animation: service-image-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
   @keyframes service-image-enter {
     from {
       clip-path: inset(0 100% 0 0);
@@ -114,6 +118,20 @@ const services = [
       clip-path: inset(0);
       opacity: 1;
       transform: translateX(0);
+    }
+  }
+
+  @keyframes service-image-exit {
+    from {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    to {
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+      transform: translateX(-1.5rem);
     }
   }
 
@@ -173,7 +191,8 @@ const services = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .service-overview__image.is-visible {
+    .service-overview__image.is-visible,
+    .service-overview__image.is-hidden {
       clip-path: none;
       opacity: 1;
       transform: none;
@@ -193,15 +212,18 @@ const services = [
           "is-visible",
           entry.isIntersecting,
         );
+        serviceOverviewImage.classList.toggle(
+          "is-hidden",
+          !entry.isIntersecting,
+        );
       },
-      { threshold: 0.01 },
+      { threshold: 0.15 },
     );
     serviceOverviewImageObserver.observe(serviceOverviewImage);
   }
 
   const countUpElement = document.querySelector<HTMLElement>("[data-count-up]");
   const countTarget = Number(countUpElement?.dataset.countUp);
-  let countAnimationFrame: number | null = null;
 
   function renderCount(value: number) {
     if (countUpElement) {
@@ -209,46 +231,45 @@ const services = [
     }
   }
 
-  const countObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (!countUpElement || !Number.isFinite(countTarget)) return;
+  if (countUpElement && Number.isFinite(countTarget)) {
+    renderCount(0);
+  }
 
-      if (!entry.isIntersecting) {
-        if (countAnimationFrame !== null) {
-          cancelAnimationFrame(countAnimationFrame);
-          countAnimationFrame = null;
+  if (
+    countUpElement &&
+    Number.isFinite(countTarget) &&
+    "IntersectionObserver" in window
+  ) {
+    const countObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        countObserver.disconnect();
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          renderCount(countTarget);
+          return;
         }
-        renderCount(0);
-        return;
-      }
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        renderCount(countTarget);
-        return;
-      }
+        const duration = 1400;
+        const startTime = performance.now();
+        const animateCount = (now: number) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const easedProgress = 1 - (1 - progress) ** 3;
+          renderCount(countTarget * easedProgress);
 
-      if (countAnimationFrame !== null) {
-        cancelAnimationFrame(countAnimationFrame);
-      }
+          if (progress < 1) {
+            requestAnimationFrame(animateCount);
+          } else {
+            renderCount(countTarget);
+          }
+        };
 
-      const duration = 1400;
-      const startTime = performance.now();
-      const animateCount = (now: number) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        const easedProgress = 1 - (1 - progress) ** 3;
-        renderCount(countTarget * easedProgress);
-
-        if (progress < 1) {
-          countAnimationFrame = requestAnimationFrame(animateCount);
-        } else {
-          countAnimationFrame = null;
-        }
-      };
-
-      countAnimationFrame = requestAnimationFrame(animateCount);
-    },
-    { threshold: 0.5 },
-  );
-
-  if (countUpElement) countObserver.observe(countUpElement);
+        requestAnimationFrame(animateCount);
+      },
+      { threshold: 0.01 },
+    );
+    countObserver.observe(countUpElement);
+  } else if (countUpElement && Number.isFinite(countTarget)) {
+    renderCount(countTarget);
+  }
 </script>
