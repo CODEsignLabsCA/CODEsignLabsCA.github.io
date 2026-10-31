@@ -47,26 +47,42 @@ const navItems: NavItem[] = [
 ---
 
 <nav id="main-nav" class="main-nav" aria-label="Main navigation">
-  <ul class="nav-links">
-    {navItems.map((item, index) => (
-      <li>
-        <a
-          href={item.href}
-          class="nav-link"
-          data-sections={item.sections.join(" ")}
-          style={`--nav-index: ${index}`}
-        >
-          <span class="nav-link__icon" aria-hidden="true">
-            <fragment set:html={item.icon} />
-          </span>
-          <span class="nav-link__label">
-            <span>{item.label}</span>
-            <span class="nav-link__label-reserve" aria-hidden="true">{item.label}</span>
-          </span>
-        </a>
-      </li>
-    ))}
-  </ul>
+  <div class="nav-content">
+    <a class="nav-brand" href="#home" aria-label="CODEsignLabs, home">
+      <span class="nav-brand__mark">
+        <img
+          src="/svg/iso_codesignlabs_2x.png"
+          alt=""
+          width="40"
+          height="40"
+          class="nav-brand__logo"
+        />
+        <span class="nav-brand__shine" aria-hidden="true"></span>
+      </span>
+      <span class="nav-brand__wordmark">CODEsign<span>Labs</span></span>
+    </a>
+
+    <ul class="nav-links">
+      {navItems.map((item, index) => (
+        <li>
+          <a
+            href={item.href}
+            class="nav-link"
+            data-sections={item.sections.join(" ")}
+            style={`--nav-index: ${index}`}
+          >
+            <span class="nav-link__icon" aria-hidden="true">
+              <fragment set:html={item.icon} />
+            </span>
+            <span class="nav-link__label">
+              <span>{item.label}</span>
+              <span class="nav-link__label-reserve" aria-hidden="true">{item.label}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
 </nav>
 
 <style>
@@ -75,7 +91,7 @@ const navItems: NavItem[] = [
     z-index: 100;
     top: 1.5rem;
     left: 50%;
-    width: 80%;
+    width: min(80%, 1120px);
     min-height: 3.75rem;
     padding: 0.55rem 1.5rem;
     border: 1px solid transparent;
@@ -97,8 +113,81 @@ const navItems: NavItem[] = [
     box-shadow: 0 12px 40px rgb(0 0 0 / 18%);
   }
 
+  .nav-content {
+    display: flex;
+    min-height: 2.6rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1.25rem, 3vw, 2.75rem);
+  }
+
+  .nav-brand {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-brand__mark {
+    position: relative;
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    overflow: hidden;
+    place-items: center;
+  }
+
+  .nav-brand__logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter 250ms ease;
+  }
+
+  .nav-brand__shine {
+    position: absolute;
+    inset: -35% auto -35% -70%;
+    width: 45%;
+    background: linear-gradient(
+      105deg,
+      transparent,
+      rgb(255 255 255 / 90%),
+      rgb(164 118 255 / 80%),
+      transparent
+    );
+    opacity: 0;
+    transform: skewX(-20deg);
+    pointer-events: none;
+  }
+
+  .nav-brand:hover .nav-brand__logo {
+    filter: brightness(1.22) drop-shadow(0 0 9px rgb(164 118 255 / 65%));
+  }
+
+  .nav-brand:hover .nav-brand__shine {
+    opacity: 1;
+    animation: logo-flash 700ms ease-out both;
+  }
+
+  .nav-brand__wordmark {
+    color: var(--white);
+    font-size: 0.92rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .nav-brand__wordmark span {
+    color: var(--sec);
+  }
+
   .nav-links {
     display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
     min-height: 2.6rem;
     align-items: center;
     justify-content: space-between;
@@ -198,6 +287,22 @@ const navItems: NavItem[] = [
     }
   }
 
+  @keyframes logo-flash {
+    0% {
+      left: -70%;
+      opacity: 0;
+    }
+
+    20% {
+      opacity: 1;
+    }
+
+    100% {
+      left: 130%;
+      opacity: 0;
+    }
+  }
+
   @media (max-width: 767px) {
     .main-nav,
     .main-nav.scrolling {
@@ -214,6 +319,7 @@ const navItems: NavItem[] = [
 
     .nav-links {
       width: 100%;
+      flex: 1 1 100%;
       min-height: 3.5rem;
       justify-content: space-around;
       gap: 0.1rem;
@@ -222,6 +328,10 @@ const navItems: NavItem[] = [
     .nav-links li {
       flex: 1 1 0;
       min-width: 0;
+    }
+
+    .nav-brand {
+      display: none;
     }
 
     .nav-link {
@@ -247,11 +357,18 @@ const navItems: NavItem[] = [
     .nav-link.active .nav-link__label > span:first-child {
       animation: none;
     }
+
+    .nav-brand:hover .nav-brand__shine {
+      animation: none;
+      opacity: 0;
+    }
   }
 </style>
 
 <script>
   const mainNav = document.getElementById("main-nav");
+  const navContent = mainNav?.querySelector<HTMLElement>(".nav-content");
+  const navBrand = mainNav?.querySelector<HTMLElement>(".nav-brand");
   const navList = mainNav?.querySelector<HTMLElement>(".nav-links");
   const navItems = Array.from(
     navList?.querySelectorAll<HTMLElement>("li") ?? [],
@@ -259,9 +376,12 @@ const navItems: NavItem[] = [
   let rafId: number | null = null;
 
   function getRequiredNavWidth() {
-    if (!mainNav || !navList || navItems.length === 0) return 528;
+    if (!mainNav || !navContent || !navBrand || !navList || navItems.length === 0) {
+      return 528;
+    }
 
     const navStyle = getComputedStyle(mainNav);
+    const contentStyle = getComputedStyle(navContent);
     const listStyle = getComputedStyle(navList);
     const itemWidth = navItems.reduce(
       (width, item) => width + item.getBoundingClientRect().width,
@@ -274,10 +394,17 @@ const navItems: NavItem[] = [
     const borderWidth =
       (Number.parseFloat(navStyle.borderLeftWidth) || 0) +
       (Number.parseFloat(navStyle.borderRightWidth) || 0);
+    const contentGap = Number.parseFloat(contentStyle.columnGap) || 0;
+    const brandWidth = navBrand.getBoundingClientRect().width;
 
     return Math.max(
       528,
-      itemWidth + gap * Math.max(0, navItems.length - 1) + horizontalPadding + borderWidth,
+      brandWidth +
+        contentGap +
+        itemWidth +
+        gap * Math.max(0, navItems.length - 1) +
+        horizontalPadding +
+        borderWidth,
     );
   }
 
@@ -290,7 +417,7 @@ const navItems: NavItem[] = [
       const maxWidth = window.innerWidth - 32;
       const endWidth = Math.min(getRequiredNavWidth(), maxWidth);
       const startWidth = Math.min(
-        Math.max(window.innerWidth * 0.8, endWidth),
+        Math.max(Math.min(window.innerWidth * 0.8, 1120), endWidth),
         maxWidth,
       );
       const progress = window.matchMedia("(prefers-reduced-motion: reduce)").matches
