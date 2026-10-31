@@ -425,6 +425,7 @@ const navItems: NavItem[] = [
   const navLinks = document.querySelectorAll<HTMLAnchorElement>(".nav-link");
   const sections = document.querySelectorAll<HTMLElement>("section[id]");
   const activeSectionIds = new Set<string>();
+  let activeObservedSection: HTMLElement | null = null;
 
   function updateActiveLink(sectionId: string) {
     navLinks.forEach((link) => {
@@ -454,7 +455,16 @@ const navItems: NavItem[] = [
         Math.abs(a.getBoundingClientRect().top - targetLine) -
         Math.abs(b.getBoundingClientRect().top - targetLine),
     );
-    updateActiveLink(activeSections[0].id);
+    const activeSection = activeSections[0];
+    updateActiveLink(activeSection.id);
+
+    if (activeSection !== activeObservedSection) {
+      activeObservedSection?.classList.remove("section-transition-active");
+      activeSection.classList.remove("section-transition-active");
+      void activeSection.offsetWidth;
+      activeSection.classList.add("section-transition-active");
+      activeObservedSection = activeSection;
+    }
   }
 
   const sectionObserver = new IntersectionObserver(

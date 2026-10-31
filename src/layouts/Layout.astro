@@ -89,6 +89,57 @@ const { title } = Astro.props;
     scroll-padding-top: 7rem;
   }
 
+  section[id] {
+    position: relative;
+  }
+
+  section[id]::before {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--sec) 18%,
+      #eee5ff 50%,
+      var(--sec) 82%,
+      transparent
+    );
+    box-shadow: 0 0 12px rgb(164 118 255 / 55%);
+    content: "";
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  section[id].section-transition-active::before {
+    animation: section-divider-sweep 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  @keyframes section-divider-sweep {
+    0% {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    18% {
+      opacity: 1;
+    }
+
+    78% {
+      opacity: 0.9;
+    }
+
+    100% {
+      opacity: 0;
+      transform: scaleX(1);
+    }
+  }
+
   * {
     font-family:
       "Montserrat Variable",
@@ -205,6 +256,12 @@ const { title } = Astro.props;
     }
 
     html.motion-enabled .reveal-media__image {
+      transform: none;
+    }
+
+    section[id].section-transition-active::before {
+      animation: none;
+      opacity: 0;
       transform: none;
     }
   }
