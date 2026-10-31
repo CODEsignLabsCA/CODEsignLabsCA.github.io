@@ -149,7 +149,7 @@ const services = [
   }
 
   .service-overview__percentage {
-    color: #d6ff3f;
+    color: #9985f9;
     font-size: 1.75rem;
     font-weight: 700;
     line-height: 1.1;
@@ -226,6 +226,8 @@ const services = [
     }
   }
 
+  let countAnimationFrame: number | null = null;
+
   if (countUpElement && Number.isFinite(countTarget)) {
     renderCount(0);
   }
@@ -237,12 +239,22 @@ const services = [
   ) {
     const countObserver = new IntersectionObserver(
       ([entry]) => {
-        if (!entry.isIntersecting) return;
-        countObserver.disconnect();
+        if (!entry.isIntersecting) {
+          if (countAnimationFrame !== null) {
+            cancelAnimationFrame(countAnimationFrame);
+            countAnimationFrame = null;
+          }
+          renderCount(0);
+          return;
+        }
 
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
           renderCount(countTarget);
           return;
+        }
+
+        if (countAnimationFrame !== null) {
+          cancelAnimationFrame(countAnimationFrame);
         }
 
         const duration = 1400;
@@ -253,13 +265,14 @@ const services = [
           renderCount(countTarget * easedProgress);
 
           if (progress < 1) {
-            requestAnimationFrame(animateCount);
+            countAnimationFrame = requestAnimationFrame(animateCount);
           } else {
+            countAnimationFrame = null;
             renderCount(countTarget);
           }
         };
 
-        requestAnimationFrame(animateCount);
+        countAnimationFrame = requestAnimationFrame(animateCount);
       },
       { threshold: 0.01 },
     );
