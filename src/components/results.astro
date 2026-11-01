@@ -45,43 +45,61 @@ const outcomeGroups = [
       title="Measurable success through solutions"
     />
 
-    <figure class="reveal reveal-media mb-8 overflow-hidden rounded-2xl">
-      <img
-        src="/images/service-sections/Measurable%20Success%20Through%20Solutions.webp"
-        alt="An engineer monitoring performance dashboards"
-        class="reveal-media__image h-auto w-full object-cover"
-        width="1191"
-        height="293"
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
-    <div class="grid gap-4 md:grid-cols-2">
-      {outcomeGroups.map((group, index) => (
-        <article class="outcome-card reveal" style={`--card-index: ${index}`}>
-          <span class="outcome-card__index" aria-hidden="true">
-            0{index + 1}
-          </span>
-          <h3 class="relative text-2xl font-medium">{group.title}</h3>
-          <div class="relative mt-5 grid gap-5">
-            {group.outcomes.map((outcome) => (
-              <div>
-                <h4 class="text-lg font-medium text-[var(--white)]">
-                  {outcome.title}
-                </h4>
-                <p class="mt-2 leading-relaxed text-[var(--white-icon)]">
-                  {outcome.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </article>
-      ))}
+    <div class="results-layout">
+      <figure class="results-image reveal reveal-media overflow-hidden rounded-2xl">
+        <img
+          src="/images/service-sections/Measurable%20Success%20Through%20Solutions.webp"
+          alt="An engineer monitoring performance dashboards"
+          class="reveal-media__image aspect-square w-full object-cover"
+          width="622"
+          height="622"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="results-cards">
+        {outcomeGroups.map((group, index) => (
+          <article class="outcome-card reveal" style={`--card-index: ${index}`}>
+            <span class="outcome-card__index" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <h3 class="relative text-2xl font-medium">{group.title}</h3>
+            <div class="relative mt-5 grid gap-5">
+              {group.outcomes.map((outcome) => (
+                <div>
+                  <h4 class="text-lg font-medium text-[var(--white)]">
+                    {outcome.title}
+                  </h4>
+                  <p class="mt-2 leading-relaxed text-[var(--white-icon)]">
+                    {outcome.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  .results-layout {
+    display: grid;
+    align-items: start;
+    gap: 1.5rem;
+  }
+
+  .results-image {
+    width: min(100%, 28rem);
+    margin: 0 auto;
+  }
+
+  .results-cards {
+    display: grid;
+    gap: 1rem;
+  }
+
   .outcome-card.reveal {
     transition-delay: calc(var(--card-index) * 180ms);
   }
@@ -107,6 +125,23 @@ const outcomeGroups = [
     font-size: 7rem;
     font-weight: 600;
     line-height: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .results-layout {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      align-items: stretch;
+    }
+
+    .results-image {
+      width: 100%;
+      margin: 0;
+    }
+
+    .results-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-self: stretch;
+    }
   }
 
   .outcome-card:hover {
