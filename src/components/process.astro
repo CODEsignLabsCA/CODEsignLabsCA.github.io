@@ -296,9 +296,13 @@ const steps = [
     }
 
     .process-heading {
-      grid-column: 5 / 13;
+      grid-column: 6 / 13;
       grid-row: 1;
       align-self: center;
+    }
+
+    .process-title {
+      font-size: clamp(1.7rem, 3.5vw, 3rem);
     }
 
     .process-collage {
@@ -327,7 +331,7 @@ const steps = [
     }
 
     .process-steps {
-      grid-column: 4 / 13;
+      grid-column: 6 / 13;
       grid-row: 2;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       align-self: end;
@@ -336,12 +340,12 @@ const steps = [
     }
 
     .process-step {
-      min-height: 13.5rem;
-      padding: 1.15rem 1rem;
+      min-height: 15.5rem;
+      padding: 1.15rem 0.8rem;
     }
 
     .process-step--2 {
-      padding-inline: 1rem;
+      padding-inline: 0.8rem;
     }
   }
 
