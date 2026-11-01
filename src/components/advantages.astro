@@ -15,36 +15,42 @@ const advantages = [
   id="advantages"
   class="advantages-section scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
 >
-  <span class="advantages-dots advantages-dots--top" aria-hidden="true"></span>
-  <span
-    class="advantages-dots advantages-dots--bottom"
-    aria-hidden="true"
-  ></span>
   <div class="advantages-layout">
+    <span
+      class="advantages-dots advantages-dots--top"
+      aria-hidden="true"
+    ></span>
+    <span
+      class="advantages-dots advantages-dots--bottom"
+      aria-hidden="true"
+    ></span>
     <div class="advantages-heading">
       <h2
         class="advantages-title display-heading"
         aria-label="Discover the key advantages"
       >
         <span class="display-heading__visual" aria-hidden="true">
-          {Array.from("DISCOVER THE KEY").map((character, index) =>
-            character === " " ? (
-              " "
-            ) : (
-              <span style={`--char-index: ${index}`}>{character}</span>
-            ),
-          )}
-          <br />
-          {Array.from("ADVANTAGES").map((character, index) => (
-            <span style={`--char-index: ${index + 17}`}>{character}</span>
-          ))}
+          <span class="advantages-title-line">
+            {Array.from("DISCOVER THE KEY").map((character, index) =>
+              character === " " ? (
+                " "
+              ) : (
+                <span style={`--char-index: ${index}`}>{character}</span>
+              ),
+            )}
+          </span>
+          <span class="advantages-title-line">
+            {Array.from("ADVANTAGES").map((character, index) => (
+              <span style={`--char-index: ${index + 17}`}>{character}</span>
+            ))}
+          </span>
         </span>
       </h2>
     </div>
 
     <article class="advantages-core rounded-2xl">
       <h3>Core Advantages</h3>
-      <div class="grid gap-5">
+      <div class="advantages-core-list">
         {advantages.map((advantage) => (
           <p>
             <strong class="text-[var(--white)]">{advantage.title}:</strong>{" "}
@@ -98,18 +104,12 @@ const advantages = [
   .advantages-layout {
     position: relative;
     display: grid;
-    width: min(100%, 56.75rem);
+    width: min(100%, 57rem);
     min-height: 24rem;
     margin-inline: auto;
     align-items: start;
     column-gap: 0.75rem;
     row-gap: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .advantages-layout {
-      transform: translateX(2rem);
-    }
   }
 
   .advantages-primary,
@@ -125,17 +125,33 @@ const advantages = [
   .advantages-title {
     margin: 0;
     color: #fff;
-    font-family: "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
+    font-family: "Montserrat Variable", sans-serif;
     font-size: clamp(2.1rem, 4vw, 2.65rem);
-    font-stretch: condensed;
     font-weight: 800;
     letter-spacing: -0.035em;
     line-height: 1.14;
     text-transform: uppercase;
   }
 
+  .advantages-title-line {
+    display: block !important;
+    width: max-content;
+    white-space: nowrap;
+    transform: scaleX(0.82);
+    transform-origin: left center;
+  }
+
+  html.motion-enabled
+    .advantages-title.display-heading
+    .display-heading__visual
+    > .advantages-title-line {
+    opacity: 1;
+    transform: scaleX(0.82);
+    transition: none;
+  }
+
   .advantages-core {
-    padding: 1rem 2rem 1.5rem;
+    padding: 1rem 2rem 0.75rem;
     background: #29383d;
     color: #f3f3f3;
   }
@@ -147,34 +163,45 @@ const advantages = [
     letter-spacing: 0.01em;
   }
 
-  .advantages-core p,
   .advantages-description {
     color: var(--white-icon);
     font-size: 0.94rem;
     line-height: 1.5;
   }
 
+  .advantages-core-list {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .advantages-core-list p {
+    color: var(--white-icon);
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
   .advantages-description {
-    padding: 0 1.25rem 0 2.25rem;
+    padding: 0 2.2rem 0 2.25rem;
   }
 
   .advantages-dots {
     position: absolute;
-    width: 4.5rem;
-    height: 2.75rem;
+    z-index: 2;
+    width: 4.25rem;
+    height: 2.5rem;
     background-image: radial-gradient(circle, #f3f3f3 1.6px, transparent 1.8px);
     background-size: 0.625rem 0.625rem;
     pointer-events: none;
   }
 
   .advantages-dots--top {
-    top: 3.8rem;
-    right: 0;
+    top: -1.125rem;
+    right: 1.75rem;
   }
 
   .advantages-dots--bottom {
-    bottom: 2.4rem;
-    left: -3.375rem;
+    bottom: -0.75rem;
+    left: -5.3rem;
   }
 
   .advantage-artwork.motion-ready img {
@@ -259,12 +286,13 @@ const advantages = [
     .advantages-layout {
       grid-template-columns: 352fr 334fr 198fr;
       grid-template-rows: 11.25rem 11rem;
+      transform: translate(-1.375rem, -5.5rem);
     }
 
     .advantages-heading {
       grid-column: 1;
       grid-row: 1;
-      padding-top: 0.25rem;
+      padding-top: 0.75rem;
     }
 
     .advantages-core {
@@ -283,6 +311,7 @@ const advantages = [
     .advantages-description {
       grid-column: 2;
       grid-row: 2;
+      margin-top: -0.375rem;
       padding-top: 0.125rem;
     }
 
@@ -330,12 +359,13 @@ const advantages = [
     }
 
     .advantages-dots--top {
-      top: 2rem;
+      top: -1rem;
       right: 1rem;
     }
 
     .advantages-dots--bottom {
-      bottom: 1rem;
+      bottom: -0.5rem;
+      left: 0;
     }
   }
 
