@@ -2,26 +2,65 @@
 const projectSlots = [
   {
     number: "01",
-    type: "Mobile application",
-    title: "Mobile app interface",
+    type: "Sports & Club Operations",
+    title: "MatchTime Pro — Multi-Tenant Club Ecosystem & IoT",
+    description:
+      "A comprehensive B2B sports management platform (Mobile App + Web Console + IoT Automation). Engineered to automate real-time court bookings, 5-second QR check-ins, multi-currency cash registers compliant with Venezuelan fiscal regulations, and an intelligent database trigger policy that automatically liberates courts from No-Shows within 15 minutes.",
+    assetLabel: "[ DEV ASSET // ACTIVE ARCHITECTURE ]",
+    technologies: [
+      "Astro",
+      "Supabase",
+      "PostgreSQL Multi-Tenant",
+      "TailwindCSS",
+      "IoT Automation",
+    ],
     layout: "mobile",
   },
   {
     number: "02",
-    type: "Web platform",
-    title: "Web dashboard interface",
+    type: "Retail & Supermarkets",
+    title: "Smart Retail & Supermarket Systems",
+    description:
+      "High-performance digital products built to synchronize multi-branch inventories in real-time, deploy interactive customer loyalty programs, and optimize fast mobile checkout experiences for local commerce and enterprise supermarkets.",
+    assetLabel: "[ ENTERPRISE SOLUTION ]",
+    technologies: [
+      "Flutter",
+      "Node.js",
+      "PostgreSQL",
+      "REST APIs",
+      "Cloud Architecture",
+    ],
     layout: "dashboard",
   },
   {
     number: "03",
-    type: "Backend & integrations",
-    title: "Integration workflow interface",
+    type: "Operations & Analytics",
+    title: "Enterprise Operations & Business Dashboards",
+    description:
+      "Custom back-office control panels engineered to transform chaotic operational data into structured business intelligence, allowing managers to monitor core revenue streams, cash flows, and workflows in real time.",
+    assetLabel: "[ ENTERPRISE SOLUTION ]",
+    technologies: [
+      "React",
+      "Vue",
+      "TypeScript",
+      "TailwindCSS",
+      "Analytics Engine",
+    ],
     layout: "workflow",
   },
   {
     number: "04",
-    type: "Digital product",
-    title: "Digital product interface",
+    type: "Startup Product Engineering",
+    title: "Custom MVP & Digital Product Launchpad",
+    description:
+      "Rapid design and development of highly scalable Minimum Viable Products (MVPs) for startups and local businesses looking to test market fitness, reduce technical debt, and launch custom SaaS platforms efficiently.",
+    assetLabel: "[ ENTERPRISE SOLUTION ]",
+    technologies: [
+      "Kotlin Multiplatform",
+      "Swift",
+      "Firebase",
+      "Figma / Stitch Standard",
+    ],
     layout: "product",
   },
 ];
@@ -38,8 +77,8 @@ const projectSlots = [
         <h2 class="text-4xl font-medium md:text-5xl">Projects</h2>
       </div>
       <p class="projects-note">
-        This portfolio model is ready for real application and system
-        screenshots, project details, and verified outcomes.
+        Commercial software systems engineered for real-world operations and
+        scalable growth.
       </p>
     </div>
 
@@ -123,13 +162,23 @@ const projectSlots = [
             ]}
             data-project-card={index}
           >
+            <div class="project-card__asset border border-zinc-800 bg-zinc-900">
+              <span class="font-mono text-xs tracking-wider text-[#97CC04]">
+                {project.assetLabel}
+              </span>
+            </div>
             <div class="project-card__details">
               <div class="project-card__heading">
                 <span class="project-number">{project.number}</span>
                 <span class="project-type">{project.type}</span>
               </div>
               <h3>{project.title}</h3>
-              <span class="project-pending">PREVIEW COMING SOON</span>
+              <p class="project-card__description">{project.description}</p>
+              <ul class="project-card__technologies" aria-label="Technology stack">
+                {project.technologies.map((technology) => (
+                  <li>{technology}</li>
+                ))}
+              </ul>
             </div>
           </article>
         ))}
@@ -240,11 +289,10 @@ const projectSlots = [
   .project-card {
     position: relative;
     min-width: 0;
-    min-height: min(42vh, 25rem);
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(13rem, 0.75fr) minmax(0, 1.25fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    padding: clamp(1.25rem, 3vw, 2rem);
     border: 1px solid rgb(255 255 255 / 8%);
     border-radius: 1.5rem;
     background: #141318;
@@ -256,35 +304,11 @@ const projectSlots = [
       opacity 400ms ease;
   }
 
-  .project-card::before {
-    position: absolute;
-    z-index: -1;
-    background: linear-gradient(
-      0deg,
-      rgb(164 118 255 / 15%),
-      rgb(164 118 255 / 5%) 65%,
-      transparent
-    );
-    content: "";
-    inset: 0;
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition:
-      opacity 350ms ease,
-      transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-
   .project-card.is-active {
     border-color: #a476ff80;
     background-color: #19161f;
     box-shadow: 0 18px 48px rgb(0 0 0 / 22%);
     opacity: 1;
-  }
-
-  .project-card.is-active::before {
-    opacity: 1;
-    transform: scaleY(1);
   }
 
   .project-preview {
@@ -586,13 +610,25 @@ const projectSlots = [
   }
 
   .project-card__details {
-    position: relative;
-    z-index: 1;
     display: grid;
     justify-items: start;
-    gap: 1rem;
+    align-content: center;
+    gap: 0.85rem;
     width: 100%;
-    padding: clamp(1.5rem, 3vw, 2.5rem);
+    min-width: 0;
+  }
+
+  .project-card__asset {
+    display: grid;
+    min-height: 14rem;
+    place-items: center;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    text-align: center;
+  }
+
+  .project-card__asset span {
+    line-height: 1.7;
   }
 
   .project-card__heading {
@@ -615,27 +651,32 @@ const projectSlots = [
   }
 
   .project-card__details h3 {
-    max-width: 18ch;
+    max-width: 30ch;
     font-size: clamp(1.35rem, 2vw, 1.8rem);
     font-weight: 500;
     line-height: 1.25;
   }
 
-  .project-pending {
-    padding: 0.45rem 0.65rem;
-    border: 1px solid #a476ff55;
-    border-radius: 999px;
-    color: var(--sec);
-    font-size: 0.56rem;
-    letter-spacing: 0.08em;
-    transition:
-      border-color 350ms ease,
-      background-color 350ms ease;
+  .project-card__description {
+    color: var(--white-icon);
+    font-size: 0.9rem;
+    line-height: 1.7;
   }
 
-  .project-card.is-active .project-pending {
-    border-color: #a476ff99;
-    background: rgb(164 118 255 / 10%);
+  .project-card__technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .project-card__technologies li {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 999px;
+    color: var(--white-icon);
+    font-size: 0.7rem;
+    line-height: 1.4;
   }
 
   @media (max-width: 767px) {
@@ -658,12 +699,13 @@ const projectSlots = [
     }
 
     .project-card {
-      min-height: 15rem;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
       border-radius: 1.1rem;
     }
 
-    .project-pending {
-      font-size: 0.52rem;
+    .project-card__asset {
+      min-height: 10rem;
     }
   }
 
