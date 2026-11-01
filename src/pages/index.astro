@@ -81,9 +81,7 @@ import Footer from "@/components/footer.astro";
     const stackPoint = Math.min(Math.max(window.innerHeight * 0.1, 72), 104);
 
     serviceSections.forEach((section, index) => {
-      const nextSection =
-        serviceSections[index + 1] ??
-        (section.id === "team" ? section.parentElement?.nextElementSibling : null);
+      const nextSection = serviceSections[index + 1];
       section.style.setProperty("--service-section-layer", String(index + 1));
 
       if (!shouldStack || !nextSection) {
