@@ -48,17 +48,42 @@
         </div>
       </div>
 
-      <div class="contact-form-panel">
-        <p class="closing-message">
-          Building software is easy. Creating real business value and unlocking
-          new revenue streams is not.
-          {" "}
-          <em>Let’s build the future of your product today.</em>
-        </p>
-        <div class="mb-6">
-          <h2 class="contact-scale-heading mt-3 text-center text-5xl font-semibold leading-tight text-[var(--white)] md:text-6xl">
-            READY TO SCALE?
+      <div class="contact-form-panel flex h-full flex-col justify-center space-y-6 text-left">
+        <div class="border-l-4 border-[#97CC04] pl-4">
+          <p class="font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400">
+            Business Valuation
+          </p>
+          <h3 class="mt-2 text-lg font-bold leading-relaxed text-white md:text-xl">
+            Building software is easy. Creating real business value and
+            unlocking new revenue streams is not.
+          </h3>
+        </div>
+
+        <div class="py-2">
+          <h2 class="text-4xl font-black leading-none tracking-tight text-white md:text-5xl">
+            READY TO <span class="text-[#97CC04]">SCALE?</span>
           </h2>
+          <p class="mt-3 max-w-md text-sm text-zinc-400">
+            Let's build the future of your digital product today. Leave a
+            message to get a technical diagnostic in less than 24 hours.
+          </p>
+        </div>
+
+        <div class="border-t border-zinc-800/80 pt-4">
+          <p class="text-xs font-medium text-zinc-500">
+            Prefer direct scheduling?
+          </p>
+          <a
+            href="https://cal.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group mt-1.5 inline-flex items-center gap-2 text-sm font-semibold text-[#97CC04] transition-colors hover:text-white"
+          >
+            <span>Book a 15-min discovery call via Cal.com</span>
+            <span class="transform transition-transform group-hover:translate-x-1">
+              &rarr;
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -81,20 +106,6 @@
     align-self: center;
   }
 
-  .closing-message {
-    margin-bottom: 2rem;
-    border-left: 2px solid #97cc04;
-    padding-left: 1.5rem;
-    color: var(--white);
-    font-size: 1.05rem;
-    line-height: 1.65;
-  }
-
-  .closing-message em {
-    color: #97cc04;
-    font-weight: 700;
-  }
-
   @media (min-width: 768px) {
     .contact-layout {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -107,10 +118,6 @@
 
     .contact-form-panel {
       padding-top: 0.75rem;
-    }
-
-    .contact-scale-heading {
-      margin-top: 3rem;
     }
   }
 </style>
