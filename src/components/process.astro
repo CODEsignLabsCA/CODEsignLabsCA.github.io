@@ -169,6 +169,86 @@ const steps = [
     animation: process-bottom-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
   }
 
+  .process-heading.is-visible .process-title span {
+    animation: process-title-enter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .process-heading.is-visible .process-title span:nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  .process-heading.is-visible .process-title span:nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  .process-heading.is-hidden .process-title span {
+    animation: process-title-exit 400ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
+  .process-step.is-visible {
+    animation: process-card-enter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .process-step--2.is-visible {
+    animation-delay: 100ms;
+  }
+
+  .process-step--3.is-visible {
+    animation-delay: 200ms;
+  }
+
+  .process-step.is-hidden {
+    animation: process-card-exit 400ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
+  @keyframes process-title-enter {
+    from {
+      opacity: 0;
+      transform: translateY(0.35em);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes process-title-exit {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-0.2em);
+    }
+  }
+
+  @keyframes process-card-enter {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes process-card-exit {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+
   @keyframes process-left-enter {
     from {
       clip-path: inset(0 100% 0 0);
@@ -389,44 +469,34 @@ const steps = [
 </style>
 
 <script>
-  const processArtwork = Array.from(
-    document.querySelectorAll<HTMLElement>(".process-artwork"),
-  );
   const processSection = document.querySelector<HTMLElement>("#process");
+  const processMotionTargets = Array.from(
+    processSection?.querySelectorAll<HTMLElement>(
+      ".process-heading, .process-artwork, .process-step",
+    ) ?? [],
+  );
   let processIsStacking =
     processSection?.classList.contains("section-is-stacking") ?? false;
   const reduceProcessMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
-  const processUsesStickySections =
-    window.matchMedia("(min-width: 768px)").matches && !reduceProcessMotion;
 
-  function setProcessArtworkVisibility(isVisible: boolean) {
-    processArtwork.forEach((artwork) => {
-      artwork.classList.toggle("is-visible", isVisible);
-      artwork.classList.toggle("is-hidden", !isVisible);
+  function setProcessMotionVisibility(isVisible: boolean) {
+    processMotionTargets.forEach((target) => {
+      target.classList.toggle("is-visible", isVisible);
+      target.classList.toggle("is-hidden", !isVisible);
     });
   }
 
   if (
     !reduceProcessMotion &&
     "IntersectionObserver" in window &&
-    processArtwork.length
+    processMotionTargets.length
   ) {
-    processArtwork.forEach((artwork) => artwork.classList.add("motion-ready"));
-    const processArtworkObserver = new IntersectionObserver(
+    processMotionTargets.forEach((target) => target.classList.add("motion-ready"));
+    const processMotionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (processUsesStickySections) {
-            if (!entry.isIntersecting) return;
-            processArtworkObserver.unobserve(entry.target);
-            if (!processIsStacking) {
-              entry.target.classList.add("is-visible");
-              entry.target.classList.remove("is-hidden");
-            }
-            return;
-          }
-
           if (processIsStacking) return;
           entry.target.classList.toggle("is-visible", entry.isIntersecting);
           entry.target.classList.toggle("is-hidden", !entry.isIntersecting);
@@ -434,13 +504,13 @@ const steps = [
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
     );
-    processArtwork.forEach((artwork) => processArtworkObserver.observe(artwork));
+    processMotionTargets.forEach((target) => processMotionObserver.observe(target));
   }
 
   processSection?.addEventListener("section-stack-state", (event) => {
     const stackEvent = event as CustomEvent<{ isStacking: boolean }>;
     if (reduceProcessMotion) return;
     processIsStacking = stackEvent.detail.isStacking;
-    setProcessArtworkVisibility(!stackEvent.detail.isStacking);
+    setProcessMotionVisibility(!stackEvent.detail.isStacking);
   });
 </script>
