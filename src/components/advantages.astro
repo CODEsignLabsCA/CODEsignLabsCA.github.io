@@ -247,6 +247,8 @@ const advantages = [
   const reduceArtworkMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
   ).matches;
+  const usesStickySections =
+    window.matchMedia("(min-width: 768px)").matches && !reduceArtworkMotion;
 
   function setArtworkVisibility(isVisible: boolean) {
     advantageArtwork.forEach((artwork) => {
@@ -267,6 +269,16 @@ const advantages = [
     const artworkObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          if (usesStickySections) {
+            if (!entry.isIntersecting) return;
+            artworkObserver.unobserve(entry.target);
+            if (!advantagesAreStacking) {
+              entry.target.classList.add("is-visible");
+              entry.target.classList.remove("is-hidden");
+            }
+            return;
+          }
+
           if (advantagesAreStacking) return;
           entry.target.classList.toggle("is-visible", entry.isIntersecting);
           entry.target.classList.toggle("is-hidden", !entry.isIntersecting);
