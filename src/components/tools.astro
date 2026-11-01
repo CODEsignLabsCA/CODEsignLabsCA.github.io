@@ -5,12 +5,12 @@ const principles = [
   {
     title: "AI-Driven Engineering",
     description:
-      "Assisted programming using Argon in Antigravity, GitHub Copilot, and Gemini to maximize development speed.",
+      "Assisted programming using Argon in Antigravity, GitHub Copilot, and Gemini to maximize development velocity and slash Time-to-Market.",
   },
   {
     title: "High-Fidelity UI/UX",
     description:
-      "Modular prototyping structured in Figma according to the Stitch standard, designed for high-conversion interfaces.",
+      "Modular prototyping structured in Figma according to the Stitch standard, engineered for scalable design systems and high-conversion interfaces.",
   },
 ];
 ---
@@ -26,24 +26,24 @@ const principles = [
     />
 
     <div class="mb-8 grid gap-5 md:grid-cols-[1fr_0.34fr]">
-      <figure class="reveal reveal-media overflow-hidden rounded-2xl">
+      <figure class="tools-artwork tools-artwork--left overflow-hidden rounded-2xl">
         <img
-          src="/images/presentation/tools-workflow.webp"
-          alt="Hands-on collaboration around a development workstation"
-          class="reveal-media__image h-52 w-full object-cover md:h-64"
-          width="1000"
-          height="253"
+          src="/images/service-sections/Advanced%20Tools%20%20and%20Technologies%20_1.webp"
+          alt="An engineer monitoring advanced technology systems"
+          class="h-52 w-full object-cover md:h-64"
+          width="1191"
+          height="293"
           loading="lazy"
           decoding="async"
         />
       </figure>
-      <figure class="reveal reveal-media overflow-hidden rounded-2xl">
+      <figure class="tools-artwork tools-artwork--right overflow-hidden rounded-2xl">
         <img
-          src="/images/presentation/tools-team.webp"
-          alt="A team reviewing work together"
-          class="reveal-media__image h-52 w-full object-cover md:h-64"
-          width="520"
-          height="481"
+          src="/images/service-sections/Advanced%20Tools%20%20and%20Technologies%20_2.webp"
+          alt="A software team collaborating around a laptop"
+          class="h-52 w-full object-cover md:h-64"
+          width="315"
+          height="293"
           loading="lazy"
           decoding="async"
         />
@@ -52,7 +52,10 @@ const principles = [
 
     <div class="grid gap-4 md:grid-cols-2">
       {principles.map((principle, index) => (
-        <article class="approach-card reveal relative overflow-hidden rounded-2xl border border-[var(--white-icon-tr)] p-6 md:p-8">
+        <article
+          class="approach-card reveal relative overflow-hidden rounded-2xl border border-[var(--white-icon-tr)] p-6 md:p-8"
+          style={`--card-index: ${index}`}
+        >
           <span class="approach-card__number" aria-hidden="true">
             0{index + 1}
           </span>
@@ -67,6 +70,44 @@ const principles = [
 </section>
 
 <style>
+  .approach-card.reveal {
+    transition-delay: calc(var(--card-index) * 180ms);
+  }
+
+  .tools-artwork.motion-ready {
+    opacity: 0;
+    transition:
+      opacity 650ms ease,
+      transform 750ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+  }
+
+  .tools-artwork--left.motion-ready {
+    transform: translateX(-3rem);
+  }
+
+  .tools-artwork--right.motion-ready {
+    transform: translateX(3rem);
+  }
+
+  .tools-artwork.motion-ready.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .approach-card.reveal {
+      transition-delay: 0ms;
+    }
+
+    .tools-artwork.motion-ready {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      will-change: auto;
+    }
+  }
+
   .approach-card {
     background: linear-gradient(145deg, #a476ff12, #1414149c 65%);
   }
@@ -89,3 +130,48 @@ const principles = [
     transform: translateY(0.25rem);
   }
 </style>
+
+<script>
+  const toolsSection = document.querySelector<HTMLElement>("#tools");
+  const toolsArtwork = Array.from(
+    toolsSection?.querySelectorAll<HTMLElement>(".tools-artwork") ?? [],
+  );
+  let toolsAreStacking =
+    toolsSection?.classList.contains("section-is-stacking") ?? false;
+  const reduceToolsMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  function setToolsArtworkVisibility(isVisible: boolean) {
+    toolsArtwork.forEach((artwork) => {
+      artwork.classList.toggle("is-visible", isVisible);
+    });
+  }
+
+  if (
+    !reduceToolsMotion &&
+    "IntersectionObserver" in window &&
+    toolsArtwork.length
+  ) {
+    toolsArtwork.forEach((artwork) => artwork.classList.add("motion-ready"));
+
+    const toolsArtworkObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (toolsAreStacking) return;
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+
+    toolsArtwork.forEach((artwork) => toolsArtworkObserver.observe(artwork));
+  }
+
+  toolsSection?.addEventListener("section-stack-state", (event) => {
+    const stackEvent = event as CustomEvent<{ isStacking: boolean }>;
+    if (reduceToolsMotion) return;
+    toolsAreStacking = stackEvent.detail.isStacking;
+    setToolsArtworkVisibility(!stackEvent.detail.isStacking);
+  });
+</script>
