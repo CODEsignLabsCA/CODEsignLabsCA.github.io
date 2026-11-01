@@ -234,11 +234,11 @@ const steps = [
   }
 
   .process-step--2.is-visible {
-    animation-delay: 100ms;
+    animation-delay: 250ms;
   }
 
   .process-step--3.is-visible {
-    animation-delay: 200ms;
+    animation-delay: 500ms;
   }
 
   .process-step.is-hidden {
@@ -498,7 +498,7 @@ const steps = [
   const processSection = document.querySelector<HTMLElement>("#process");
   const processMotionTargets = Array.from(
     processSection?.querySelectorAll<HTMLElement>(
-      ".process-heading, .process-artwork, .process-step",
+      ".process-heading, .process-artwork, .process-steps",
     ) ?? [],
   );
   let processIsStacking =
@@ -511,6 +511,13 @@ const steps = [
     processMotionTargets.forEach((target) => {
       target.classList.toggle("is-visible", isVisible);
       target.classList.toggle("is-hidden", !isVisible);
+
+      if (target.matches(".process-steps")) {
+        target.querySelectorAll<HTMLElement>(".process-step").forEach((step) => {
+          step.classList.toggle("is-visible", isVisible);
+          step.classList.toggle("is-hidden", !isVisible);
+        });
+      }
     });
   }
 
@@ -526,6 +533,15 @@ const steps = [
           if (processIsStacking) return;
           entry.target.classList.toggle("is-visible", entry.isIntersecting);
           entry.target.classList.toggle("is-hidden", !entry.isIntersecting);
+
+          if (entry.target.matches(".process-steps")) {
+            entry.target
+              .querySelectorAll<HTMLElement>(".process-step")
+              .forEach((step) => {
+                step.classList.toggle("is-visible", entry.isIntersecting);
+                step.classList.toggle("is-hidden", !entry.isIntersecting);
+              });
+          }
         });
       },
       { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
