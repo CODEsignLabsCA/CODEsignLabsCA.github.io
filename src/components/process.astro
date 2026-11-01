@@ -25,7 +25,9 @@ const steps = [
   <div class="process-layout">
     <div class="process-heading">
       <h2 class="process-title display-heading">
-        Development Process That Guarantees Excellence
+        <span>Development Process</span>
+        <span>That Guarantees</span>
+        <span>Excellence</span>
       </h2>
     </div>
 
@@ -84,10 +86,14 @@ const steps = [
   }
 
   .process-title {
-    font-size: clamp(2.4rem, 4vw, 3rem);
+    font-size: clamp(2.3rem, 4vw, 3rem);
     font-weight: 700;
-    line-height: 1.12;
+    line-height: 1.1;
     text-transform: uppercase;
+  }
+
+  .process-title span {
+    display: block;
   }
 
   .process-collage {
