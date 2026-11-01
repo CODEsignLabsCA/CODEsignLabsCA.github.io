@@ -39,11 +39,11 @@ const advantages = [
         </div>
       </article>
 
-      <figure class="advantages-primary reveal reveal-media">
+      <figure class="advantages-primary advantage-artwork advantage-artwork--primary">
         <img
           src="/images/service-sections/Discover the Key Advantages_1.webp"
           alt="A software developer working at a laptop inside a neon diamond frame"
-          class="reveal-media__image h-auto w-full object-contain"
+          class="h-auto w-full object-contain"
           width="583"
           height="583"
           loading="lazy"
@@ -60,11 +60,11 @@ const advantages = [
         </p>
       </div>
 
-      <figure class="advantages-secondary reveal reveal-media">
+      <figure class="advantages-secondary advantage-artwork advantage-artwork--secondary">
         <img
           src="/images/service-sections/Discover the Key Advantages_2.webp"
           alt="A developer reviewing software architecture and code on a workstation"
-          class="reveal-media__image h-auto w-full object-contain"
+          class="h-auto w-full object-contain"
           width="302"
           height="276"
           loading="lazy"
@@ -90,6 +90,86 @@ const advantages = [
   .advantages-primary img,
   .advantages-secondary img {
     display: block;
+  }
+
+  .advantage-artwork.motion-ready img {
+    will-change: clip-path, opacity, transform;
+  }
+
+  .advantage-artwork--primary.is-visible img {
+    animation: advantage-primary-enter 900ms cubic-bezier(0.2, 0.7, 0.2, 1)
+      both;
+  }
+
+  .advantage-artwork--primary.is-hidden img {
+    animation: advantage-primary-exit 650ms cubic-bezier(0.4, 0, 0.8, 0.3)
+      both;
+  }
+
+  .advantage-artwork--secondary.is-visible img {
+    animation: advantage-secondary-enter 800ms 120ms
+      cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .advantage-artwork--secondary.is-hidden img {
+    animation: advantage-secondary-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3)
+      both;
+  }
+
+  @keyframes advantage-primary-enter {
+    from {
+      clip-path: circle(0 at 50% 50%);
+      opacity: 0;
+      transform: rotate(-8deg) scale(0.86);
+    }
+
+    to {
+      clip-path: circle(75% at 50% 50%);
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+  }
+
+  @keyframes advantage-primary-exit {
+    from {
+      clip-path: circle(75% at 50% 50%);
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    to {
+      clip-path: circle(0 at 50% 50%);
+      opacity: 0;
+      transform: rotate(8deg) scale(0.86);
+    }
+  }
+
+  @keyframes advantage-secondary-enter {
+    from {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+
+    to {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes advantage-secondary-exit {
+    from {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
   }
 
   @media (min-width: 768px) {
@@ -145,4 +225,63 @@ const advantages = [
       margin-top: -1rem;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .advantage-artwork img {
+      animation: none !important;
+      clip-path: none;
+      opacity: 1;
+      transform: none;
+      will-change: auto;
+    }
+  }
 </style>
+
+<script>
+  const advantageArtwork = Array.from(
+    document.querySelectorAll<HTMLElement>(".advantage-artwork"),
+  );
+  const advantagesSection = document.querySelector<HTMLElement>("#advantages");
+  let advantagesAreStacking =
+    advantagesSection?.classList.contains("section-is-stacking") ?? false;
+  const reduceArtworkMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  function setArtworkVisibility(isVisible: boolean) {
+    advantageArtwork.forEach((artwork) => {
+      artwork.classList.toggle("is-visible", isVisible);
+      artwork.classList.toggle("is-hidden", !isVisible);
+    });
+  }
+
+  if (
+    !reduceArtworkMotion &&
+    "IntersectionObserver" in window &&
+    advantageArtwork.length
+  ) {
+    advantageArtwork.forEach((artwork) =>
+      artwork.classList.add("motion-ready"),
+    );
+
+    const artworkObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (advantagesAreStacking) return;
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+          entry.target.classList.toggle("is-hidden", !entry.isIntersecting);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+
+    advantageArtwork.forEach((artwork) => artworkObserver.observe(artwork));
+  }
+
+  advantagesSection?.addEventListener("section-stack-state", (event) => {
+    const stackEvent = event as CustomEvent<{ isStacking: boolean }>;
+    if (reduceArtworkMotion) return;
+    advantagesAreStacking = stackEvent.detail.isStacking;
+    setArtworkVisibility(!stackEvent.detail.isStacking);
+  });
+</script>
