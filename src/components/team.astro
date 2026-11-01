@@ -14,11 +14,11 @@ import AnimatedHeading from "./AnimatedHeading.astro";
     />
 
     <article class="team-profile reveal mx-auto grid max-w-4xl items-center gap-6 md:grid-cols-[minmax(16rem,0.8fr)_1.2fr] md:gap-12">
-      <div class="profile-frame reveal-media mx-auto w-full max-w-[17rem]">
+      <div class="profile-frame team-photo reveal-media mx-auto w-full max-w-[17rem]">
         <img
           src="/images/service-sections/The%20Brain%20Behind%20the%20Engineering.webp"
           alt="Jairo Fernando Ramos G"
-          class="reveal-media__image aspect-[441/408] w-full rounded-xl object-cover"
+          class="team-photo__image reveal-media__image aspect-[441/408] w-full rounded-xl object-cover"
           width="441"
           height="408"
           loading="lazy"
@@ -86,6 +86,22 @@ import AnimatedHeading from "./AnimatedHeading.astro";
     padding: 0;
   }
 
+  html.motion-enabled .team-photo.reveal-media:not(.is-visible) .team-photo__image {
+    clip-path: inset(0 100% 0 0);
+    transform: none;
+  }
+
+  html.motion-enabled .team-photo.reveal-media.is-visible .team-photo__image {
+    clip-path: inset(0);
+    transform: none;
+  }
+
+  html.motion-enabled .team-photo__image {
+    transition:
+      clip-path 850ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 850ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
   @media (max-width: 767px) {
     .team-profile {
       grid-template-columns: minmax(0, 1fr);
@@ -93,6 +109,14 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 
     .team-profile__content {
       width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-photo__image {
+      clip-path: none;
+      transform: none;
+      transition: none;
     }
   }
 </style>
