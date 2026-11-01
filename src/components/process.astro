@@ -24,10 +24,35 @@ const steps = [
 >
   <div class="process-layout">
     <div class="process-heading">
-      <h2 class="process-title display-heading">
-        <span>Development Process</span>
-        <span>That Guarantees</span>
-        <span>Excellence</span>
+      <h2
+        class="process-title display-heading"
+        aria-label="Development Process That Guarantees Excellence"
+      >
+        <span class="display-heading__visual" aria-hidden="true">
+          <span class="process-title-line">
+            {Array.from("Development Process").map((character, index) =>
+              character === " " ? (
+                " "
+              ) : (
+                <span style={`--char-index: ${index}`}>{character}</span>
+              ),
+            )}
+          </span>
+          <span class="process-title-line">
+            {Array.from("That Guarantees").map((character, index) =>
+              character === " " ? (
+                " "
+              ) : (
+                <span style={`--char-index: ${index + 20}`}>{character}</span>
+              ),
+            )}
+          </span>
+          <span class="process-title-line">
+            {Array.from("Excellence").map((character, index) => (
+              <span style={`--char-index: ${index + 36}`}>{character}</span>
+            ))}
+          </span>
+        </span>
       </h2>
     </div>
 
@@ -169,20 +194,39 @@ const steps = [
     animation: process-bottom-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
   }
 
-  .process-heading.is-visible .process-title span {
-    animation: process-title-enter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  .process-title-line {
+    display: block !important;
+    width: max-content;
+    white-space: nowrap;
+    transform: scaleX(0.95);
+    transform-origin: left center;
   }
 
-  .process-heading.is-visible .process-title span:nth-child(2) {
-    animation-delay: 90ms;
+  html.motion-enabled .process-title-line > span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.35em) rotate(8deg);
+    transition:
+      opacity 450ms ease,
+      transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--char-index) * 22ms);
   }
 
-  .process-heading.is-visible .process-title span:nth-child(3) {
-    animation-delay: 180ms;
+  html.motion-enabled
+    .process-title.is-visible
+    .process-title-line
+    > span {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
   }
 
-  .process-heading.is-hidden .process-title span {
-    animation: process-title-exit 400ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  html.motion-enabled
+    .process-title.display-heading
+    .display-heading__visual
+    > .process-title-line {
+    opacity: 1;
+    transform: scaleX(0.95);
+    transition: none;
   }
 
   .process-step.is-visible {
@@ -199,30 +243,6 @@ const steps = [
 
   .process-step.is-hidden {
     animation: process-card-exit 400ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
-  }
-
-  @keyframes process-title-enter {
-    from {
-      opacity: 0;
-      transform: translateY(0.35em);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes process-title-exit {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    to {
-      opacity: 0;
-      transform: translateY(-0.2em);
-    }
   }
 
   @keyframes process-card-enter {
@@ -458,6 +478,12 @@ const steps = [
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .process-title-line > span {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
     .process-artwork img {
       animation: none !important;
       clip-path: none;
