@@ -1,78 +1,72 @@
 ---
-import AnimatedHeading from "./AnimatedHeading.astro";
-
 const steps = [
   {
-    number: "01",
     title: "Requirement Analysis",
     description:
-      "Our process begins with an in-depth understanding of your business goals.",
+      "Technical mapping aligned to your business model. We define architecture and functional scoping before coding.",
   },
   {
-    number: "02",
     title: "Rigorous Testing",
     description:
-      "We conduct thorough testing at every stage of development to ensure the software",
+      "Automated unit, integration, and stress testing. We secure user data and logic performance under high-demand.",
   },
   {
-    number: "03",
     title: "Deployment & CI/CD",
     description:
-      "We automate the release to production on the App Store and Play Store, ensuring updates.",
+      "Full pipeline automation. Seamless release to cloud servers, App Store, and Play Store with zero downtime.",
   },
 ];
 ---
 
 <section
   id="process"
-  class="scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
+  class="scroll-mt-28 border-t border-[#ffffff10] py-16 text-[var(--white)] md:py-20"
 >
-  <div class="max-w-5xl mx-auto">
-    <AnimatedHeading
-      eyebrow="Service"
-      title="Development process that guarantees excellence"
-    />
+  <div class="process-layout">
+    <div class="process-heading">
+      <h2 class="process-title display-heading">
+        Development Process That Guarantees Excellence
+      </h2>
+    </div>
 
-    <div class="mb-10 grid items-center gap-5 md:grid-cols-[1.25fr_0.75fr]">
-      <figure class="reveal reveal-media slide-diamond overflow-hidden">
+    <div class="process-collage" aria-label="Development process imagery">
+      <figure class="process-artwork process-artwork--left">
         <img
-          src="/images/presentation/process-engineering.webp"
-          alt="A developer working through software requirements"
-          class="reveal-media__image aspect-square w-full object-cover"
-          width="650"
-          height="650"
+          src="/images/service-sections/Development Process That Guarantees Excellence_2.webp"
+          alt="Software engineers collaborating at a development workstation"
+          width="475"
+          height="475"
           loading="lazy"
           decoding="async"
         />
       </figure>
-      <figure class="reveal reveal-media overflow-hidden rounded-2xl">
+      <figure class="process-artwork process-artwork--top">
         <img
-          src="/images/presentation/process-team.webp"
-          alt="Colleagues collaborating on a project"
-          class="reveal-media__image aspect-[4/3] w-full object-cover"
-          width="650"
-          height="497"
+          src="/images/service-sections/Development Process That Guarantees Excellence_1.webp"
+          alt="A developer planning requirements beside a laptop"
+          width="475"
+          height="475"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <figure class="process-artwork process-artwork--bottom">
+        <img
+          src="/images/service-sections/Development Process That Guarantees Excellence_3.webp"
+          alt="A developer reviewing code across multiple monitors"
+          width="467"
+          height="446"
           loading="lazy"
           decoding="async"
         />
       </figure>
     </div>
 
-    <ol class="process-list grid gap-8 md:grid-cols-3">
+    <ol class="process-steps">
       {steps.map((step, index) => (
-        <li class="process-step reveal relative pt-6">
-          <span class="text-sm tracking-[0.2em] text-[var(--sec)]">
-            {step.number}
-          </span>
-          <h3 class="mt-5 text-2xl font-medium">{step.title}</h3>
-          <p class="mt-3 leading-relaxed text-[var(--white-icon)]">
-            {step.description}
-          </p>
-          {index < steps.length - 1 && (
-            <span class="process-step__connector" aria-hidden="true">
-              →
-            </span>
-          )}
+        <li class:list={["process-step", `process-step--${index + 1}`]}>
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
         </li>
       ))}
     </ol>
@@ -80,26 +74,350 @@ const steps = [
 </section>
 
 <style>
-  .slide-diamond {
-    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  .process-layout {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .process-heading {
+    min-width: 0;
+  }
+
+  .process-title {
+    font-size: clamp(2.4rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.12;
+    text-transform: uppercase;
+  }
+
+  .process-collage {
+    position: relative;
+    min-height: 25rem;
+    margin-inline: -1rem;
+  }
+
+  .process-artwork {
+    position: absolute;
+    margin: 0;
+  }
+
+  .process-artwork img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .process-artwork.motion-ready img {
+    will-change: clip-path, opacity, transform;
+  }
+
+  .process-artwork--left {
+    z-index: 1;
+    top: 8%;
+    left: -9%;
+    width: 72%;
+  }
+
+  .process-artwork--top {
+    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 67%;
+  }
+
+  .process-artwork--bottom {
+    z-index: 2;
+    right: 8%;
+    bottom: 0;
+    width: 68%;
+  }
+
+  .process-artwork--left.is-visible img {
+    animation: process-left-enter 850ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .process-artwork--left.is-hidden img {
+    animation: process-left-exit 650ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
+  .process-artwork--top.is-visible img {
+    animation: process-top-enter 900ms 100ms
+      cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .process-artwork--top.is-hidden img {
+    animation: process-top-exit 650ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
+  .process-artwork--bottom.is-visible img {
+    animation: process-bottom-enter 800ms 180ms
+      cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .process-artwork--bottom.is-hidden img {
+    animation: process-bottom-exit 600ms cubic-bezier(0.4, 0, 0.8, 0.3) both;
+  }
+
+  @keyframes process-left-enter {
+    from {
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+      transform: translateX(-2rem);
+    }
+
+    to {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes process-left-exit {
+    from {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    to {
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+      transform: translateX(-2rem);
+    }
+  }
+
+  @keyframes process-top-enter {
+    from {
+      clip-path: circle(0 at 50% 50%);
+      opacity: 0;
+      transform: rotate(8deg) scale(0.88);
+    }
+
+    to {
+      clip-path: circle(75% at 50% 50%);
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+  }
+
+  @keyframes process-top-exit {
+    from {
+      clip-path: circle(75% at 50% 50%);
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+
+    to {
+      clip-path: circle(0 at 50% 50%);
+      opacity: 0;
+      transform: rotate(-8deg) scale(0.88);
+    }
+  }
+
+  @keyframes process-bottom-enter {
+    from {
+      clip-path: inset(100% 0 0);
+      opacity: 0;
+      transform: translateY(1.75rem);
+    }
+
+    to {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes process-bottom-exit {
+    from {
+      clip-path: inset(0);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    to {
+      clip-path: inset(100% 0 0);
+      opacity: 0;
+      transform: translateY(1.75rem);
+    }
+  }
+
+  .process-steps {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .process-step {
-    border-top: 1px solid #a476ff66;
+    padding: 1.25rem 1.35rem;
+    border-radius: 0.85rem;
   }
 
-  .process-step__connector {
-    display: none;
+  .process-step--1,
+  .process-step--3 {
+    background: #29373a;
+  }
+
+  .process-step h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .process-step p {
+    margin-top: 1.25rem;
+    color: var(--white-icon);
+    font-size: 0.95rem;
+    line-height: 1.55;
   }
 
   @media (min-width: 768px) {
-    .process-step__connector {
-      display: block;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      color: var(--sec);
-      font-size: 1.5rem;
+    .process-layout {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: auto 1fr;
+      column-gap: 1.25rem;
+      row-gap: 1rem;
+      min-height: 33rem;
+    }
+
+    .process-heading {
+      grid-column: 5 / 13;
+      grid-row: 1;
+      align-self: center;
+    }
+
+    .process-collage {
+      grid-column: 1 / 6;
+      grid-row: 1 / 3;
+      min-height: 31rem;
+      margin-left: -5rem;
+      margin-right: -1rem;
+    }
+
+    .process-artwork--left {
+      left: -2%;
+      width: 73%;
+    }
+
+    .process-artwork--top {
+      right: -1%;
+      width: 68%;
+    }
+
+    .process-artwork--bottom {
+      right: 8%;
+      bottom: 0;
+      width: 70%;
+    }
+
+    .process-steps {
+      grid-column: 4 / 13;
+      grid-row: 2;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-self: end;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .process-step {
+      min-height: 13.5rem;
+      padding: 1.25rem 1.35rem;
+    }
+
+    .process-step--2 {
+      padding-inline: 1rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .process-collage {
+      width: 100%;
+      min-height: min(100vw, 25rem);
+      margin-inline: 0;
+    }
+
+    .process-artwork--left {
+      left: -4%;
+      width: 72%;
+    }
+
+    .process-artwork--top {
+      right: 0;
+      width: 68%;
+    }
+
+    .process-artwork--bottom {
+      right: 8%;
+      width: 68%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .process-artwork img {
+      animation: none !important;
+      clip-path: none;
+      opacity: 1;
+      transform: none;
+      will-change: auto;
     }
   }
 </style>
+
+<script>
+  const processArtwork = Array.from(
+    document.querySelectorAll<HTMLElement>(".process-artwork"),
+  );
+  const processSection = document.querySelector<HTMLElement>("#process");
+  let processIsStacking =
+    processSection?.classList.contains("section-is-stacking") ?? false;
+  const reduceProcessMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const processUsesStickySections =
+    window.matchMedia("(min-width: 768px)").matches && !reduceProcessMotion;
+
+  function setProcessArtworkVisibility(isVisible: boolean) {
+    processArtwork.forEach((artwork) => {
+      artwork.classList.toggle("is-visible", isVisible);
+      artwork.classList.toggle("is-hidden", !isVisible);
+    });
+  }
+
+  if (
+    !reduceProcessMotion &&
+    "IntersectionObserver" in window &&
+    processArtwork.length
+  ) {
+    processArtwork.forEach((artwork) => artwork.classList.add("motion-ready"));
+    const processArtworkObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (processUsesStickySections) {
+            if (!entry.isIntersecting) return;
+            processArtworkObserver.unobserve(entry.target);
+            if (!processIsStacking) {
+              entry.target.classList.add("is-visible");
+              entry.target.classList.remove("is-hidden");
+            }
+            return;
+          }
+
+          if (processIsStacking) return;
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+          entry.target.classList.toggle("is-hidden", !entry.isIntersecting);
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+    processArtwork.forEach((artwork) => processArtworkObserver.observe(artwork));
+  }
+
+  processSection?.addEventListener("section-stack-state", (event) => {
+    const stackEvent = event as CustomEvent<{ isStacking: boolean }>;
+    if (reduceProcessMotion) return;
+    processIsStacking = stackEvent.detail.isStacking;
+    setProcessArtworkVisibility(!stackEvent.detail.isStacking);
+  });
+</script>
