@@ -65,8 +65,16 @@ const navItems: NavItem[] = [
             data-sections={item.sections.join(" ")}
             style={`--nav-index: ${index}`}
           >
-            <span class="nav-link__icon" aria-hidden="true">
-              <fragment set:html={item.icon} />
+            <span class="nav-link__icon">
+              {item.label === "Home" ? (
+                <img
+                  src="/iso_codesignlabs.png"
+                  alt="Inicio"
+                  class="w-6 h-6 object-contain"
+                />
+              ) : (
+                <fragment set:html={item.icon} />
+              )}
             </span>
             <span class="nav-link__label">
               <span>{item.label}</span>
