@@ -1,0 +1,173 @@
+---
+import { Image } from "astro:assets";
+import worldNetwork from "../assets/3d/world-network.png";
+import mobileHand from "../assets/3d/mobile-hand.png";
+import modularCube from "../assets/3d/modular-cube.png";
+
+const allowsMultipleExpanded = false;
+
+const capabilities = [
+  {
+    title: "Enterprise Web Architecture",
+    subtitle: "Scalable & High-Demand Backend Systems",
+    iconUrl: worldNetwork,
+    content: [
+      "**Scalable Web Applications:** Design and implementation of robust Single Page Applications (SPAs) and Server-Side Rendered (SSR) systems using Next.js, React, and Vue.",
+      "**High-Conversion Landing Platforms:** Highly optimized business web assets structured for extreme performance, minimal Core Web Vitals metrics, and seamless third-party integrations.",
+      "**Secure API & Backend Integration:** Structuring high-demand backend architectures utilizing Supabase, Node.js, and relational databases (PostgreSQL/MySQL) with multi-tenant data isolation.",
+    ],
+  },
+  {
+    title: "Multiplatform Mobile Engineering",
+    subtitle: "Native & Shared Core Workflows",
+    iconUrl: mobileHand,
+    content: [
+      "**Cross-Platform App Development:** Architectural blueprinting and deployment of high-fidelity mobile apps for iOS and Android using Flutter, Dart, and React Native.",
+      "**Shared Logical Core Systems:** Implementing advanced multiplatform strategies (like Kotlin Multiplatform) to unify state management and algorithms, cutting time-to-market in half.",
+      "**Offline-First & Security Architectures:** Engineering reliable mobile workflows with local data encryption, automated biometrics authentication, and real-time offline sync.",
+    ],
+  },
+  {
+    title: "UI/UX Product Engineering",
+    subtitle: "High-Density Design Systems & MVPs",
+    iconUrl: modularCube,
+    content: [
+      "**Design System Governance:** Building and scaling unified modular design components in Figma (utilizing the Stitch standard) ensuring clear-cut UI consistency for complex platforms.",
+      "**Data-Driven UX Optimization:** User journey blueprinting and interface testing specialized in transforming heavy backend data grids into clean, high-density dashboard experiences.",
+      "**Interactive Functional Prototyping:** Rapid translation of raw business requirements into highly interactive technical MVPs, ensuring visual and structural alignment before production code.",
+    ],
+  },
+] as const;
+
+function formatContent(text: string) {
+  return text.split(/(\*\*.*?\*\*)/g).map((part) => ({
+    text: part.startsWith("**") && part.endsWith("**")
+      ? part.slice(2, -2)
+      : part,
+    bold: part.startsWith("**") && part.endsWith("**"),
+  }));
+}
+---
+
+<div class="w-full text-left pt-3 md:pt-9">
+  <h3 class="text-[var(--white)] text-3xl md:text-4xl font-semibold md:mb-6">
+    What I do?
+  </h3>
+  <div
+    class="capabilities-accordion w-full max-w-2xl mx-auto bg-neutral-900/40 border border-neutral-800 rounded-2xl overflow-hidden backdrop-blur-md"
+    data-allows-multiple-expanded={String(allowsMultipleExpanded)}
+  >
+    <ul>
+      {capabilities.map((item, index) => {
+        const panelId = `capability-panel-${index + 1}`;
+        const triggerId = `capability-trigger-${index + 1}`;
+
+        return (
+          <li class="group/item border-b border-neutral-800 last:border-b-0">
+            <button
+              id={triggerId}
+              type="button"
+              class="flex items-center gap-4 p-4 transition-all duration-200 hover:bg-neutral-800/40 text-left w-full"
+              aria-expanded="false"
+              aria-controls={panelId}
+              data-accordion-trigger
+            >
+              <Image
+                src={item.iconUrl}
+                alt={item.title}
+                width={44}
+                height={44}
+                class="h-11 w-11 object-contain transition-all duration-300 ease-out group-hover/item:scale-115 group-hover/item:-rotate-6 group-hover/item:drop-shadow-[0_10px_20px_rgba(255,255,255,0.05)]"
+              />
+              <span class="min-w-0">
+                <span class="block font-medium text-lg leading-5 text-neutral-100">
+                  {item.title}
+                </span>
+                <span class="block text-sm font-normal text-neutral-400 mt-1">
+                  {item.subtitle}
+                </span>
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="ml-auto h-5 w-5 shrink-0 text-neutral-500 transition-transform duration-300 ease-in-out group-aria-[expanded=true]/item:rotate-180"
+                aria-hidden="true"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={triggerId}
+              aria-hidden="true"
+              data-accordion-panel
+              class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out aria-[hidden=false]:grid-rows-[1fr]"
+            >
+              <div class="min-h-0 overflow-hidden">
+                <ul class="space-y-3 px-4 pb-4 pl-[4.5rem] text-sm leading-relaxed text-neutral-400">
+                  {item.content.map((text) => (
+                    <li class="list-disc">
+                      {formatContent(text).map(({ text: part, bold }) =>
+                        bold ? (
+                          <strong class="font-semibold text-neutral-200">
+                            {part}
+                          </strong>
+                        ) : (
+                          part
+                        ),
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</div>
+
+<script>
+  const accordion = document.querySelector<HTMLElement>(
+    ".capabilities-accordion",
+  );
+
+  if (accordion) {
+    const allowsMultipleExpanded =
+      accordion.dataset.allowsMultipleExpanded === "true";
+    const triggers = accordion.querySelectorAll<HTMLButtonElement>(
+      "[data-accordion-trigger]",
+    );
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const willExpand = trigger.getAttribute("aria-expanded") !== "true";
+
+        if (!allowsMultipleExpanded && willExpand) {
+          triggers.forEach((otherTrigger) => {
+            otherTrigger.setAttribute("aria-expanded", "false");
+            const otherPanelId = otherTrigger.getAttribute("aria-controls");
+            const otherPanel = otherPanelId
+              ? accordion.querySelector<HTMLElement>(`#${otherPanelId}`)
+              : null;
+            otherPanel?.setAttribute("aria-hidden", "true");
+          });
+        }
+
+        trigger.setAttribute("aria-expanded", String(willExpand));
+        const panelId = trigger.getAttribute("aria-controls");
+        const panel = panelId
+          ? accordion.querySelector<HTMLElement>(`#${panelId}`)
+          : null;
+        panel?.setAttribute("aria-hidden", String(!willExpand));
+      });
+    });
+  }
+</script>
