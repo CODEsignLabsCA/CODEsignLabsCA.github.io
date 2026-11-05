@@ -155,70 +155,70 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
                   )}
                 </div>
               )}
-              {project.screensMobile.length > 0 && (
-                <div
-                  class="screenshot-carousel screenshot-carousel--mobile"
-                  aria-label={
-                    isSpanish
-                      ? `Capturas móviles de ${project.title}`
-                      : `${project.title} mobile screenshots`
-                  }
-                  data-screenshot-carousel
-                >
-                  {project.screensMobile.map((screen, screenIndex) => (
+            </div>
+            {project.screensMobile.length > 0 && (
+              <div
+                class="screenshot-carousel screenshot-carousel--mobile"
+                aria-label={
+                  isSpanish
+                    ? `Capturas móviles de ${project.title}`
+                    : `${project.title} mobile screenshots`
+                }
+                data-screenshot-carousel
+              >
+                {project.screensMobile.map((screen, screenIndex) => (
+                  <button
+                    type="button"
+                    class="preview-image-trigger preview-image-trigger--mobile"
+                    data-screenshot-slide
+                    data-lightbox-src={screen}
+                    data-lightbox-alt={`${project.title} Mobile Interface`}
+                    aria-label={
+                      isSpanish
+                        ? `Ampliar captura móvil ${screenIndex + 1} de ${project.title}`
+                        : `Enlarge mobile screenshot ${screenIndex + 1} for ${project.title}`
+                    }
+                    hidden={screenIndex !== 0}
+                  >
+                    <img
+                      src={screen}
+                      alt=""
+                      class="preview-screen-image"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+                {project.screensMobile.length > 1 && (
+                  <div class="screenshot-carousel__controls">
                     <button
                       type="button"
-                      class="preview-image-trigger preview-image-trigger--mobile"
-                      data-screenshot-slide
-                      data-lightbox-src={screen}
-                      data-lightbox-alt={`${project.title} Mobile Interface`}
+                      data-carousel-prev
                       aria-label={
                         isSpanish
-                          ? `Ampliar captura móvil ${screenIndex + 1} de ${project.title}`
-                          : `Enlarge mobile screenshot ${screenIndex + 1} for ${project.title}`
+                          ? "Captura móvil anterior"
+                          : "Previous mobile screenshot"
                       }
-                      hidden={screenIndex !== 0}
                     >
-                      <img
-                        src={screen}
-                        alt=""
-                        class="preview-screen-image"
-                        loading="lazy"
-                      />
+                      &larr;
                     </button>
-                  ))}
-                  {project.screensMobile.length > 1 && (
-                    <div class="screenshot-carousel__controls">
-                      <button
-                        type="button"
-                        data-carousel-prev
-                        aria-label={
-                          isSpanish
-                            ? "Captura móvil anterior"
-                            : "Previous mobile screenshot"
-                        }
-                      >
-                        &larr;
-                      </button>
-                      <span data-carousel-count aria-live="polite">
-                        1 / {project.screensMobile.length}
-                      </span>
-                      <button
-                        type="button"
-                        data-carousel-next
-                        aria-label={
-                          isSpanish
-                            ? "Captura móvil siguiente"
-                            : "Next mobile screenshot"
-                        }
-                      >
-                        &rarr;
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+                    <span data-carousel-count aria-live="polite">
+                      1 / {project.screensMobile.length}
+                    </span>
+                    <button
+                      type="button"
+                      data-carousel-next
+                      aria-label={
+                        isSpanish
+                          ? "Captura móvil siguiente"
+                          : "Next mobile screenshot"
+                      }
+                    >
+                      &rarr;
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <span class="preview-index">
               {String(index + 1).padStart(2, "0")}
             </span>
@@ -435,9 +435,9 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
     position: absolute;
     z-index: 2;
     top: 2rem;
-    right: 0.75rem;
-    width: clamp(6.5rem, 27%, 9rem);
-    height: min(82%, 22rem);
+    right: 4%;
+    width: clamp(4.5rem, 14%, 5.5rem);
+    aspect-ratio: 410 / 1077;
   }
 
   .preview-image-trigger--mobile {
@@ -656,7 +656,9 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
 
   .preview-window {
     position: relative;
-    width: 76%;
+    width: 82%;
+    margin-right: auto;
+    margin-left: 4%;
     overflow: visible;
     border: 1px solid rgb(255 255 255 / 14%);
     border-radius: 0.8rem;
