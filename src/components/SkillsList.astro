@@ -1,8 +1,4 @@
 ---
-import { Image } from "astro:assets";
-import worldNetwork from "../assets/3d/world-network.png";
-import mobileHand from "../assets/3d/mobile-hand.png";
-import modularCube from "../assets/3d/modular-cube.png";
 
 const allowsMultipleExpanded = false;
 
@@ -10,7 +6,7 @@ const capabilities = [
   {
     title: "Enterprise Web Architecture",
     subtitle: "Scalable & High-Demand Backend Systems",
-    iconUrl: worldNetwork,
+    iconName: "lan",
     content: [
       "**Scalable Web Applications:** Design and implementation of robust Single Page Applications (SPAs) and Server-Side Rendered (SSR) systems using Next.js, React, and Vue.",
       "**High-Conversion Landing Platforms:** Highly optimized business web assets structured for extreme performance, minimal Core Web Vitals metrics, and seamless third-party integrations.",
@@ -20,7 +16,7 @@ const capabilities = [
   {
     title: "Multiplatform Mobile Engineering",
     subtitle: "Native & Shared Core Workflows",
-    iconUrl: mobileHand,
+    iconName: "devices",
     content: [
       "**Cross-Platform App Development:** Architectural blueprinting and deployment of high-fidelity mobile apps for iOS and Android using Flutter, Dart, and React Native.",
       "**Shared Logical Core Systems:** Implementing advanced multiplatform strategies (like Kotlin Multiplatform) to unify state management and algorithms, cutting time-to-market in half.",
@@ -30,7 +26,7 @@ const capabilities = [
   {
     title: "UI/UX Product Engineering",
     subtitle: "High-Density Design Systems & MVPs",
-    iconUrl: modularCube,
+    iconName: "dashboard_customize",
     content: [
       "**Design System Governance:** Building and scaling unified modular design components in Figma (utilizing the Stitch standard) ensuring clear-cut UI consistency for complex platforms.",
       "**Data-Driven UX Optimization:** User journey blueprinting and interface testing specialized in transforming heavy backend data grids into clean, high-density dashboard experiences.",
@@ -49,7 +45,7 @@ function formatContent(text: string) {
 }
 ---
 
-<div class="w-full text-left pt-3 md:pt-9">
+<section class="w-full max-w-4xl mx-auto py-12 px-4 text-left">
   <h3 class="text-[var(--white)] text-3xl md:text-4xl font-semibold md:mb-6">
     Core Capabilities
   </h3>
@@ -67,18 +63,17 @@ function formatContent(text: string) {
             <button
               id={triggerId}
               type="button"
-              class="flex items-center gap-4 p-4 transition-all duration-200 hover:bg-neutral-800/40 text-left w-full"
+              class="flex items-center gap-4 p-5 transition-all duration-200 hover:bg-neutral-800/40 text-left w-full"
               aria-expanded="false"
               aria-controls={panelId}
               data-accordion-trigger
             >
-              <Image
-                src={item.iconUrl}
-                alt={item.title}
-                width={44}
-                height={44}
-                class="h-11 w-11 object-contain transition-all duration-300 ease-out group-hover/item:scale-115 group-hover/item:-rotate-6 group-hover/item:drop-shadow-[0_10px_20px_rgba(255,255,255,0.05)]"
-              />
+              <span
+                class="material-symbols-outlined text-3xl text-[var(--sec)]"
+                aria-hidden="true"
+              >
+                {item.iconName}
+              </span>
               <span class="min-w-0">
                 <span class="block font-medium text-lg leading-5 text-neutral-100">
                   {item.title}
@@ -132,7 +127,7 @@ function formatContent(text: string) {
       })}
     </ul>
   </div>
-</div>
+</section>
 
 <script>
   const accordion = document.querySelector<HTMLElement>(
@@ -171,3 +166,20 @@ function formatContent(text: string) {
     });
   }
 </script>
+
+<style>
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-feature-settings: "liga";
+    -webkit-font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
+  }
+</style>

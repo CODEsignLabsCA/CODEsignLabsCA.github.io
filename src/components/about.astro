@@ -7,16 +7,19 @@ const visionariesAccordions = [
     items: [
       {
         title: "Domain-Driven Design (DDD)",
+        iconName: "schema",
         description:
           "A radical separation of business logic from the technical core. This enables system scaling and the introduction of complex features without compromising existing stability.",
       },
       {
         title: "Clean and SOLID Architecture",
+        iconName: "layers",
         description:
           "Decoupled code, independent of both the database and the user interface. This ensures robust automated unit testing and seamless technology migrations.",
       },
       {
         title: "Kotlin Multiplatform (KMP)",
+        iconName: "sync_alt",
         description:
           "Centralization of algorithms and data flows into a single, shared logical core, delivering native-level performance across iOS, Android, and the Web.",
       },
@@ -27,16 +30,19 @@ const visionariesAccordions = [
     items: [
       {
         title: "AI-Augmented Development",
+        iconName: "psychology",
         description:
           "Programming assisted by tools like Argon (within the Antigravity ecosystem) and GitHub Copilot. We automate repetitive coding tasks to accelerate time-to-market.",
       },
       {
         title: "Automated CI/CD Pipelines",
+        iconName: "deployed_code",
         description:
           "Fully automated deployment. Every change to the repository is compiled, tested, and pushed to production—whether on servers or app stores (App Store/Play Store)—eliminating the risk of human error.",
       },
       {
         title: "BaaS and Serverless Infrastructure",
+        iconName: "cloud_done",
         description:
           "An agile architecture leveraging Supabase and Firebase. Backend setup time is reduced to minutes, allowing for the immediate activation of databases and payment gateways.",
       },
@@ -75,9 +81,17 @@ const visionariesAccordions = [
               </summary>
               <ul class="visionary-accordion__content">
                 {accordion.items.map((item) => (
-                  <li>
-                    <strong>{item.title}</strong>
-                    <p>{item.description}</p>
+                  <li class="group/item flex items-start gap-3">
+                    <span
+                      class="material-symbols-outlined mt-0.5 text-2xl text-neutral-400 transition-all duration-300 ease-out group-hover/item:text-[var(--sec)] group-hover/item:scale-110"
+                      aria-hidden="true"
+                    >
+                      {item.iconName}
+                    </span>
+                    <div>
+                      <strong>{item.title}</strong>
+                      <p>{item.description}</p>
+                    </div>
                   </li>
                 ))}
               </ul>
