@@ -16,7 +16,7 @@ const t = useTranslations(lang);
         {t("hero.name")}
       </p>
       <div class="hero-headline">
-        <h1 class="hero-title text-[var(--white)] font-medium text-pretty leading-none">
+        <h1 class="hero-title text-[var(--white)] font-medium text-pretty whitespace-normal break-words leading-none">
           {t("hero.role")}
         </h1>
         <p class="hero-description text-md md:text-2xl text-[var(--white-icon)]">
@@ -101,18 +101,20 @@ const t = useTranslations(lang);
   .hero-headline {
     display: grid;
     max-width: 64rem;
-    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
     gap: clamp(2rem, 4vw, 3rem);
   }
 
   .hero-title {
+    min-width: 0;
     font-size: clamp(4.5rem, calc(4.2vw + 24px), 5.25rem);
     letter-spacing: -0.075em;
     line-height: 0.92;
   }
 
   .hero-description {
+    max-width: 36rem;
     padding-left: 1.25rem;
     border-left: 2px solid #a476ff80;
     line-height: 1.75;
