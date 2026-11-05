@@ -55,6 +55,7 @@ const isSpanish = Astro.currentLocale === "es";
     id: string;
     title: string;
     description: string;
+    descriptionEN: string;
     link: string;
     image: string;
     screensDesktop: string[];
@@ -62,7 +63,9 @@ const isSpanish = Astro.currentLocale === "es";
   };
 
   const container = document.getElementById("realtime-projects-showcase");
-  const isSpanish = window.location.pathname.startsWith("/es");
+  const isSpanish =
+    window.location.pathname.startsWith("/es") ||
+    window.location.pathname.includes("/es/");
   const lightbox = document.querySelector<HTMLDialogElement>(
     "[data-project-lightbox]",
   );
@@ -134,6 +137,8 @@ const isSpanish = Astro.currentLocale === "es";
     id,
     title: typeof data.title === "string" ? data.title : "",
     description: typeof data.description === "string" ? data.description : "",
+    descriptionEN:
+      typeof data.descriptionEN === "string" ? data.descriptionEN : "",
     link: safeLinkUrl(data.link),
     image: safeAssetUrl(data.image),
     screensDesktop: toScreenArray(
@@ -313,12 +318,13 @@ const isSpanish = Astro.currentLocale === "es";
     const stopListening = onSnapshot(
       collection(db, "projects"),
       (snapshot) => {
-        const projects = snapshot.docs.map((projectDoc) =>
-          toProject(
-            projectDoc.id,
-            projectDoc.data() as Record<string, unknown>,
-          ),
-        );
+        const projects = snapshot.docs.flatMap((projectDoc) => {
+          const projectData = projectDoc.data();
+          const isEnabled = projectData.enabled === true;
+          if (!isEnabled) return [];
+
+          return [toProject(projectDoc.id, projectData)];
+        });
 
         container.innerHTML = "";
         const visual = projects
@@ -337,7 +343,10 @@ const isSpanish = Astro.currentLocale === "es";
         const cards = projects
           .map((project, index) => {
             const title = escapeHtml(project.title);
-            const description = escapeHtml(project.description);
+            const displayDescription = isSpanish
+              ? project.description || ""
+              : project.descriptionEN || project.description || "";
+            const description = escapeHtml(displayDescription);
             const image = project.image
               ? `<img class="h-full w-full object-cover" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
               : "";
