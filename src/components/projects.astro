@@ -7,15 +7,21 @@ type FirestoreProject = {
   description: string;
   link?: string;
   image: string;
+  screenApp: string;
 };
 
 const isSpanish = Astro.currentLocale === "es";
 const querySnapshot = await getDocs(collection(db, "projects"));
-const projectsSlots = querySnapshot.docs.map((projectDoc) => ({
-  ...(projectDoc.data() as FirestoreProject),
-  id: projectDoc.id,
-  layout: "product" as const,
-}));
+const projectsSlots = querySnapshot.docs.map((projectDoc) => {
+  const project = projectDoc.data() as FirestoreProject;
+
+  return {
+    ...project,
+    id: projectDoc.id,
+    screenApp: projectDoc.data().screenApp || "",
+    layout: "product" as const,
+  };
+});
 ---
 
 <section
@@ -57,43 +63,14 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => ({
                 <span></span>
                 <i></i>
               </div>
-              <div class="preview-screen">
-                <div class="preview-sidebar">
-                  <b></b>
-                  <i></i>
-                  <i></i>
-                  <i></i>
-                </div>
-                <div class="preview-main">
-                  <div class="preview-heading">
-                    <i></i>
-                    <b></b>
-                  </div>
-                  <div class="preview-panels">
-                    <div class="preview-panel preview-panel--large">
-                      <i></i>
-                      <b></b>
-                      <span></span>
-                    </div>
-                    <div class="preview-panel">
-                      <i></i>
-                      <b></b>
-                    </div>
-                    <div class="preview-panel">
-                      <i></i>
-                      <b></b>
-                    </div>
-                  </div>
-                  <div class="preview-chart">
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                  </div>
-                </div>
-              </div>
+              {project.screenApp && (
+                <img
+                  src={project.screenApp}
+                  alt={`${project.title} Interface Screen`}
+                  class="w-full h-full object-cover object-top rounded-b-xl"
+                  loading="lazy"
+                />
+              )}
             </div>
             <span class="preview-index">
               {String(index + 1).padStart(2, "0")}
