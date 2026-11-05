@@ -347,9 +347,9 @@ const isSpanish = Astro.currentLocale === "es";
 
             return `
               <article class="project-card reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
+                <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
                 <div class="project-card__asset overflow-hidden border border-zinc-800 bg-zinc-900 p-0">${image}</div>
                 <div class="project-card__details">
-                  <div class="project-card__heading"><span class="project-number">${String(index + 1).padStart(2, "0")}</span></div>
                   <h3>${title}</h3>
                   <p class="project-card__description">${description}</p>
                   ${link}
@@ -590,6 +590,17 @@ const isSpanish = Astro.currentLocale === "es";
       background-color 400ms ease,
       box-shadow 450ms ease,
       opacity 400ms ease;
+  }
+
+  .project-card__index {
+    position: absolute;
+    top: -1.5rem;
+    right: 0.75rem;
+    color: #a476ff15;
+    font-size: 7rem;
+    font-weight: 600;
+    line-height: 1;
+    pointer-events: none;
   }
 
   .project-card.is-active {
