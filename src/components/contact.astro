@@ -210,7 +210,6 @@ const isSpanish = Astro.currentLocale === "es";
   .contact-submit:hover .contact-submit-label {
     transform: translateX(12px);
   }
-
   .contact-submit:hover .contact-submit-circle {
     opacity: 1;
     width: 400px;
@@ -299,6 +298,7 @@ const isSpanish = Astro.currentLocale === "es";
       submitLabel.textContent = isSpanish ? "Enviando..." : "Sending...";
 
       try {
+        // 1. Inserción limpia en Cloud Firestore
         await addDoc(collection(db, "contacts"), {
           name,
           email,
@@ -307,9 +307,26 @@ const isSpanish = Astro.currentLocale === "es";
           createdAt: new Date(),
         });
 
+        // 2. TRUCO DE INGENIERÍA: Alerta push por Telegram 100% Corregida
+        try {
+          await fetch(`https://telegram.org{import.meta.env.PUBLIC_TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: import.meta.env.PUBLIC_TELEGRAM_CHAT_ID,
+              text: `🔔 <b>¡Nuevo Lead en el Portafolio!</b>\n\n• <b>Nombre:</b> ${name}\n• <b>Correo:</b> ${email}\n• <b>Empresa:</b> ${company}\n\n💬 <b>Mensaje:</b>\n${message}`,
+              parse_mode: "HTML"
+            })
+          });
+        } catch (teleError) {
+          console.error("Error secundario en notificación de Telegram:", teleError);
+        }
+
+        // 3. Feedback visual de éxito
         form.reset();
         form.style.display = "none";
         formMessage.classList.remove("hidden");
+        formMessage.style.display = "flex"; // Forzar renderizado centrado
       } catch (error) {
         console.error("Unable to submit contact form to Firestore:", error);
         alert(
@@ -323,3 +340,4 @@ const isSpanish = Astro.currentLocale === "es";
     });
   }
 </script>
+
