@@ -330,7 +330,7 @@ const isSpanish = Astro.currentLocale === "es";
                   ${renderCarousel(project.screensDesktop, project.title, "desktop")}
                 </div>
                 ${renderCarousel(project.screensMobile, project.title, "mobile")}
-                <span class="preview-index">${String(index + 1).padStart(2, "0")}</span>
+                <span class="project-card__index project-preview__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
               </div>`;
           })
           .join("");
@@ -576,6 +576,7 @@ const isSpanish = Astro.currentLocale === "es";
 
   .project-card {
     position: relative;
+    overflow: hidden;
     min-width: 0;
     display: grid;
     grid-template-columns: minmax(13rem, 0.75fr) minmax(0, 1.25fr);
@@ -594,6 +595,7 @@ const isSpanish = Astro.currentLocale === "es";
 
   .project-card__index {
     position: absolute;
+    z-index: 0;
     top: -1.5rem;
     right: 0.75rem;
     color: #a476ff15;
@@ -601,6 +603,18 @@ const isSpanish = Astro.currentLocale === "es";
     font-weight: 600;
     line-height: 1;
     pointer-events: none;
+  }
+
+  .project-card__asset,
+  .project-card__details {
+    position: relative;
+    z-index: 1;
+  }
+
+  .project-preview__index {
+    top: -1.5rem;
+    right: auto;
+    left: 0.75rem;
   }
 
   .project-card.is-active {
@@ -642,6 +656,7 @@ const isSpanish = Astro.currentLocale === "es";
 
   .preview-window {
     position: relative;
+    z-index: 1;
     width: 82%;
     margin-right: auto;
     margin-left: 4%;
@@ -900,15 +915,6 @@ const isSpanish = Astro.currentLocale === "es";
 
   .project-preview--product .preview-panels {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .preview-index {
-    position: absolute;
-    top: 1rem;
-    left: 1.2rem;
-    color: rgb(255 255 255 / 50%);
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
   }
 
   .project-card__details {
