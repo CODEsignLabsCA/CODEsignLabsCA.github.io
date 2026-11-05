@@ -1,4 +1,4 @@
-name: Deploy Astro to GitHub Pages
+name: Deploy Astro to GitHub Pages & Firebase Hosting
 
 on:
   push:
@@ -33,17 +33,22 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build Astro site
         run: pnpm run build
 
+      # Guardar los archivos de la carpeta dist para el deploy de GitHub Pages
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
-  deploy:
+      # Desplegar los mismos archivos compilados directamente a tu Firebase Hosting
+      - name: Deploy to Firebase Hosting
+        run: pnpm dlx firebase-tools deploy --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting
+
+  deploy-github-pages:
     needs: build
     runs-on: ubuntu-latest
     environment:
