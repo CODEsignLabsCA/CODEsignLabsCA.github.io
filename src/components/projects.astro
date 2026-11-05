@@ -12,14 +12,26 @@ type FirestoreProject = {
 };
 
 const toScreenArray = (screens: unknown, legacyScreen?: unknown): string[] => {
-  if (Array.isArray(screens)) {
-    return screens.filter(
-      (screen): screen is string =>
-        typeof screen === "string" && screen.length > 0,
-    );
+  const value = screens ?? legacyScreen;
+
+  if (Array.isArray(value)) {
+    return value.flatMap((screen) => toScreenArray(screen));
   }
 
-  return typeof legacyScreen === "string" && legacyScreen ? [legacyScreen] : [];
+  if (typeof value !== "string" || !value.trim()) return [];
+
+  const screen = value.trim();
+  if (screen.startsWith("[")) {
+    const parsed: unknown = JSON.parse(screen);
+    if (!Array.isArray(parsed)) {
+      throw new Error(
+        "Project screenshot fields must contain arrays of paths.",
+      );
+    }
+    return toScreenArray(parsed);
+  }
+
+  return [screen];
 };
 
 const isSpanish = Astro.currentLocale === "es";
