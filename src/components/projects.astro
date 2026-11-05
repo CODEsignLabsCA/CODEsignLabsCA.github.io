@@ -1,56 +1,5 @@
 ---
-import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
-
-type FirestoreProject = {
-  title: string;
-  description: string;
-  link?: string;
-  image: string;
-  screensDesktop?: string[];
-  screensMobile?: string[];
-};
-
-const toScreenArray = (screens: unknown, legacyScreen?: unknown): string[] => {
-  const value = screens ?? legacyScreen;
-
-  if (Array.isArray(value)) {
-    return value.flatMap((screen) => toScreenArray(screen));
-  }
-
-  if (typeof value !== "string" || !value.trim()) return [];
-
-  const screen = value.trim();
-  if (screen.startsWith("[")) {
-    const parsed: unknown = JSON.parse(screen);
-    if (!Array.isArray(parsed)) {
-      throw new Error(
-        "Project screenshot fields must contain arrays of paths.",
-      );
-    }
-    return toScreenArray(parsed);
-  }
-
-  return [screen];
-};
-
 const isSpanish = Astro.currentLocale === "es";
-const querySnapshot = await getDocs(collection(db, "projects"));
-const projectsSlots = querySnapshot.docs.map((projectDoc) => {
-  const data = projectDoc.data();
-  const project = data as FirestoreProject;
-
-  return {
-    ...project,
-    id: projectDoc.id,
-    screensDesktop: toScreenArray(
-      data.screensDesktop,
-      data.screenAppDesktop ?? data.screenApp,
-    ),
-    screensMobile: toScreenArray(data.screensMobile, data.screenAppMobile),
-    layout: "product" as const,
-  };
-});
 ---
 
 <section
@@ -74,199 +23,7 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
       </p>
     </div>
 
-    <div class="projects-showcase" data-project-showcase>
-      <div class="projects-visual">
-        {projectsSlots.map((project, index) => (
-          <div
-            class:list={[
-              "project-preview",
-              `project-preview--${project.layout}`,
-              { "is-active": index === 0 },
-            ]}
-            data-project-preview={index}
-          >
-            <div class="preview-window">
-              <div class="preview-toolbar">
-                <span></span>
-                <span></span>
-                <span></span>
-                <i></i>
-              </div>
-              {project.screensDesktop.length > 0 && (
-                <div
-                  class="screenshot-carousel screenshot-carousel--desktop"
-                  aria-label={
-                    isSpanish
-                      ? `Capturas de escritorio de ${project.title}`
-                      : `${project.title} desktop screenshots`
-                  }
-                  data-screenshot-carousel
-                >
-                  {project.screensDesktop.map((screen, screenIndex) => (
-                    <button
-                      type="button"
-                      class="preview-image-trigger preview-image-trigger--desktop"
-                      data-screenshot-slide
-                      data-lightbox-src={screen}
-                      data-lightbox-alt={`${project.title} Desktop Interface`}
-                      aria-label={
-                        isSpanish
-                          ? `Ampliar captura de escritorio ${screenIndex + 1} de ${project.title}`
-                          : `Enlarge desktop screenshot ${screenIndex + 1} for ${project.title}`
-                      }
-                      hidden={screenIndex !== 0}
-                    >
-                      <img
-                        src={screen}
-                        alt=""
-                        class="preview-screen-image"
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
-                  {project.screensDesktop.length > 1 && (
-                    <div class="screenshot-carousel__controls">
-                      <button
-                        type="button"
-                        data-carousel-prev
-                        aria-label={
-                          isSpanish
-                            ? "Captura de escritorio anterior"
-                            : "Previous desktop screenshot"
-                        }
-                      >
-                        &larr;
-                      </button>
-                      <span data-carousel-count aria-live="polite">
-                        1 / {project.screensDesktop.length}
-                      </span>
-                      <button
-                        type="button"
-                        data-carousel-next
-                        aria-label={
-                          isSpanish
-                            ? "Captura de escritorio siguiente"
-                            : "Next desktop screenshot"
-                        }
-                      >
-                        &rarr;
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-            {project.screensMobile.length > 0 && (
-              <div
-                class="screenshot-carousel screenshot-carousel--mobile"
-                aria-label={
-                  isSpanish
-                    ? `Capturas móviles de ${project.title}`
-                    : `${project.title} mobile screenshots`
-                }
-                data-screenshot-carousel
-              >
-                {project.screensMobile.map((screen, screenIndex) => (
-                  <button
-                    type="button"
-                    class="preview-image-trigger preview-image-trigger--mobile"
-                    data-screenshot-slide
-                    data-lightbox-src={screen}
-                    data-lightbox-alt={`${project.title} Mobile Interface`}
-                    aria-label={
-                      isSpanish
-                        ? `Ampliar captura móvil ${screenIndex + 1} de ${project.title}`
-                        : `Enlarge mobile screenshot ${screenIndex + 1} for ${project.title}`
-                    }
-                    hidden={screenIndex !== 0}
-                  >
-                    <img
-                      src={screen}
-                      alt=""
-                      class="preview-screen-image"
-                      loading="lazy"
-                    />
-                  </button>
-                ))}
-                {project.screensMobile.length > 1 && (
-                  <div class="screenshot-carousel__controls">
-                    <button
-                      type="button"
-                      data-carousel-prev
-                      aria-label={
-                        isSpanish
-                          ? "Captura móvil anterior"
-                          : "Previous mobile screenshot"
-                      }
-                    >
-                      &larr;
-                    </button>
-                    <span data-carousel-count aria-live="polite">
-                      1 / {project.screensMobile.length}
-                    </span>
-                    <button
-                      type="button"
-                      data-carousel-next
-                      aria-label={
-                        isSpanish
-                          ? "Captura móvil siguiente"
-                          : "Next mobile screenshot"
-                      }
-                    >
-                      &rarr;
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-            <span class="preview-index">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <div class="projects-grid">
-        {projectsSlots.map((project, index) => (
-          <article
-            class:list={[
-              "project-card",
-              "reveal",
-              { "is-active": index === 0 },
-            ]}
-            data-project-card={index}
-          >
-            <div class="project-card__asset overflow-hidden border border-zinc-800 bg-zinc-900 p-0">
-              <img
-                class="h-full w-full object-cover"
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-              />
-            </div>
-            <div class="project-card__details">
-              <div class="project-card__heading">
-                <span class="project-number">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <h3>{project.title}</h3>
-              <p class="project-card__description">{project.description}</p>
-              {project.link && (
-                <a
-                  class="text-sm text-[var(--sec)] underline underline-offset-4"
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {isSpanish ? "Ver proyecto" : "View project"}
-                </a>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
+    <div id="realtime-projects-showcase"></div>
   </div>
 
   <dialog
@@ -291,76 +48,208 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
 </section>
 
 <script>
-  const showcases = document.querySelectorAll<HTMLElement>(
-    "[data-project-showcase]",
+  import { db } from "../firebase";
+  import { collection, onSnapshot } from "firebase/firestore";
+
+  type Project = {
+    id: string;
+    title: string;
+    description: string;
+    link: string;
+    image: string;
+    screensDesktop: string[];
+    screensMobile: string[];
+  };
+
+  const container = document.getElementById("realtime-projects-showcase");
+  const isSpanish = window.location.pathname.startsWith("/es");
+  const lightbox = document.querySelector<HTMLDialogElement>(
+    "[data-project-lightbox]",
   );
+  const lightboxImage = lightbox?.querySelector<HTMLImageElement>(
+    "[data-lightbox-image]",
+  );
+  let projectObserver: IntersectionObserver | undefined;
 
-  showcases.forEach((showcase) => {
-    const lightbox = showcase
-      .closest("section")
-      ?.querySelector<HTMLDialogElement>("[data-project-lightbox]");
-    const lightboxImage = lightbox?.querySelector<HTMLImageElement>(
-      "[data-lightbox-image]",
-    );
-
-    showcase
-      .querySelectorAll<HTMLButtonElement>("[data-lightbox-src]")
-      .forEach((trigger) => {
-        trigger.addEventListener("click", () => {
-          if (!lightbox || !lightboxImage) return;
-          lightboxImage.src = trigger.dataset.lightboxSrc ?? "";
-          lightboxImage.alt = trigger.dataset.lightboxAlt ?? "";
-          lightbox.showModal();
-        });
-      });
-
-    lightbox
-      ?.querySelector("[data-lightbox-close]")
-      ?.addEventListener("click", () => lightbox.close());
-    lightbox?.addEventListener("click", (event) => {
-      if (event.target === lightbox) lightbox.close();
+  const escapeHtml = (value: string): string =>
+    value.replace(/[&<>"']/g, (character) => {
+      const entities: Record<string, string> = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      };
+      return entities[character];
     });
 
-    showcase
-      .querySelectorAll<HTMLElement>("[data-screenshot-carousel]")
-      .forEach((carousel) => {
-        const slides = Array.from(
-          carousel.querySelectorAll<HTMLButtonElement>(
-            "[data-screenshot-slide]",
-          ),
-        );
-        const counter = carousel.querySelector<HTMLElement>(
-          "[data-carousel-count]",
-        );
+  const safeAssetUrl = (value: unknown): string => {
+    if (typeof value !== "string" || !value.trim()) return "";
+    const url = value.trim();
+    if (url.startsWith("/") && !url.startsWith("//")) return url;
 
-        if (slides.length < 2) return;
+    try {
+      const parsed = new URL(url, window.location.origin);
+      return parsed.protocol === "https:" ? parsed.href : "";
+    } catch {
+      return "";
+    }
+  };
 
-        let activeIndex = 0;
-        const showSlide = (nextIndex: number) => {
-          activeIndex = (nextIndex + slides.length) % slides.length;
-          slides.forEach((slide, slideIndex) => {
-            slide.hidden = slideIndex !== activeIndex;
-          });
-          if (counter) {
-            counter.textContent = `${activeIndex + 1} / ${slides.length}`;
-          }
-        };
+  const safeLinkUrl = (value: unknown): string => {
+    if (typeof value !== "string" || !value.trim()) return "";
+    const url = value.trim();
+    if (url.startsWith("/") && !url.startsWith("//")) return url;
 
-        carousel
-          .querySelector("[data-carousel-prev]")
-          ?.addEventListener("click", () => showSlide(activeIndex - 1));
-        carousel
-          .querySelector("[data-carousel-next]")
-          ?.addEventListener("click", () => showSlide(activeIndex + 1));
-      });
+    try {
+      const parsed = new URL(url);
+      return ["https:", "http:"].includes(parsed.protocol) ? parsed.href : "";
+    } catch {
+      return "";
+    }
+  };
+
+  const toScreenArray = (value: unknown): string[] => {
+    if (Array.isArray(value)) {
+      return value.flatMap((screen) => toScreenArray(screen));
+    }
+    if (typeof value !== "string" || !value.trim()) return [];
+
+    const screen = value.trim();
+    if (screen.startsWith("[")) {
+      try {
+        const parsed: unknown = JSON.parse(screen);
+        return Array.isArray(parsed) ? toScreenArray(parsed) : [];
+      } catch (error) {
+        console.error("Invalid project screenshot array in Firestore.", error);
+        return [];
+      }
+    }
+
+    const safeUrl = safeAssetUrl(screen);
+    return safeUrl ? [safeUrl] : [];
+  };
+
+  const toProject = (id: string, data: Record<string, unknown>): Project => ({
+    id,
+    title: typeof data.title === "string" ? data.title : "",
+    description: typeof data.description === "string" ? data.description : "",
+    link: safeLinkUrl(data.link),
+    image: safeAssetUrl(data.image),
+    screensDesktop: toScreenArray(
+      data.screensDesktop ?? data.screenAppDesktop ?? data.screenApp,
+    ),
+    screensMobile: toScreenArray(data.screensMobile ?? data.screenAppMobile),
+  });
+
+  const renderCarousel = (
+    screens: string[],
+    projectTitle: string,
+    type: "desktop" | "mobile",
+  ): string => {
+    if (!screens.length) return "";
+
+    const title = escapeHtml(projectTitle);
+    const isMobile = type === "mobile";
+    const label = isMobile
+      ? isSpanish
+        ? `Capturas móviles de ${title}`
+        : `${title} mobile screenshots`
+      : isSpanish
+        ? `Capturas de escritorio de ${title}`
+        : `${title} desktop screenshots`;
+    const screenLabel = isMobile
+      ? isSpanish
+        ? "captura móvil"
+        : "mobile screenshot"
+      : isSpanish
+        ? "captura de escritorio"
+        : "desktop screenshot";
+    const kind = isMobile ? "mobile" : "desktop";
+
+    return `
+      <div class="screenshot-carousel screenshot-carousel--${kind}" aria-label="${label}" data-screenshot-carousel>
+        ${screens
+          .map(
+            (screen, index) => `
+              <button
+                type="button"
+                class="preview-image-trigger preview-image-trigger--${kind}"
+                data-screenshot-slide
+                data-lightbox-src="${escapeHtml(screen)}"
+                data-lightbox-alt="${title} ${isMobile ? "Mobile" : "Desktop"} Interface"
+                aria-label="${escapeHtml(
+                  isSpanish
+                    ? `Ampliar ${screenLabel} ${index + 1} de ${projectTitle}`
+                    : `Enlarge ${screenLabel} ${index + 1} for ${projectTitle}`,
+                )}"
+                ${index > 0 ? "hidden" : ""}
+              >
+                <img src="${escapeHtml(screen)}" alt="" class="preview-screen-image" loading="lazy" />
+              </button>`,
+          )
+          .join("")}
+        ${
+          screens.length > 1
+            ? `
+              <div class="screenshot-carousel__controls">
+                <button type="button" data-carousel-prev aria-label="${escapeHtml(
+                  isSpanish
+                    ? `Anterior: ${screenLabel}`
+                    : `Previous ${screenLabel}`,
+                )}">&larr;</button>
+                <span data-carousel-count aria-live="polite">1 / ${screens.length}</span>
+                <button type="button" data-carousel-next aria-label="${escapeHtml(
+                  isSpanish
+                    ? `Siguiente: ${screenLabel}`
+                    : `Next ${screenLabel}`,
+                )}">&rarr;</button>
+              </div>`
+            : ""
+        }
+      </div>`;
+  };
+
+  const initializeInteractions = () => {
+    if (!container) return;
+
+    projectObserver?.disconnect();
+    const carousels = container.querySelectorAll<HTMLElement>(
+      "[data-screenshot-carousel]",
+    );
+    carousels.forEach((carousel) => {
+      const slides = Array.from(
+        carousel.querySelectorAll<HTMLButtonElement>("[data-screenshot-slide]"),
+      );
+      const counter = carousel.querySelector<HTMLElement>(
+        "[data-carousel-count]",
+      );
+      if (slides.length < 2) return;
+
+      let activeIndex = 0;
+      const showSlide = (nextIndex: number) => {
+        activeIndex = (nextIndex + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.hidden = slideIndex !== activeIndex;
+        });
+        if (counter)
+          counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+      };
+
+      carousel
+        .querySelector("[data-carousel-prev]")
+        ?.addEventListener("click", () => showSlide(activeIndex - 1));
+      carousel
+        .querySelector("[data-carousel-next]")
+        ?.addEventListener("click", () => showSlide(activeIndex + 1));
+    });
 
     const cards = Array.from(
-      showcase.querySelectorAll<HTMLElement>("[data-project-card]"),
+      container.querySelectorAll<HTMLElement>("[data-project-card]"),
     );
     const previews = Array.from(
-      showcase.querySelectorAll<HTMLElement>("[data-project-preview]"),
+      container.querySelectorAll<HTMLElement>("[data-project-preview]"),
     );
-
     if (!cards.length || cards.length !== previews.length) return;
 
     const activateProject = (index: number) => {
@@ -373,8 +262,7 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
     };
 
     activateProject(0);
-
-    const observer = new IntersectionObserver(
+    projectObserver = new IntersectionObserver(
       (entries) => {
         const activeEntries = entries.filter((entry) => entry.isIntersecting);
         if (!activeEntries.length) return;
@@ -391,7 +279,6 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
             ? entry
             : closest;
         });
-
         const activeIndex = Number(
           closestEntry.target.getAttribute("data-project-card"),
         );
@@ -399,12 +286,100 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
       },
       { rootMargin: "-38% 0px -38% 0px", threshold: 0 },
     );
+    cards.forEach((card) => projectObserver?.observe(card));
+  };
 
-    cards.forEach((card) => observer.observe(card));
-  });
+  if (!container) {
+    console.error("Missing #realtime-projects-showcase container.");
+  } else {
+    container.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const trigger = target.closest<HTMLButtonElement>("[data-lightbox-src]");
+      if (!trigger || !lightbox || !lightboxImage) return;
+
+      lightboxImage.src = trigger.dataset.lightboxSrc ?? "";
+      lightboxImage.alt = trigger.dataset.lightboxAlt ?? "";
+      lightbox.showModal();
+    });
+
+    lightbox
+      ?.querySelector("[data-lightbox-close]")
+      ?.addEventListener("click", () => lightbox.close());
+    lightbox?.addEventListener("click", (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+
+    const stopListening = onSnapshot(
+      collection(db, "projects"),
+      (snapshot) => {
+        const projects = snapshot.docs.map((projectDoc) =>
+          toProject(
+            projectDoc.id,
+            projectDoc.data() as Record<string, unknown>,
+          ),
+        );
+
+        container.innerHTML = "";
+        const visual = projects
+          .map((project, index) => {
+            return `
+              <div class="project-preview project-preview--product ${index === 0 ? "is-active" : ""}" data-project-preview="${index}">
+                <div class="preview-window">
+                  <div class="preview-toolbar"><span></span><span></span><span></span><i></i></div>
+                  ${renderCarousel(project.screensDesktop, project.title, "desktop")}
+                </div>
+                ${renderCarousel(project.screensMobile, project.title, "mobile")}
+                <span class="preview-index">${String(index + 1).padStart(2, "0")}</span>
+              </div>`;
+          })
+          .join("");
+        const cards = projects
+          .map((project, index) => {
+            const title = escapeHtml(project.title);
+            const description = escapeHtml(project.description);
+            const image = project.image
+              ? `<img class="h-full w-full object-cover" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
+              : "";
+            const link = project.link
+              ? `<a class="text-sm text-[var(--sec)] underline underline-offset-4" href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer">${isSpanish ? "Ver proyecto" : "View project"}</a>`
+              : "";
+
+            return `
+              <article class="project-card reveal ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
+                <div class="project-card__asset overflow-hidden border border-zinc-800 bg-zinc-900 p-0">${image}</div>
+                <div class="project-card__details">
+                  <div class="project-card__heading"><span class="project-number">${String(index + 1).padStart(2, "0")}</span></div>
+                  <h3>${title}</h3>
+                  <p class="project-card__description">${description}</p>
+                  ${link}
+                </div>
+              </article>`;
+          })
+          .join("");
+
+        container.innerHTML = projects.length
+          ? `<div class="projects-showcase" data-project-showcase>
+              <div class="projects-visual">${visual}</div>
+              <div class="projects-grid">${cards}</div>
+            </div>`
+          : `<p class="projects-empty">${isSpanish ? "No hay proyectos disponibles." : "No projects are available."}</p>`;
+
+        initializeInteractions();
+      },
+      (error) => {
+        console.error("Failed to listen for Firestore project updates.", error);
+        projectObserver?.disconnect();
+        container.innerHTML = `<p class="projects-error">${isSpanish ? "No se pudieron cargar los proyectos." : "Projects could not be loaded."}</p>`;
+      },
+    );
+    document.addEventListener("astro:before-swap", stopListening, {
+      once: true,
+    });
+  }
 </script>
 
-<style>
+<style is:global>
   .preview-image-trigger {
     display: block;
     width: 100%;
