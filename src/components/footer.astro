@@ -30,10 +30,26 @@ const isSpanish = Astro.currentLocale === "es";
               <a
                 href={link.href}
                 target="_blank"
-                class="flex flex-col items-center group"
-                aria-label={link.label}
+                rel={link.label === "LinkedIn" ? "noopener noreferrer" : undefined}
+                class:list={[
+                  "flex flex-col items-center group",
+                  link.label === "LinkedIn" &&
+                    "border border-neutral-800 rounded-xl p-3 hover:border-[#0a66c2]/40 hover:scale-105 transition-all duration-300 ease-out",
+                ]}
+                aria-label={
+                  link.label === "LinkedIn"
+                    ? "Visit Jairo Fernando Ramos's professional LinkedIn profile"
+                    : link.label
+                }
               >
-                <div class="text-[var(--white-icon)] hover:text-[var(--white)] transition duration-300 ease-in-out">
+                <div
+                  class:list={[
+                    "text-[var(--white-icon)] transition duration-300 ease-in-out",
+                    link.label === "LinkedIn"
+                      ? "group-hover:text-[#0a66c2]"
+                      : "hover:text-[var(--white)]",
+                  ]}
+                >
                   <div set:html={link.icon} />
                 </div>
               </a>
