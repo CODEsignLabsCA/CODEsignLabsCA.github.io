@@ -7,8 +7,19 @@ type FirestoreProject = {
   description: string;
   link?: string;
   image: string;
-  screenAppDesktop?: string;
-  screenAppMobile?: string;
+  screensDesktop?: string[];
+  screensMobile?: string[];
+};
+
+const toScreenArray = (screens: unknown, legacyScreen?: unknown): string[] => {
+  if (Array.isArray(screens)) {
+    return screens.filter(
+      (screen): screen is string =>
+        typeof screen === "string" && screen.length > 0,
+    );
+  }
+
+  return typeof legacyScreen === "string" && legacyScreen ? [legacyScreen] : [];
 };
 
 const isSpanish = Astro.currentLocale === "es";
@@ -20,8 +31,11 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
   return {
     ...project,
     id: projectDoc.id,
-    screenAppDesktop: data.screenAppDesktop || "",
-    screenAppMobile: data.screenAppMobile || "",
+    screensDesktop: toScreenArray(
+      data.screensDesktop,
+      data.screenAppDesktop ?? data.screenApp,
+    ),
+    screensMobile: toScreenArray(data.screensMobile, data.screenAppMobile),
     layout: "product" as const,
   };
 });
@@ -66,41 +80,131 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
                 <span></span>
                 <i></i>
               </div>
-              {project.screenAppDesktop && (
-                <button
-                  type="button"
-                  class="preview-image-trigger preview-image-trigger--desktop"
-                  data-lightbox-src={project.screenAppDesktop}
-                  data-lightbox-alt={`${project.title} Desktop Interface`}
-                  aria-label={isSpanish
-                    ? `Ampliar captura de escritorio de ${project.title}`
-                    : `Enlarge ${project.title} desktop screenshot`}
+              {project.screensDesktop.length > 0 && (
+                <div
+                  class="screenshot-carousel screenshot-carousel--desktop"
+                  aria-label={
+                    isSpanish
+                      ? `Capturas de escritorio de ${project.title}`
+                      : `${project.title} desktop screenshots`
+                  }
+                  data-screenshot-carousel
                 >
-                  <img
-                    src={project.screenAppDesktop}
-                    alt=""
-                    class="preview-screen-image"
-                    loading="lazy"
-                  />
-                </button>
+                  {project.screensDesktop.map((screen, screenIndex) => (
+                    <button
+                      type="button"
+                      class="preview-image-trigger preview-image-trigger--desktop"
+                      data-screenshot-slide
+                      data-lightbox-src={screen}
+                      data-lightbox-alt={`${project.title} Desktop Interface`}
+                      aria-label={
+                        isSpanish
+                          ? `Ampliar captura de escritorio ${screenIndex + 1} de ${project.title}`
+                          : `Enlarge desktop screenshot ${screenIndex + 1} for ${project.title}`
+                      }
+                      hidden={screenIndex !== 0}
+                    >
+                      <img
+                        src={screen}
+                        alt=""
+                        class="preview-screen-image"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                  {project.screensDesktop.length > 1 && (
+                    <div class="screenshot-carousel__controls">
+                      <button
+                        type="button"
+                        data-carousel-prev
+                        aria-label={
+                          isSpanish
+                            ? "Captura de escritorio anterior"
+                            : "Previous desktop screenshot"
+                        }
+                      >
+                        &larr;
+                      </button>
+                      <span data-carousel-count aria-live="polite">
+                        1 / {project.screensDesktop.length}
+                      </span>
+                      <button
+                        type="button"
+                        data-carousel-next
+                        aria-label={
+                          isSpanish
+                            ? "Captura de escritorio siguiente"
+                            : "Next desktop screenshot"
+                        }
+                      >
+                        &rarr;
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
-              {project.screenAppMobile && (
-                <button
-                  type="button"
-                  class="preview-image-trigger preview-image-trigger--mobile"
-                  data-lightbox-src={project.screenAppMobile}
-                  data-lightbox-alt={`${project.title} Mobile Interface`}
-                  aria-label={isSpanish
-                    ? `Ampliar captura móvil de ${project.title}`
-                    : `Enlarge ${project.title} mobile screenshot`}
+              {project.screensMobile.length > 0 && (
+                <div
+                  class="screenshot-carousel screenshot-carousel--mobile"
+                  aria-label={
+                    isSpanish
+                      ? `Capturas móviles de ${project.title}`
+                      : `${project.title} mobile screenshots`
+                  }
+                  data-screenshot-carousel
                 >
-                  <img
-                    src={project.screenAppMobile}
-                    alt=""
-                    class="preview-screen-image"
-                    loading="lazy"
-                  />
-                </button>
+                  {project.screensMobile.map((screen, screenIndex) => (
+                    <button
+                      type="button"
+                      class="preview-image-trigger preview-image-trigger--mobile"
+                      data-screenshot-slide
+                      data-lightbox-src={screen}
+                      data-lightbox-alt={`${project.title} Mobile Interface`}
+                      aria-label={
+                        isSpanish
+                          ? `Ampliar captura móvil ${screenIndex + 1} de ${project.title}`
+                          : `Enlarge mobile screenshot ${screenIndex + 1} for ${project.title}`
+                      }
+                      hidden={screenIndex !== 0}
+                    >
+                      <img
+                        src={screen}
+                        alt=""
+                        class="preview-screen-image"
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                  {project.screensMobile.length > 1 && (
+                    <div class="screenshot-carousel__controls">
+                      <button
+                        type="button"
+                        data-carousel-prev
+                        aria-label={
+                          isSpanish
+                            ? "Captura móvil anterior"
+                            : "Previous mobile screenshot"
+                        }
+                      >
+                        &larr;
+                      </button>
+                      <span data-carousel-count aria-live="polite">
+                        1 / {project.screensMobile.length}
+                      </span>
+                      <button
+                        type="button"
+                        data-carousel-next
+                        aria-label={
+                          isSpanish
+                            ? "Captura móvil siguiente"
+                            : "Next mobile screenshot"
+                        }
+                      >
+                        &rarr;
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
             <span class="preview-index">
@@ -156,7 +260,11 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
   <dialog
     class="project-lightbox"
     data-project-lightbox
-    aria-label={isSpanish ? "Captura ampliada del proyecto" : "Enlarged project screenshot"}
+    aria-label={
+      isSpanish
+        ? "Captura ampliada del proyecto"
+        : "Enlarged project screenshot"
+    }
   >
     <button
       class="project-lightbox__close"
@@ -176,9 +284,9 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
   );
 
   showcases.forEach((showcase) => {
-    const lightbox = showcase.closest("section")?.querySelector<HTMLDialogElement>(
-      "[data-project-lightbox]",
-    );
+    const lightbox = showcase
+      .closest("section")
+      ?.querySelector<HTMLDialogElement>("[data-project-lightbox]");
     const lightboxImage = lightbox?.querySelector<HTMLImageElement>(
       "[data-lightbox-image]",
     );
@@ -194,13 +302,45 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
         });
       });
 
-    lightbox?.querySelector("[data-lightbox-close]")?.addEventListener(
-      "click",
-      () => lightbox.close(),
-    );
+    lightbox
+      ?.querySelector("[data-lightbox-close]")
+      ?.addEventListener("click", () => lightbox.close());
     lightbox?.addEventListener("click", (event) => {
       if (event.target === lightbox) lightbox.close();
     });
+
+    showcase
+      .querySelectorAll<HTMLElement>("[data-screenshot-carousel]")
+      .forEach((carousel) => {
+        const slides = Array.from(
+          carousel.querySelectorAll<HTMLButtonElement>(
+            "[data-screenshot-slide]",
+          ),
+        );
+        const counter = carousel.querySelector<HTMLElement>(
+          "[data-carousel-count]",
+        );
+
+        if (slides.length < 2) return;
+
+        let activeIndex = 0;
+        const showSlide = (nextIndex: number) => {
+          activeIndex = (nextIndex + slides.length) % slides.length;
+          slides.forEach((slide, slideIndex) => {
+            slide.hidden = slideIndex !== activeIndex;
+          });
+          if (counter) {
+            counter.textContent = `${activeIndex + 1} / ${slides.length}`;
+          }
+        };
+
+        carousel
+          .querySelector("[data-carousel-prev]")
+          ?.addEventListener("click", () => showSlide(activeIndex - 1));
+        carousel
+          .querySelector("[data-carousel-next]")
+          ?.addEventListener("click", () => showSlide(activeIndex + 1));
+      });
 
     const cards = Array.from(
       showcase.querySelectorAll<HTMLElement>("[data-project-card]"),
@@ -262,17 +402,36 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
     cursor: zoom-in;
   }
 
+  .screenshot-carousel [hidden] {
+    display: none;
+  }
+
+  .screenshot-carousel {
+    position: relative;
+  }
+
+  .screenshot-carousel--desktop {
+    width: 100%;
+  }
+
   .preview-image-trigger--desktop {
     overflow: hidden;
     border-radius: 0 0 0.75rem 0.75rem;
   }
 
-  .preview-image-trigger--mobile {
+  .screenshot-carousel--mobile {
     position: absolute;
-    right: -7%;
-    bottom: -8%;
+    z-index: 2;
+    right: -8%;
+    bottom: -10%;
     width: clamp(3.5rem, 18%, 5.5rem);
     height: 72%;
+  }
+
+  .preview-image-trigger--mobile {
+    position: absolute;
+    inset: 0;
+    height: 100%;
     padding: 0.28rem;
     overflow: hidden;
     border: 2px solid #77717f;
@@ -281,10 +440,57 @@ const projectsSlots = querySnapshot.docs.map((projectDoc) => {
     box-shadow: 0 15px 35px rgb(0 0 0 / 45%);
   }
 
+  .screenshot-carousel__controls {
+    position: absolute;
+    z-index: 3;
+    right: 0.4rem;
+    bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.2rem 0.3rem;
+    border: 1px solid rgb(255 255 255 / 15%);
+    border-radius: 9999px;
+    background: rgb(16 16 19 / 88%);
+    color: white;
+    font-size: 0.65rem;
+    line-height: 1;
+    backdrop-filter: blur(6px);
+  }
+
+  .screenshot-carousel__controls button {
+    display: grid;
+    width: 1.35rem;
+    height: 1.35rem;
+    place-items: center;
+    border: 0;
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 12%);
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .screenshot-carousel--mobile .screenshot-carousel__controls {
+    right: 0.25rem;
+    bottom: 0.35rem;
+    left: 0.25rem;
+    justify-content: space-between;
+    gap: 0.1rem;
+    padding: 0.15rem;
+    font-size: 0.55rem;
+  }
+
+  .screenshot-carousel--mobile .screenshot-carousel__controls button {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
   .preview-screen-image {
     display: block;
     width: 100%;
-    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: top;
   }
 
   .preview-image-trigger--mobile .preview-screen-image {
