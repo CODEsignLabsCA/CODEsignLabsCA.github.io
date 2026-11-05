@@ -20,7 +20,15 @@ const t = useTranslations(lang);
           {t("hero.role")}
         </h1>
         <p class="hero-description text-md md:text-2xl text-[var(--white-icon)]">
-          {t("hero.description")}
+          {t("hero.description.start")}{" "}
+          <span class="text-[var(--sec)] shiny-sec">{t("hero.description.highlight1")}</span>{" "}
+          {t("hero.description.middle1")}{" "}
+          <span class="text-[var(--sec)] shiny-sec">{t("hero.description.highlight2")}</span>
+          {t("hero.description.middle2")}{" "}
+          <span class="text-[var(--sec)] shiny-sec">{t("hero.description.highlight3")}</span>
+          {" "}{t("hero.description.middle3")}{" "}
+          <span class="text-[var(--sec)] shiny-sec">{t("hero.description.highlight4")}</span>{" "}
+          {t("hero.description.end")}
         </p>
       </div>
       <div class="flex justify-start gap-2 pt-3 md:pt-6">
