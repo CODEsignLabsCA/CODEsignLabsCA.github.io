@@ -47,7 +47,7 @@ const isSpanish = Astro.currentLocale === "es";
           ></textarea>
           <button
             type="submit"
-            class="contact-submit rounded-full bg-[#97cc04] px-8 py-4 font-bold text-[#151c1e] transition-colors hover:bg-[#a8dc10]"
+            class="contact-submit rounded-full border-4 border-transparent px-9 py-4 font-semibold"
           >
             <svg
               class="contact-submit-arrow contact-submit-arrow--incoming"
@@ -154,79 +154,88 @@ const isSpanish = Astro.currentLocale === "es";
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 4px;
     overflow: hidden;
     align-self: center;
-    isolation: isolate;
-    transition:
-      background-color 0.3s ease,
-      box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    background-color: transparent;
+    color: #97cc04;
+    box-shadow: 0 0 0 2px #97cc04;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .contact-submit-label {
     position: relative;
     z-index: 1;
-    transform: translateX(-8px);
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    white-space: nowrap;
+    transform: translateX(-12px);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .contact-submit-circle {
     position: absolute;
-    z-index: 0;
     top: 50%;
     left: 50%;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background-color: #a8dc10;
+    background-color: #97cc04;
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, -50%) scale(0);
-    transition:
-      transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-      opacity 0.3s ease;
+    transform: translate(-50%, -50%);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .contact-submit-arrow {
     position: absolute;
-    z-index: 2;
-    width: 20px;
-    fill: currentColor;
-    transition: left 0.7s cubic-bezier(0.23, 1, 0.32, 1), right 0.7s
-      cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 9;
+    width: 24px;
+    fill: #97cc04;
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .contact-submit-arrow--incoming {
-    left: -28px;
+    left: -25%;
   }
 
   .contact-submit-arrow--outgoing {
-    right: 18px;
+    right: 16px;
   }
 
   .contact-submit:hover {
-    box-shadow: 0 0 0 8px rgb(151 204 4 / 15%);
+    color: #151c1e;
+    box-shadow: 0 0 0 12px transparent;
   }
 
   .contact-submit:hover .contact-submit-label {
-    transform: translateX(8px);
+    transform: translateX(12px);
   }
 
   .contact-submit:hover .contact-submit-circle {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(16);
+    width: 220px;
+    height: 220px;
   }
 
   .contact-submit:hover .contact-submit-arrow--incoming {
-    left: 18px;
+    left: 16px;
   }
 
   .contact-submit:hover .contact-submit-arrow--outgoing {
-    right: -28px;
+    right: -25%;
+  }
+
+  .contact-submit:hover .contact-submit-arrow {
+    fill: #151c1e;
+  }
+
+  .contact-submit:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 4px #97cc04;
   }
 
   .contact-submit:focus-visible {
-    outline: 2px solid #a8dc10;
+    outline: 2px solid #97cc04;
     outline-offset: 4px;
   }
 
@@ -240,10 +249,6 @@ const isSpanish = Astro.currentLocale === "es";
     .contact-submit-circle,
     .contact-submit-arrow {
       transition: none;
-    }
-
-    .contact-submit:hover .contact-submit-circle {
-      transform: translate(-50%, -50%) scale(1);
     }
   }
 
