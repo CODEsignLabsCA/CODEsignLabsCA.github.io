@@ -49,7 +49,24 @@ const isSpanish = Astro.currentLocale === "es";
             type="submit"
             class="contact-submit rounded-full bg-[#97cc04] px-8 py-4 font-bold text-[#151c1e] transition-colors hover:bg-[#a8dc10]"
           >
-            {isSpanish ? "CONSTRUYAMOS EL FUTURO" : "LET'S BUILD THE FUTURE"}
+            <svg
+              class="contact-submit-arrow contact-submit-arrow--incoming"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M16.17 11 10.81 5.64l1.41-1.42L20 12l-7.78 7.78-1.41-1.42L16.17 13H4v-2h12.17Z"></path>
+            </svg>
+            <span class="contact-submit-label">
+              {isSpanish ? "CONSTRUYAMOS EL FUTURO" : "LET'S BUILD THE FUTURE"}
+            </span>
+            <span class="contact-submit-circle" aria-hidden="true"></span>
+            <svg
+              class="contact-submit-arrow contact-submit-arrow--outgoing"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M16.17 11 10.81 5.64l1.41-1.42L20 12l-7.78 7.78-1.41-1.42L16.17 13H4v-2h12.17Z"></path>
+            </svg>
           </button>
         </form>
         <div class="mt-6 space-y-3 border-t border-zinc-800/80 pt-6">
@@ -134,7 +151,100 @@ const isSpanish = Astro.currentLocale === "es";
   }
 
   .contact-submit {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     align-self: center;
+    isolation: isolate;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .contact-submit-label {
+    position: relative;
+    z-index: 1;
+    transform: translateX(-8px);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .contact-submit-circle {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #a8dc10;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    transition:
+      transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 0.3s ease;
+  }
+
+  .contact-submit-arrow {
+    position: absolute;
+    z-index: 2;
+    width: 20px;
+    fill: currentColor;
+    transition: left 0.7s cubic-bezier(0.23, 1, 0.32, 1), right 0.7s
+      cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .contact-submit-arrow--incoming {
+    left: -28px;
+  }
+
+  .contact-submit-arrow--outgoing {
+    right: 18px;
+  }
+
+  .contact-submit:hover {
+    box-shadow: 0 0 0 8px rgb(151 204 4 / 15%);
+  }
+
+  .contact-submit:hover .contact-submit-label {
+    transform: translateX(8px);
+  }
+
+  .contact-submit:hover .contact-submit-circle {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(16);
+  }
+
+  .contact-submit:hover .contact-submit-arrow--incoming {
+    left: 18px;
+  }
+
+  .contact-submit:hover .contact-submit-arrow--outgoing {
+    right: -28px;
+  }
+
+  .contact-submit:focus-visible {
+    outline: 2px solid #a8dc10;
+    outline-offset: 4px;
+  }
+
+  .contact-submit:disabled {
+    cursor: wait;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-submit,
+    .contact-submit-label,
+    .contact-submit-circle,
+    .contact-submit-arrow {
+      transition: none;
+    }
+
+    .contact-submit:hover .contact-submit-circle {
+      transform: translate(-50%, -50%) scale(1);
+    }
   }
 
   @media (min-width: 768px) {
@@ -162,14 +272,15 @@ const isSpanish = Astro.currentLocale === "es";
 
   if (form && formMessage) {
     const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const submitLabel = submitButton?.querySelector<HTMLElement>(".contact-submit-label");
     const isSpanish = form.dataset.locale === "es";
-    const originalButtonText = submitButton?.textContent?.trim() ?? "";
+    const originalButtonText = submitLabel?.textContent?.trim() ?? "";
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      if (!submitButton) {
-        console.error("Contact form submit button was not found.");
+      if (!submitButton || !submitLabel) {
+        console.error("Contact form submit button or label was not found.");
         return;
       }
 
@@ -180,7 +291,7 @@ const isSpanish = Astro.currentLocale === "es";
       const message = String(formData.get("message") ?? "").trim();
 
       submitButton.disabled = true;
-      submitButton.textContent = isSpanish ? "Enviando..." : "Sending...";
+      submitLabel.textContent = isSpanish ? "Enviando..." : "Sending...";
 
       try {
         await addDoc(collection(db, "contacts"), {
@@ -202,7 +313,7 @@ const isSpanish = Astro.currentLocale === "es";
             : "There was a problem sending your message. Please try again later.",
         );
         submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        submitLabel.textContent = originalButtonText;
       }
     });
   }
