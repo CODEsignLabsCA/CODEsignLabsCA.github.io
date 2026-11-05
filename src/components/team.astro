@@ -1,5 +1,7 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
+
+const isSpanish = Astro.currentLocale === "es";
 ---
 
 <section
@@ -8,8 +10,10 @@ import AnimatedHeading from "./AnimatedHeading.astro";
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow="The talent behind the engineering"
-      title="From Idea to Market Leadership: Architecting digital products that reshape industries and drive meaningful growth."
+      eyebrow={isSpanish ? "El talento detrás de la ingeniería" : "The talent behind the engineering"}
+      title={isSpanish
+        ? "De la idea al liderazgo del mercado: productos digitales que transforman industrias e impulsan un crecimiento significativo."
+        : "From Idea to Market Leadership: Architecting digital products that reshape industries and drive meaningful growth."}
       headingClass="team-heading text-center uppercase"
     />
 
@@ -28,33 +32,36 @@ import AnimatedHeading from "./AnimatedHeading.astro";
       <div class="team-profile__content">
         <h3 class="text-2xl font-medium">Jairo Fernando Ramos G</h3>
         <p class="mt-2 text-lg font-bold text-[var(--sec)]">
-          Lead Product & Full-Stack Architect
+          {isSpanish ? "Líder de Producto y Arquitecto Full-Stack" : "Lead Product & Full-Stack Architect"}
         </p>
         <ul class="team-expertise mt-2 space-y-5">
           <li>
-            <strong>Product Design:</strong>{" "}
-            Specialist in conceptualizing interactive{" "}
+            <strong>{isSpanish ? "Diseño de producto:" : "Product Design:"}</strong>{" "}
+            {isSpanish ? "Especialista en conceptualizar " : "Specialist in conceptualizing "}
+            {isSpanish ? "experiencias interactivas y " : "interactive "}
             <strong class="text-[#97CC04]">
-              MVPS in Figma using the Stitch
+              {isSpanish ? "MVPs en Figma con el sistema de diseño modular Stitch" : "MVPS in Figma using the Stitch modular design system"}
             </strong>{" "}
-            modular design system.
+            {!isSpanish && "."}
           </li>
           <li>
-            <strong>
-              Cross-Platform Engineering:
-            </strong>{" "}
-            Architecture and native deployment using{" "}
+            <strong>{isSpanish ? "Ingeniería multiplataforma:" : "Cross-Platform Engineering:"}</strong>{" "}
+            {isSpanish ? "Arquitectura y despliegue nativo con " : "Architecture and native deployment using "}
             <strong class="text-[#97CC04]">
-              Kotlin Multiplatform, Flutter, Dart, and Swift.
+              {isSpanish
+                ? "Kotlin Multiplatform, Flutter, Dart y Swift."
+                : "Kotlin Multiplatform, Flutter, Dart, and Swift."}
             </strong>
           </li>
           <li>
-            <strong>Business Strategy:</strong>{" "}
-            Robust data integration using{" "}
+            <strong>{isSpanish ? "Estrategia de negocio:" : "Business Strategy:"}</strong>{" "}
+            {isSpanish ? "Integración robusta de datos con " : "Robust data integration using "}
             <strong class="text-[#97CC04]">
-              PostgreSQL and Supabase, combined with advanced AI automation
+              {isSpanish
+                ? "PostgreSQL y Supabase, junto con automatización avanzada con IA"
+                : "PostgreSQL and Supabase, combined with advanced AI automation"}
             </strong>{" "}
-            to unlock new corporate revenue streams.
+            {isSpanish ? "para abrir nuevas fuentes de ingresos empresariales." : "to unlock new corporate revenue streams."}
           </li>
         </ul>
       </div>

@@ -1,16 +1,21 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
 
+const isSpanish = Astro.currentLocale === "es";
 const testimonials = [
   {
     name: "Drew Feig",
     quote:
-      "Working with this software development team has been a game-changer for our business",
+      isSpanish
+        ? "Trabajar con este equipo de desarrollo de software marcó un antes y un después para nuestro negocio."
+        : "Working with this software development team has been a game-changer for our business",
   },
   {
     name: "Estelle Darcy",
     quote:
-      "The team's expertise and responsiveness were outstanding. They delivered our project on time",
+      isSpanish
+        ? "La experiencia y capacidad de respuesta del equipo fueron excepcionales. Entregaron nuestro proyecto a tiempo."
+        : "The team's expertise and responsiveness were outstanding. They delivered our project on time",
   },
 ];
 ---
@@ -21,8 +26,8 @@ const testimonials = [
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow="Real feedback"
-      title="Real feedback from clients"
+      eyebrow={isSpanish ? "Opiniones reales" : "Real feedback"}
+      title={isSpanish ? "Opiniones reales de nuestros clientes" : "Real feedback from clients"}
     />
     <div class="grid gap-5 md:grid-cols-2">
       {testimonials.map((testimonial, index) => (
@@ -44,7 +49,7 @@ const testimonials = [
     <figure class="reveal reveal-media mt-8 overflow-hidden rounded-2xl">
       <img
         src="/images/presentation/client-feedback.webp"
-        alt="A software team working together at their workstations"
+        alt={isSpanish ? "Equipo de software trabajando en conjunto en sus estaciones" : "A software team working together at their workstations"}
         class="reveal-media__image h-56 w-full object-cover md:h-72"
         width="1000"
         height="335"

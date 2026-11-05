@@ -1,20 +1,29 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
 
+const isSpanish = Astro.currentLocale === "es";
 const services = [
   {
     number: "01",
-    title: "Multiplatform Mobile Engineering",
+    title: isSpanish
+      ? "Ingeniería móvil multiplataforma"
+      : "Multiplatform Mobile Engineering",
     stack: "Flutter, Dart, Kotlin Multiplatform, Swift.",
-    label: "Return",
-    outcome: "Monetizable, native apps with a fast time-to-market.",
+    label: isSpanish ? "Beneficio" : "Return",
+    outcome: isSpanish
+      ? "Aplicaciones nativas monetizables y con un lanzamiento rápido."
+      : "Monetizable, native apps with a fast time-to-market.",
   },
   {
     number: "02",
-    title: "Web & Backend Infrastructure",
+    title: isSpanish
+      ? "Infraestructura web y backend"
+      : "Web & Backend Infrastructure",
     stack: "PostgreSQL, MySQL, TypeScript, JavaScript.",
-    label: "Outcome",
-    outcome: "High-demand architectures with optimized costs.",
+    label: isSpanish ? "Resultado" : "Outcome",
+    outcome: isSpanish
+      ? "Arquitecturas de alta demanda con costos optimizados."
+      : "High-demand architectures with optimized costs.",
   },
 ];
 ---
@@ -28,7 +37,9 @@ const services = [
       <figure class="service-overview__image">
         <img
           src="/images/service-sections/Our Comprehensive Range of Software Development.webp"
-          alt="A mobile app and software development workspace in a custom neon frame"
+          alt={isSpanish
+            ? "Aplicación móvil y espacio de desarrollo de software en un marco de neón"
+            : "A mobile app and software development workspace in a custom neon frame"}
           width="453"
           height="654"
           loading="lazy"
@@ -38,18 +49,23 @@ const services = [
           <p class="service-overview__percentage">
             <span data-count-up="71.2">71,2</span>%
           </p>
-          <p class="service-overview__caption">Custom Software Development</p>
+          <p class="service-overview__caption">
+            {isSpanish ? "Desarrollo de software a medida" : "Custom Software Development"}
+          </p>
         </div>
       </figure>
 
       <div class="service-overview__content">
         <AnimatedHeading
-          eyebrow="Service"
-          title="Our comprehensive range of software development"
+          eyebrow={isSpanish ? "Servicios" : "Service"}
+          title={isSpanish
+            ? "Nuestra oferta integral de desarrollo de software"
+            : "Our comprehensive range of software development"}
         />
         <p class="mb-6 text-base leading-relaxed text-[var(--white-icon)] md:text-lg">
-          We develop multi-platform digital ecosystems designed to open new sales
-          channels and diversify your company’s revenue streams.
+          {isSpanish
+            ? "Desarrollamos ecosistemas digitales multiplataforma diseñados para abrir nuevos canales de venta y diversificar las fuentes de ingresos de su empresa."
+            : "We develop multi-platform digital ecosystems designed to open new sales channels and diversify your company’s revenue streams."}
         </p>
         <div class="grid gap-4 sm:grid-cols-2">
           {services.map((service) => (
@@ -61,7 +77,10 @@ const services = [
                 {service.title}
               </h3>
               <p class="mt-3 text-sm leading-relaxed text-[var(--white-icon)]">
-                <strong class="text-[var(--white)]">Stack:</strong> {service.stack}
+                <strong class="text-[var(--white)]">
+                  {isSpanish ? "Tecnologías:" : "Stack:"}
+                </strong>{" "}
+                {service.stack}
               </p>
               <p class="mt-3 text-sm leading-relaxed text-[var(--white-icon)]">
                 <strong class="text-[var(--white)]">{service.label}:</strong>{" "}

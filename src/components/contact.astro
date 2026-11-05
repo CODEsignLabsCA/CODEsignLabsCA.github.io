@@ -1,13 +1,20 @@
+---
+const isSpanish = Astro.currentLocale === "es";
+---
+
 <section id="contact" class="w-full border-t border-[#ffffff10] py-16 md:py-20">
   <div class="mx-auto max-w-5xl">
     <div class="contact-layout">
       <div class="contact-intro text-[var(--white-icon)]">
-        <h2 class="mb-2 text-lg text-[var(--sec)] shiny-sec">Let's talk</h2>
+        <h2 class="mb-2 text-lg text-[var(--sec)] shiny-sec">
+          {isSpanish ? "Hablemos" : "Let's talk"}
+        </h2>
         <h3 class="mb-6 text-4xl font-medium text-[var(--white)] md:text-5xl">
-          Contact
+          {isSpanish ? "Contacto" : "Contact"}
         </h3>
         <form
           id="contact-form"
+          data-locale={isSpanish ? "es" : "en"}
           action="https://formspree.io/f/YOUR_FORM_ID_HERE"
           method="POST"
           class="flex flex-col gap-4"
@@ -15,20 +22,20 @@
           <input
             type="text"
             name="from_name"
-            placeholder="Name"
+            placeholder={isSpanish ? "Nombre" : "Name"}
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
           />
           <input
             type="email"
             name="reply_to"
-            placeholder="Email"
+            placeholder={isSpanish ? "Correo electrónico" : "Email"}
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
           />
           <textarea
             name="message"
-            placeholder="Message"
+            placeholder={isSpanish ? "Mensaje" : "Message"}
             rows="6"
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)] resize-none"
@@ -37,7 +44,7 @@
             type="submit"
             class="contact-submit rounded-full bg-[#97cc04] px-8 py-4 font-bold text-[#151c1e] transition-colors hover:bg-[#a8dc10]"
           >
-            LET'S BUILD THE FUTURE
+            {isSpanish ? "CONSTRUYAMOS EL FUTURO" : "LET'S BUILD THE FUTURE"}
           </button>
         </form>
         <div class="mt-6 space-y-3 border-t border-zinc-800/80 pt-6">
@@ -47,41 +54,44 @@
             rel="noopener noreferrer"
             class="block text-sm text-zinc-400 transition-colors hover:text-[#97CC04]"
           >
-            Connect via WhatsApp &rarr;
+            {isSpanish ? "Conéctese por WhatsApp" : "Connect via WhatsApp"} &rarr;
           </a>
         </div>
         <div
           id="form-message"
           class="hidden justify-center items-center mt-4 text-[var(--white)] text-lg"
         >
-          ✅ Thank you for your message!
+          {isSpanish ? "✅ Gracias por su mensaje." : "✅ Thank you for your message!"}
         </div>
       </div>
 
       <div class="contact-form-panel flex h-full flex-col justify-center space-y-6 text-left">
         <div class="border-l-4 border-[#97CC04] pl-4">
           <p class="font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400">
-            Business Valuation
+            {isSpanish ? "Valoración empresarial" : "Business Valuation"}
           </p>
           <h3 class="mt-2 text-lg font-bold leading-relaxed text-white md:text-xl">
-            Building software is easy. Creating real business value and
-            unlocking new revenue streams is not.
+            {isSpanish
+              ? "Crear software es fácil. Generar valor empresarial real y abrir nuevas fuentes de ingresos no lo es."
+              : "Building software is easy. Creating real business value and unlocking new revenue streams is not."}
           </h3>
         </div>
 
         <div class="py-2">
           <h2 class="text-4xl font-black leading-none tracking-tight text-white md:text-5xl">
-            READY TO <span class="text-[#97CC04]">SCALE?</span>
+            {isSpanish ? "¿LISTO PARA " : "READY TO "}
+            <span class="text-[#97CC04]">{isSpanish ? "ESCALAR?" : "SCALE?"}</span>
           </h2>
           <p class="mt-3 max-w-md text-sm text-zinc-400">
-            Let's build the future of your digital product today. Leave a
-            message to get a technical diagnostic in less than 24 hours.
+            {isSpanish
+              ? "Construyamos hoy el futuro de su producto digital. Envíe un mensaje y recibirá un diagnóstico técnico en menos de 24 horas."
+              : "Let's build the future of your digital product today. Leave a message to get a technical diagnostic in less than 24 hours."}
           </p>
         </div>
 
         <div class="border-t border-zinc-800/80 pt-4">
           <p class="text-xs font-medium text-zinc-500">
-            Prefer direct scheduling?
+            {isSpanish ? "¿Prefiere agendar directamente?" : "Prefer direct scheduling?"}
           </p>
           <a
             href="https://cal.com"
@@ -89,7 +99,11 @@
             rel="noopener noreferrer"
             class="group mt-1.5 inline-flex items-center gap-2 text-sm font-semibold text-[#97CC04] transition-colors hover:text-white"
           >
-            <span>Book a 15-min discovery call via Cal.com</span>
+            <span>
+              {isSpanish
+                ? "Agende una llamada de exploración de 15 min en Cal.com"
+                : "Book a 15-min discovery call via Cal.com"}
+            </span>
             <span class="transform transition-transform group-hover:translate-x-1">
               &rarr;
             </span>
@@ -135,6 +149,7 @@
 <script type="module" is:inline>
   const form = document.getElementById("contact-form");
   const formMessage = document.getElementById("form-message");
+  const isSpanish = form?.dataset.locale === "es";
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -153,11 +168,11 @@
       } else {
         const data = await response.json();
         console.error("Error response:", data);
-        alert("There was a problem sending your message.");
+        alert(isSpanish ? "Hubo un problema al enviar su mensaje." : "There was a problem sending your message.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("There was a problem sending your message.");
+      alert(isSpanish ? "Hubo un problema al enviar su mensaje." : "There was a problem sending your message.");
     }
   });
 </script>

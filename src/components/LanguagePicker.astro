@@ -1,0 +1,45 @@
+---
+const currentLocale = Astro.currentLocale ?? "en";
+const localizedPath =
+  currentLocale === "es"
+    ? Astro.url.pathname.replace(/^\/es(?=\/|$)/, "") || "/"
+    : Astro.url.pathname;
+const englishHref = localizedPath;
+const spanishHref =
+  localizedPath === "/" ? "/es/" : `/es${localizedPath}`;
+---
+
+<nav
+  aria-label="Language selection"
+  class="fixed top-[5.25rem] right-4 z-50 flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/60 px-3 py-1.5 shadow-lg backdrop-blur-md sm:top-4"
+>
+  <a
+    href={englishHref}
+    lang="en"
+    aria-label="English"
+    aria-current={currentLocale === "en" ? "page" : undefined}
+    class:list={[
+      "text-xs transition-colors duration-200",
+      currentLocale === "en"
+        ? "font-semibold text-[#a855f7]"
+        : "text-neutral-400 hover:text-neutral-100",
+    ]}
+  >
+    EN
+  </a>
+  <span class="h-4 w-px bg-neutral-700" aria-hidden="true"></span>
+  <a
+    href={spanishHref}
+    lang="es"
+    aria-label="Español"
+    aria-current={currentLocale === "es" ? "page" : undefined}
+    class:list={[
+      "text-xs transition-colors duration-200",
+      currentLocale === "es"
+        ? "font-semibold text-[#a855f7]"
+        : "text-neutral-400 hover:text-neutral-100",
+    ]}
+  >
+    ES
+  </a>
+</nav>

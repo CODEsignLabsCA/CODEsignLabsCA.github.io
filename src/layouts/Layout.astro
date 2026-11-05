@@ -1,5 +1,29 @@
+---
+import LanguagePicker from "../components/LanguagePicker.astro";
+
+interface Props {
+  title?: string;
+  lang?: string;
+}
+
+const { title = "CODEsignLabs | Lead Product & Full-Stack Software Architecture", lang } =
+  Astro.props;
+const currentLocale = lang ?? Astro.currentLocale ?? "en";
+const isSpanish = currentLocale === "es";
+const siteUrl = Astro.site?.origin ?? "https://codesignlabsca.github.io";
+const pathname = Astro.url.pathname;
+const cleanPath = pathname
+  .replace(/^\/es(?=\/|$)/, "")
+  .replace(/\/+$/, "");
+const enPath = cleanPath || "/";
+const esPath = cleanPath ? `/es${cleanPath.startsWith("/") ? "" : "/"}${cleanPath}` : "/es/";
+const enUrl = new URL(enPath, siteUrl).href;
+const esUrl = new URL(esPath, siteUrl).href;
+const canonicalUrl = new URL(pathname, siteUrl).href;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={currentLocale}>
   <head>
     <script is:inline>
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -7,10 +31,12 @@
       }
     </script>
     <meta charset="UTF-8" />
-    <title>CODEsignLabs | Lead Product &amp; Full-Stack Software Architecture</title>
+    <title>{title}</title>
     <meta
       name="description"
-      content="High-performance software assets, premium cross-platform engineering, and scalable backend infrastructure by CODEsignLabs."
+      content={isSpanish
+        ? "Activos de software de alto rendimiento, ingeniería multiplataforma y arquitectura backend escalable de CODEsignLabs."
+        : "High-performance software assets, premium cross-platform engineering, and scalable backend infrastructure by CODEsignLabs."}
     />
     <meta
       name="keywords"
@@ -18,7 +44,10 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/iso_codesignlabs.png" />
-    <link rel="canonical" href="https://codesignlabsca.github.io/" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
 
     <link
       rel="preload"
@@ -35,7 +64,7 @@
     />
 
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://codesignlabsca.github.io/" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta
       property="og:title"
       content="CODEsignLabs | Lead Product &amp; Full-Stack Software Architecture"
@@ -122,6 +151,7 @@
   </head>
   <body class="bg-[--background] sm:px-28 lg:px-20 px-9">
     <slot />
+    <LanguagePicker />
   </body>
 </html>
 

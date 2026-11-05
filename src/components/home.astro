@@ -2,33 +2,25 @@
 import LetterGlitch from "../React/LetterGlitch.tsx";
 import LogoWall from "../components/logoWall.astro";
 import SkillsList from "./SkillsList.astro";
+import { defaultLang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+
+const lang = Astro.currentLocale === "es" ? "es" : defaultLang;
+const t = useTranslations(lang);
 ---
 
 <section class="text-[var(--white)] mt-12 md:mt-0" id="home">
   <div class="max-w-6xl mx-auto space-y-8 pb-14 pt-16 md:pt-36">
     <div class="hero-copy text-left space-y-4">
       <p class="text-md md:text-lg text-[var(--white-icon)] shiny-white">
-        Hi, I'm Jairo Fernando
+        {t("hero.name")}
       </p>
       <div class="hero-headline">
         <h1 class="hero-title text-[var(--white)] font-medium text-pretty leading-none">
-          Software <br /> Developer
+          {t("hero.role")}
         </h1>
         <p class="hero-description text-md md:text-2xl text-[var(--white-icon)]">
-          We transform ideas into{" "}
-          <span class="text-[var(--sec)] shiny-sec">
-            interactive and seamless digital experiences
-          </span>{" "}
-          through{" "}
-          <span class="text-[var(--sec)] shiny-sec">
-            cutting-edge Full-Stack development
-          </span>
-          , creating high-value{" "}
-          <span class="text-[var(--sec)] shiny-sec">solutions</span> that unlock{" "}
-          <span class="text-[var(--sec)] shiny-sec">
-            new business opportunities and revenue
-          </span>{" "}
-          for your company.
+          {t("hero.description")}
         </p>
       </div>
       <div class="flex justify-start gap-2 pt-3 md:pt-6">
@@ -65,7 +57,7 @@ import SkillsList from "./SkillsList.astro";
         <a
           target="_blank"
           href="mailto:hello@example.com"
-          aria-label="Email"
+          aria-label={t("common.email")}
           class="text-[var(--white-icon)] hover:text-white transition duration-300 ease-in-out border border-1 border-[var(--white-icon-tr)] p-3 rounded-xl bg-[#1414149c] hover:bg-[var(--white-icon-tr)]"
         >
           <svg

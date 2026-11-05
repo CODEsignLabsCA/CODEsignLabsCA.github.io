@@ -1,34 +1,43 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
 
+const isSpanish = Astro.currentLocale === "es";
 const outcomeGroups = [
   {
-    title: "Enhanced Operational",
+    title: isSpanish ? "Operaciones optimizadas" : "Enhanced Operational",
     outcomes: [
       {
-        title: "Advanced Automation",
+        title: isSpanish ? "Automatización avanzada" : "Advanced Automation",
         description:
-          "Drastic reduction in operational costs through workflows and tool integration.",
+          isSpanish
+            ? "Reducción significativa de los costos operativos mediante flujos de trabajo e integración de herramientas."
+            : "Drastic reduction in operational costs through workflows and tool integration.",
       },
       {
-        title: "Margin Efficiency",
+        title: isSpanish ? "Eficiencia de márgenes" : "Margin Efficiency",
         description:
-          "Lower technical expenditure translates directly into a higher corporate profit margin.",
+          isSpanish
+            ? "Un menor gasto técnico se traduce directamente en un mayor margen de beneficio empresarial."
+            : "Lower technical expenditure translates directly into a higher corporate profit margin.",
       },
     ],
   },
   {
-    title: "Driving Revenue & New Business",
+    title: isSpanish ? "Impulso de ingresos y nuevos negocios" : "Driving Revenue & New Business",
     outcomes: [
       {
-        title: "+30% Average Revenue",
+        title: isSpanish ? "+30 % de ingresos promedio" : "+30% Average Revenue",
         description:
-          "Design and implementation of new transactional channels and active monetization strategies.",
+          isSpanish
+            ? "Diseño e implementación de nuevos canales transaccionales y estrategias activas de monetización."
+            : "Design and implementation of new transactional channels and active monetization strategies.",
       },
       {
-        title: "Consistent Cash Flow",
+        title: isSpanish ? "Flujo de caja constante" : "Consistent Cash Flow",
         description:
-          "Automated cross-selling funnels and multi-tenant platforms that transform code into a profitable asset.",
+          isSpanish
+            ? "Embudos automatizados de venta cruzada y plataformas multi-tenant que convierten el código en un activo rentable."
+            : "Automated cross-selling funnels and multi-tenant platforms that transform code into a profitable asset.",
       },
     ],
   },
@@ -41,15 +50,15 @@ const outcomeGroups = [
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow="Measurable success"
-      title="Measurable success through solutions"
+      eyebrow={isSpanish ? "Éxito medible" : "Measurable success"}
+      title={isSpanish ? "Resultados medibles a través de soluciones" : "Measurable success through solutions"}
     />
 
     <div class="results-layout">
       <figure class="results-image reveal reveal-media overflow-hidden rounded-2xl">
         <img
           src="/images/service-sections/Measurable%20Success%20Through%20Solutions.webp"
-          alt="An engineer monitoring performance dashboards"
+          alt={isSpanish ? "Ingeniero supervisando paneles de rendimiento" : "An engineer monitoring performance dashboards"}
           class="reveal-media__image aspect-square w-full object-cover"
           width="622"
           height="622"

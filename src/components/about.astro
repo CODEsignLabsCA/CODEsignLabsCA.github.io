@@ -1,50 +1,49 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
+import { defaultLang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+
+const lang = Astro.currentLocale === "es" ? "es" : defaultLang;
+const t = useTranslations(lang);
 
 const visionariesAccordions = [
   {
-    title: "Engineering Approach",
+    title: t("approach.engineering"),
     items: [
       {
-        title: "Domain-Driven Design (DDD)",
+        title: t("approach.ddd.title"),
         iconName: "schema",
-        description:
-          "A radical separation of business logic from the technical core. This enables system scaling and the introduction of complex features without compromising existing stability.",
+        description: t("approach.ddd.description"),
       },
       {
-        title: "Clean and SOLID Architecture",
+        title: t("approach.solid.title"),
         iconName: "layers",
-        description:
-          "Decoupled code, independent of both the database and the user interface. This ensures robust automated unit testing and seamless technology migrations.",
+        description: t("approach.solid.description"),
       },
       {
-        title: "Kotlin Multiplatform (KMP)",
+        title: t("approach.kmp.title"),
         iconName: "sync_alt",
-        description:
-          "Centralization of algorithms and data flows into a single, shared logical core, delivering native-level performance across iOS, Android, and the Web.",
+        description: t("approach.kmp.description"),
       },
     ],
   },
   {
-    title: "Automation Philosophy",
+    title: t("approach.automation"),
     items: [
       {
-        title: "AI-Augmented Development",
+        title: t("approach.ai.title"),
         iconName: "psychology",
-        description:
-          "Programming assisted by tools like Argon (within the Antigravity ecosystem) and GitHub Copilot. We automate repetitive coding tasks to accelerate time-to-market.",
+        description: t("approach.ai.description"),
       },
       {
-        title: "Automated CI/CD Pipelines",
+        title: t("approach.cicd.title"),
         iconName: "deployed_code",
-        description:
-          "Fully automated deployment. Every change to the repository is compiled, tested, and pushed to production—whether on servers or app stores (App Store/Play Store)—eliminating the risk of human error.",
+        description: t("approach.cicd.description"),
       },
       {
-        title: "BaaS and Serverless Infrastructure",
+        title: t("approach.baas.title"),
         iconName: "cloud_done",
-        description:
-          "An agile architecture leveraging Supabase and Firebase. Backend setup time is reduced to minutes, allowing for the immediate activation of databases and payment gateways.",
+        description: t("approach.baas.description"),
       },
     ],
   },
@@ -56,16 +55,20 @@ const visionariesAccordions = [
   class="about-section scroll-mt-28 py-16 md:py-20 border-t border-[#ffffff10] text-[var(--white)]"
 >
   <div class="max-w-5xl mx-auto">
-    <AnimatedHeading eyebrow="About us" title="The Engineering Approach" />
+    <AnimatedHeading
+      eyebrow={t("approach.eyebrow")}
+      title={t("approach.title")}
+    />
 
     <div class="grid md:grid-cols-[1.1fr_0.9fr] gap-10 md:gap-16 items-center">
       <div class="reveal space-y-5 text-[var(--white-icon)] text-lg leading-relaxed">
         <p>
-          We are not programmers; we are product engineers. We combine the
-          mathematical precision of development with automated workflows to
-          create highly profitable software assets.
+          {t("approach.intro")}
         </p>
-        <div class="visionaries-accordions" aria-label="Engineering and automation details">
+        <div
+          class="visionaries-accordions"
+          aria-label={t("approach.detailsLabel")}
+        >
           {visionariesAccordions.map((accordion) => (
             <details
               class="visionary-accordion"
@@ -100,11 +103,14 @@ const visionariesAccordions = [
         </div>
       </div>
 
-      <div class="about-visual" aria-label="Our engineering team">
+      <div
+        class="about-visual"
+        aria-label={t("approach.visualLabel")}
+      >
         <figure class="about-visual__image about-visual__image--primary">
           <img
             src="/images/service-sections/Get to Know the Visionaries_1.webp"
-            alt="Product engineers collaborating around a computer, framed by a green and violet diamond"
+            alt={t("approach.visualLabel")}
             width="619"
             height="640"
             loading="lazy"
@@ -114,7 +120,7 @@ const visionariesAccordions = [
         <figure class="about-visual__image about-visual__image--secondary">
           <img
             src="/images/service-sections/Get to Know the Visionaries_2.webp"
-            alt="Two colleagues working together, framed by a violet diamond"
+            alt={t("approach.visualLabel")}
             width="642"
             height="619"
             loading="lazy"

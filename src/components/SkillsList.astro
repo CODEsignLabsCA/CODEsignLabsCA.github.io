@@ -1,36 +1,41 @@
 ---
 
+import { defaultLang } from "../i18n/ui";
+import { useTranslations } from "../i18n/utils";
+
+const lang = Astro.currentLocale === "es" ? "es" : defaultLang;
+const t = useTranslations(lang);
 const allowsMultipleExpanded = false;
 
 const capabilities = [
   {
-    title: "Enterprise Web Architecture",
-    subtitle: "Scalable & High-Demand Backend Systems",
+    title: t("core.items.0.title"),
+    subtitle: t("core.items.0.subtitle"),
     iconName: "lan",
     content: [
-      "**Scalable Web Applications:** Design and implementation of robust Single Page Applications (SPAs) and Server-Side Rendered (SSR) systems using Next.js, React, and Vue.",
-      "**High-Conversion Landing Platforms:** Highly optimized business web assets structured for extreme performance, minimal Core Web Vitals metrics, and seamless third-party integrations.",
-      "**Secure API & Backend Integration:** Structuring high-demand backend architectures utilizing Supabase, Node.js, and relational databases (PostgreSQL/MySQL) with multi-tenant data isolation.",
+      t("core.items.0.content.0"),
+      t("core.items.0.content.1"),
+      t("core.items.0.content.2"),
     ],
   },
   {
-    title: "Multiplatform Mobile Engineering",
-    subtitle: "Native & Shared Core Workflows",
+    title: t("core.items.1.title"),
+    subtitle: t("core.items.1.subtitle"),
     iconName: "devices",
     content: [
-      "**Cross-Platform App Development:** Architectural blueprinting and deployment of high-fidelity mobile apps for iOS and Android using Flutter, Dart, and React Native.",
-      "**Shared Logical Core Systems:** Implementing advanced multiplatform strategies (like Kotlin Multiplatform) to unify state management and algorithms, cutting time-to-market in half.",
-      "**Offline-First & Security Architectures:** Engineering reliable mobile workflows with local data encryption, automated biometrics authentication, and real-time offline sync.",
+      t("core.items.1.content.0"),
+      t("core.items.1.content.1"),
+      t("core.items.1.content.2"),
     ],
   },
   {
-    title: "UI/UX Product Engineering",
-    subtitle: "High-Density Design Systems & MVPs",
+    title: t("core.items.2.title"),
+    subtitle: t("core.items.2.subtitle"),
     iconName: "dashboard_customize",
     content: [
-      "**Design System Governance:** Building and scaling unified modular design components in Figma (utilizing the Stitch standard) ensuring clear-cut UI consistency for complex platforms.",
-      "**Data-Driven UX Optimization:** User journey blueprinting and interface testing specialized in transforming heavy backend data grids into clean, high-density dashboard experiences.",
-      "**Interactive Functional Prototyping:** Rapid translation of raw business requirements into highly interactive technical MVPs, ensuring visual and structural alignment before production code.",
+      t("core.items.2.content.0"),
+      t("core.items.2.content.1"),
+      t("core.items.2.content.2"),
     ],
   },
 ] as const;
@@ -47,7 +52,7 @@ function formatContent(text: string) {
 
 <section class="w-full max-w-4xl mx-auto py-12 px-4 text-left">
   <h3 class="text-[var(--white)] text-3xl md:text-4xl font-semibold md:mb-6">
-    Core Capabilities
+    {t("core.title")}
   </h3>
   <div
     class="capabilities-accordion w-full max-w-2xl mx-auto bg-neutral-900/40 border border-neutral-800 rounded-2xl overflow-hidden backdrop-blur-md"

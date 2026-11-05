@@ -1,0 +1,174 @@
+---
+import { useTranslations } from "../i18n/utils";
+import Layout from "@/layouts/Layout.astro";
+import Nav from "@/components/nav.astro";
+import Home from "@/components/home.astro";
+import About from "@/components/about.astro";
+import Services from "@/components/services.astro";
+import Advantages from "@/components/advantages.astro";
+import Process from "@/components/process.astro";
+import Tools from "@/components/tools.astro";
+import Results from "@/components/results.astro";
+import Team from "@/components/team.astro";
+import Testimonials from "@/components/testimonials.astro";
+import Projects from "@/components/projects.astro";
+import Contact from "@/components/contact.astro";
+import Footer from "@/components/footer.astro";
+
+const lang = Astro.currentLocale === "es" ? "es" : "en";
+const t = useTranslations(lang);
+---
+
+<Layout
+  title={`CODEsignLabs | ${t("hero.role")}`}
+  lang={lang}
+>
+  <Nav />
+  <Home />
+  <About />
+  <div class="service-section-stack">
+    <Services />
+    <Advantages />
+    <Process />
+    <Tools />
+    <Results />
+    <Team />
+  </div>
+  <Testimonials />
+  <Projects />
+  <Contact />
+  <Footer />
+</Layout>
+
+<style>
+  :global(.service-section-stack) {
+    position: relative;
+    isolation: isolate;
+  }
+
+  :global(.service-section-stack > section) {
+    position: sticky;
+    top: clamp(5rem, 12vh, 7rem);
+    z-index: var(--service-section-layer, 1);
+    background: var(--background);
+    transform: scale(var(--service-section-scale, 1));
+    transform-origin: center top;
+    opacity: var(--service-section-opacity, 1);
+    will-change: transform, opacity;
+  }
+
+  :global(.service-section-stack > section:not(#services)::before) {
+    display: none;
+  }
+
+  @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+    :global(.service-section-stack > section) {
+      position: relative;
+      top: auto;
+      transform: none;
+      opacity: 1;
+      will-change: auto;
+    }
+  }
+</style>
+
+<script>
+  const serviceSections = Array.from(
+    document.querySelectorAll<HTMLElement>(".service-section-stack > section"),
+  );
+  let serviceSectionsRafId: number | null = null;
+
+  function updateServiceSections() {
+    const shouldStack =
+      window.matchMedia("(min-width: 768px)").matches &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const enterPoint = window.innerHeight * 0.68;
+    const stackPoint = Math.min(Math.max(window.innerHeight * 0.1, 72), 104);
+
+    serviceSections.forEach((section, index) => {
+      const nextSection = serviceSections[index + 1];
+      section.style.setProperty("--service-section-layer", String(index + 1));
+
+      if (!shouldStack || !nextSection) {
+        if (section.classList.contains("section-is-stacking")) {
+          section.classList.remove("section-is-stacking");
+          section.dispatchEvent(
+            new CustomEvent("section-stack-state", {
+              detail: { isStacking: false },
+            }),
+          );
+        }
+        if (
+          section.id === "services" &&
+          section.classList.contains("service-is-stacking")
+        ) {
+          section.classList.remove("service-is-stacking");
+          section.dispatchEvent(
+            new CustomEvent("service-stack-state", {
+              detail: { isStacking: false },
+            }),
+          );
+        }
+        section.style.setProperty("--service-section-scale", "1");
+        section.style.setProperty("--service-section-opacity", "1");
+        return;
+      }
+
+      const nextTop = nextSection.getBoundingClientRect().top;
+      const progress = Math.min(
+        1,
+        Math.max(0, (enterPoint - nextTop) / (enterPoint - stackPoint)),
+      );
+
+      const isStacking = progress > 0.01;
+      const wasStacking = section.classList.contains("section-is-stacking");
+
+      if (isStacking !== wasStacking) {
+        section.classList.toggle("section-is-stacking", isStacking);
+        section.dispatchEvent(
+          new CustomEvent("section-stack-state", {
+            detail: { isStacking },
+          }),
+        );
+      }
+
+      if (section.id === "services") {
+        const wasStacking = section.classList.contains("service-is-stacking");
+
+        if (isStacking !== wasStacking) {
+          section.classList.toggle("service-is-stacking", isStacking);
+          section.dispatchEvent(
+            new CustomEvent("service-stack-state", {
+              detail: { isStacking },
+            }),
+          );
+        }
+      }
+
+      section.style.setProperty(
+        "--service-section-scale",
+        String(1 - progress * 0.16),
+      );
+      section.style.setProperty(
+        "--service-section-opacity",
+        String(1 - progress),
+      );
+    });
+
+    serviceSectionsRafId = null;
+  }
+
+  function scheduleServiceSectionsUpdate() {
+    if (serviceSectionsRafId === null) {
+      serviceSectionsRafId = requestAnimationFrame(updateServiceSections);
+    }
+  }
+
+  window.addEventListener("scroll", scheduleServiceSectionsUpdate, {
+    passive: true,
+  });
+  window.addEventListener("resize", scheduleServiceSectionsUpdate, {
+    passive: true,
+  });
+  updateServiceSections();
+</script>

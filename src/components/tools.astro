@@ -1,16 +1,21 @@
 ---
 import AnimatedHeading from "./AnimatedHeading.astro";
 
+const isSpanish = Astro.currentLocale === "es";
 const principles = [
   {
-    title: "AI-Driven Engineering",
+    title: isSpanish ? "Ingeniería impulsada por IA" : "AI-Driven Engineering",
     description:
-      "Assisted programming using Argon in Antigravity, GitHub Copilot, and Gemini to maximize development velocity and slash Time-to-Market.",
+      isSpanish
+        ? "Programación asistida con Argon en Antigravity, GitHub Copilot y Gemini para maximizar la velocidad de desarrollo y reducir el tiempo de lanzamiento."
+        : "Assisted programming using Argon in Antigravity, GitHub Copilot, and Gemini to maximize development velocity and slash Time-to-Market.",
   },
   {
-    title: "High-Fidelity UI/UX",
+    title: isSpanish ? "UI/UX de alta fidelidad" : "High-Fidelity UI/UX",
     description:
-      "Modular prototyping structured in Figma according to the Stitch standard, engineered for scalable design systems and high-conversion interfaces.",
+      isSpanish
+        ? "Prototipado modular en Figma según el estándar Stitch, pensado para sistemas de diseño escalables e interfaces de alta conversión."
+        : "Modular prototyping structured in Figma according to the Stitch standard, engineered for scalable design systems and high-conversion interfaces.",
   },
 ];
 ---
@@ -21,15 +26,17 @@ const principles = [
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow="Harnessing Cutting-Edge"
-      title="Advanced tools and technologies"
+      eyebrow={isSpanish ? "Aprovechando la innovación" : "Harnessing Cutting-Edge"}
+      title={isSpanish ? "Herramientas y tecnologías avanzadas" : "Advanced tools and technologies"}
     />
 
     <div class="mb-8 grid gap-5 md:grid-cols-[1fr_0.34fr]">
       <figure class="tools-artwork tools-artwork--left overflow-hidden rounded-2xl">
         <img
           src="/images/service-sections/Advanced%20Tools%20%20and%20Technologies%20_1.webp"
-          alt="An engineer monitoring advanced technology systems"
+          alt={isSpanish
+            ? "Ingeniero supervisando sistemas tecnológicos avanzados"
+            : "An engineer monitoring advanced technology systems"}
           class="h-52 w-full object-cover md:h-64"
           width="1191"
           height="293"
@@ -40,7 +47,9 @@ const principles = [
       <figure class="tools-artwork tools-artwork--right overflow-hidden rounded-2xl">
         <img
           src="/images/service-sections/Advanced%20Tools%20%20and%20Technologies%20_2.webp"
-          alt="A software team collaborating around a laptop"
+          alt={isSpanish
+            ? "Equipo de software colaborando alrededor de una laptop"
+            : "A software team collaborating around a laptop"}
           class="h-52 w-full object-cover md:h-64"
           width="315"
           height="293"

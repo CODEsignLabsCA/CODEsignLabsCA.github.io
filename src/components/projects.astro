@@ -1,60 +1,71 @@
 ---
+const isSpanish = Astro.currentLocale === "es";
 const projectSlots = [
   {
     number: "01",
-    type: "Sports & Club Operations",
-    title: "MatchTime Pro — Multi-Tenant Club Ecosystem & IoT",
+    type: isSpanish ? "Deportes y operaciones de clubes" : "Sports & Club Operations",
+    title: isSpanish
+      ? "MatchTime Pro — Ecosistema multi-tenant para clubes e IoT"
+      : "MatchTime Pro — Multi-Tenant Club Ecosystem & IoT",
     description:
-      "A comprehensive B2B sports management platform (Mobile App + Web Console + IoT Automation). Engineered to automate real-time court bookings, 5-second QR check-ins, multi-currency cash registers compliant with Venezuelan fiscal regulations, and an intelligent database trigger policy that automatically liberates courts from No-Shows within 15 minutes.",
-    assetLabel: "[ DEV ASSET // ACTIVE ARCHITECTURE ]",
+      isSpanish
+        ? "Plataforma B2B integral para la gestión deportiva (app móvil + consola web + automatización IoT). Automatiza reservas de canchas en tiempo real, registros QR en 5 segundos, cajas multidivisa que cumplen la normativa fiscal venezolana y una política inteligente que libera las canchas ante ausencias en 15 minutos."
+        : "A comprehensive B2B sports management platform (Mobile App + Web Console + IoT Automation). Engineered to automate real-time court bookings, 5-second QR check-ins, multi-currency cash registers compliant with Venezuelan fiscal regulations, and an intelligent database trigger policy that automatically liberates courts from No-Shows within 15 minutes.",
+    assetLabel: isSpanish ? "[ ACTIVO DE DESARROLLO // ARQUITECTURA ACTIVA ]" : "[ DEV ASSET // ACTIVE ARCHITECTURE ]",
     technologies: [
       "Astro",
       "Supabase",
-      "PostgreSQL Multi-Tenant",
+      isSpanish ? "PostgreSQL multi-tenant" : "PostgreSQL Multi-Tenant",
       "TailwindCSS",
-      "IoT Automation",
+      isSpanish ? "Automatización IoT" : "IoT Automation",
     ],
     layout: "mobile",
   },
   {
     number: "02",
-    type: "Retail & Supermarkets",
-    title: "Smart Retail & Supermarket Systems",
+    type: isSpanish ? "Comercio minorista y supermercados" : "Retail & Supermarkets",
+    title: isSpanish ? "Sistemas inteligentes para comercios y supermercados" : "Smart Retail & Supermarket Systems",
     description:
-      "High-performance digital products built to synchronize multi-branch inventories in real-time, deploy interactive customer loyalty programs, and optimize fast mobile checkout experiences for local commerce and enterprise supermarkets.",
-    assetLabel: "[ ENTERPRISE SOLUTION ]",
+      isSpanish
+        ? "Productos digitales de alto rendimiento que sincronizan inventarios entre sucursales en tiempo real, implementan programas interactivos de fidelización y optimizan el pago móvil para comercios locales y grandes supermercados."
+        : "High-performance digital products built to synchronize multi-branch inventories in real-time, deploy interactive customer loyalty programs, and optimize fast mobile checkout experiences for local commerce and enterprise supermarkets.",
+    assetLabel: isSpanish ? "[ SOLUCIÓN EMPRESARIAL ]" : "[ ENTERPRISE SOLUTION ]",
     technologies: [
       "Flutter",
       "Node.js",
       "PostgreSQL",
       "REST APIs",
-      "Cloud Architecture",
+      isSpanish ? "Arquitectura cloud" : "Cloud Architecture",
     ],
     layout: "dashboard",
   },
   {
     number: "03",
-    type: "Operations & Analytics",
-    title: "Enterprise Operations & Business Dashboards",
+    type: isSpanish ? "Operaciones y analítica" : "Operations & Analytics",
+    title: isSpanish ? "Paneles empresariales de operaciones y negocio" : "Enterprise Operations & Business Dashboards",
     description:
-      "Custom back-office control panels engineered to transform chaotic operational data into structured business intelligence, allowing managers to monitor core revenue streams, cash flows, and workflows in real time.",
-    assetLabel: "[ ENTERPRISE SOLUTION ]",
+      isSpanish
+        ? "Paneles de control back-office a medida que convierten datos operativos dispersos en inteligencia de negocio estructurada y permiten supervisar ingresos, flujos de caja y procesos en tiempo real."
+        : "Custom back-office control panels engineered to transform chaotic operational data into structured business intelligence, allowing managers to monitor core revenue streams, cash flows, and workflows in real time.",
+    assetLabel: isSpanish ? "[ SOLUCIÓN EMPRESARIAL ]" : "[ ENTERPRISE SOLUTION ]",
     technologies: [
       "React",
       "Vue",
       "TypeScript",
       "TailwindCSS",
-      "Analytics Engine",
+      isSpanish ? "Motor de analítica" : "Analytics Engine",
     ],
     layout: "workflow",
   },
   {
     number: "04",
-    type: "Startup Product Engineering",
-    title: "Custom MVP & Digital Product Launchpad",
+    type: isSpanish ? "Ingeniería de producto para startups" : "Startup Product Engineering",
+    title: isSpanish ? "MVP a medida y lanzamiento de productos digitales" : "Custom MVP & Digital Product Launchpad",
     description:
-      "Rapid design and development of highly scalable Minimum Viable Products (MVPs) for startups and local businesses looking to test market fitness, reduce technical debt, and launch custom SaaS platforms efficiently.",
-    assetLabel: "[ ENTERPRISE SOLUTION ]",
+      isSpanish
+        ? "Diseño y desarrollo ágil de productos mínimos viables (MVP) escalables para startups y negocios locales que buscan validar el mercado, reducir deuda técnica y lanzar plataformas SaaS a medida."
+        : "Rapid design and development of highly scalable Minimum Viable Products (MVPs) for startups and local businesses looking to test market fitness, reduce technical debt, and launch custom SaaS platforms efficiently.",
+    assetLabel: isSpanish ? "[ SOLUCIÓN EMPRESARIAL ]" : "[ ENTERPRISE SOLUTION ]",
     technologies: [
       "Kotlin Multiplatform",
       "Swift",
@@ -73,12 +84,17 @@ const projectSlots = [
   <div class="mx-auto max-w-6xl">
     <div class="projects-heading">
       <div>
-        <p class="mb-2 text-lg text-[var(--sec)] shiny-sec">Selected work</p>
-        <h2 class="text-4xl font-medium md:text-5xl">Projects</h2>
+        <p class="mb-2 text-lg text-[var(--sec)] shiny-sec">
+          {isSpanish ? "Proyectos seleccionados" : "Selected work"}
+        </p>
+        <h2 class="text-4xl font-medium md:text-5xl">
+          {isSpanish ? "Proyectos" : "Projects"}
+        </h2>
       </div>
       <p class="projects-note">
-        Commercial software systems engineered for real-world operations and
-        scalable growth.
+        {isSpanish
+          ? "Sistemas de software comercial diseñados para operaciones reales y un crecimiento escalable."
+          : "Commercial software systems engineered for real-world operations and scalable growth."}
       </p>
     </div>
 
@@ -174,7 +190,7 @@ const projectSlots = [
               </div>
               <h3>{project.title}</h3>
               <p class="project-card__description">{project.description}</p>
-              <ul class="project-card__technologies" aria-label="Technology stack">
+              <ul class="project-card__technologies" aria-label={isSpanish ? "Tecnologías" : "Technology stack"}>
                 {project.technologies.map((technology) => (
                   <li>{technology}</li>
                 ))}

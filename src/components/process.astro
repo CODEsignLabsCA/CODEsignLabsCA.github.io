@@ -1,21 +1,31 @@
 ---
 const steps = [
   {
-    title: "Requirement Analysis",
+    title: Astro.currentLocale === "es" ? "Análisis de requisitos" : "Requirement Analysis",
     description:
-      "Technical mapping aligned to your business model. We define architecture and functional scoping before coding.",
+      Astro.currentLocale === "es"
+        ? "Planificación técnica alineada con su modelo de negocio. Definimos la arquitectura y el alcance funcional antes de programar."
+        : "Technical mapping aligned to your business model. We define architecture and functional scoping before coding.",
   },
   {
-    title: "Rigorous Testing",
+    title: Astro.currentLocale === "es" ? "Pruebas rigurosas" : "Rigorous Testing",
     description:
-      "Automated unit, integration, and stress testing. We secure user data and logic performance under high-demand.",
+      Astro.currentLocale === "es"
+        ? "Pruebas automatizadas unitarias, de integración y de estrés. Protegemos los datos de usuario y el rendimiento de la lógica ante alta demanda."
+        : "Automated unit, integration, and stress testing. We secure user data and logic performance under high-demand.",
   },
   {
-    title: "Deployment & CI/CD",
+    title: Astro.currentLocale === "es" ? "Despliegue y CI/CD" : "Deployment & CI/CD",
     description:
-      "Full pipeline automation. Seamless release to cloud servers, App Store, and Play Store with zero downtime.",
+      Astro.currentLocale === "es"
+        ? "Automatización integral del pipeline. Publicación fluida en servidores cloud, App Store y Play Store sin tiempo de inactividad."
+        : "Full pipeline automation. Seamless release to cloud servers, App Store, and Play Store with zero downtime.",
   },
 ];
+const isSpanish = Astro.currentLocale === "es";
+const processTitleLines = isSpanish
+  ? ["Proceso de desarrollo", "que garantiza", "la excelencia"]
+  : ["Development Process", "That Guarantees", "Excellence"];
 ---
 
 <section
@@ -26,11 +36,13 @@ const steps = [
     <div class="process-heading">
       <h2
         class="process-title display-heading"
-        aria-label="Development Process That Guarantees Excellence"
+        aria-label={isSpanish
+          ? "Proceso de desarrollo que garantiza la excelencia"
+          : "Development Process That Guarantees Excellence"}
       >
         <span class="display-heading__visual" aria-hidden="true">
           <span class="process-title-line">
-            {Array.from("Development Process").map((character, index) =>
+            {Array.from(processTitleLines[0]).map((character, index) =>
               character === " " ? (
                 " "
               ) : (
@@ -39,7 +51,7 @@ const steps = [
             )}
           </span>
           <span class="process-title-line">
-            {Array.from("That Guarantees").map((character, index) =>
+            {Array.from(processTitleLines[1]).map((character, index) =>
               character === " " ? (
                 " "
               ) : (
@@ -48,7 +60,7 @@ const steps = [
             )}
           </span>
           <span class="process-title-line">
-            {Array.from("Excellence").map((character, index) => (
+            {Array.from(processTitleLines[2]).map((character, index) => (
               <span style={`--char-index: ${index + 36}`}>{character}</span>
             ))}
           </span>
@@ -56,11 +68,16 @@ const steps = [
       </h2>
     </div>
 
-    <div class="process-collage" aria-label="Development process imagery">
+    <div
+      class="process-collage"
+      aria-label={isSpanish ? "Imágenes del proceso de desarrollo" : "Development process imagery"}
+    >
       <figure class="process-artwork process-artwork--left">
         <img
           src="/images/service-sections/Development Process That Guarantees Excellence_1.webp"
-          alt="A developer working at multiple monitors inside a purple and green diamond frame"
+          alt={isSpanish
+            ? "Desarrollador trabajando con varios monitores dentro de un marco de diamante púrpura y verde"
+            : "A developer working at multiple monitors inside a purple and green diamond frame"}
           width="575"
           height="603"
           loading="lazy"
@@ -70,7 +87,9 @@ const steps = [
       <figure class="process-artwork process-artwork--top">
         <img
           src="/images/service-sections/Development Process That Guarantees Excellence_2.webp"
-          alt="A developer planning requirements beside a laptop inside a green diamond frame"
+          alt={isSpanish
+            ? "Desarrollador planificando requisitos junto a una laptop dentro de un marco de diamante verde"
+            : "A developer planning requirements beside a laptop inside a green diamond frame"}
           width="475"
           height="475"
           loading="lazy"
@@ -80,7 +99,9 @@ const steps = [
       <figure class="process-artwork process-artwork--bottom">
         <img
           src="/images/service-sections/Development Process That Guarantees Excellence_3.webp"
-          alt="A developer reviewing code across multiple monitors"
+          alt={isSpanish
+            ? "Desarrollador revisando código en varios monitores"
+            : "A developer reviewing code across multiple monitors"}
           width="467"
           height="446"
           loading="lazy"
