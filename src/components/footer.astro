@@ -8,7 +8,7 @@ const isSpanish = Astro.currentLocale === "es";
   <div class="max-w-5xl mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10">
       <div class="flex flex-col lg:items-start items-center space-y-6 gap-9">
-        <div class="flex space-x-6 sm:space-x-8">
+        <div class="social-dock">
           {
             [
               {
@@ -29,12 +29,15 @@ const isSpanish = Astro.currentLocale === "es";
             ].map((link) => (
               <a
                 href={link.href}
-                target="_blank"
-                rel={link.label === "LinkedIn" ? "noopener noreferrer" : undefined}
+                target={link.href.startsWith("https://") ? "_blank" : undefined}
+                rel={link.href.startsWith("https://") ? "noopener noreferrer" : undefined}
                 class:list={[
-                  "flex flex-col items-center group",
-                  link.label === "LinkedIn" &&
-                    "border border-neutral-800 rounded-xl p-3 hover:border-[#0a66c2]/40 hover:scale-105 transition-all duration-300 ease-out",
+                  "social-dock__link",
+                  link.label === "GitHub" && "social-dock__link--github",
+                  link.label === "LinkedIn" && "social-dock__link--linkedin",
+                  link.label !== "GitHub" &&
+                    link.label !== "LinkedIn" &&
+                    "social-dock__link--email",
                 ]}
                 aria-label={
                   link.label === "LinkedIn"
@@ -42,16 +45,8 @@ const isSpanish = Astro.currentLocale === "es";
                     : link.label
                 }
               >
-                <div
-                  class:list={[
-                    "text-[var(--white-icon)] transition duration-300 ease-in-out",
-                    link.label === "LinkedIn"
-                      ? "group-hover:text-[#0a66c2]"
-                      : "hover:text-[var(--white)]",
-                  ]}
-                >
-                  <div set:html={link.icon} />
-                </div>
+                <div set:html={link.icon} />
+                <span class="social-dock__tooltip" aria-hidden="true">{link.label}</span>
               </a>
             ))
           }
