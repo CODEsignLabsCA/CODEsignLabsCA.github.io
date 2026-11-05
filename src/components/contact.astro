@@ -15,8 +15,6 @@ const isSpanish = Astro.currentLocale === "es";
         <form
           id="contact-form"
           data-locale={isSpanish ? "es" : "en"}
-          action="https://formspree.io/f/YOUR_FORM_ID_HERE"
-          method="POST"
           class="flex flex-col gap-4"
         >
           <input
@@ -30,6 +28,13 @@ const isSpanish = Astro.currentLocale === "es";
             type="email"
             name="reply_to"
             placeholder={isSpanish ? "Correo electrónico" : "Email"}
+            required
+            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
+          />
+          <input
+            type="text"
+            name="company"
+            placeholder={isSpanish ? "Empresa / Asunto" : "Company / Subject"}
             required
             class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
           />
@@ -59,6 +64,8 @@ const isSpanish = Astro.currentLocale === "es";
         </div>
         <div
           id="form-message"
+          role="status"
+          aria-live="polite"
           class="hidden justify-center items-center mt-4 text-[var(--white)] text-lg"
         >
           {isSpanish ? "✅ Gracias por su mensaje." : "✅ Thank you for your message!"}
@@ -146,33 +153,57 @@ const isSpanish = Astro.currentLocale === "es";
   }
 </style>
 
-<script type="module" is:inline>
-  const form = document.getElementById("contact-form");
-  const formMessage = document.getElementById("form-message");
-  const isSpanish = form?.dataset.locale === "es";
+<script>
+  import { addDoc, collection } from "firebase/firestore";
+  import { db } from "../firebase";
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const formData = new FormData(form);
+  const form = document.querySelector<HTMLFormElement>("#contact-form");
+  const formMessage = document.querySelector<HTMLDivElement>("#form-message");
 
-    try {
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" },
-      });
-      if (response.ok) {
+  if (form && formMessage) {
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const isSpanish = form.dataset.locale === "es";
+    const originalButtonText = submitButton?.textContent?.trim() ?? "";
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      if (!submitButton) {
+        console.error("Contact form submit button was not found.");
+        return;
+      }
+
+      const formData = new FormData(form);
+      const name = String(formData.get("from_name") ?? "").trim();
+      const email = String(formData.get("reply_to") ?? "").trim();
+      const company = String(formData.get("company") ?? "").trim();
+      const message = String(formData.get("message") ?? "").trim();
+
+      submitButton.disabled = true;
+      submitButton.textContent = isSpanish ? "Enviando..." : "Sending...";
+
+      try {
+        await addDoc(collection(db, "contacts"), {
+          name,
+          email,
+          company,
+          message,
+          createdAt: new Date(),
+        });
+
         form.reset();
         form.style.display = "none";
         formMessage.classList.remove("hidden");
-      } else {
-        const data = await response.json();
-        console.error("Error response:", data);
-        alert(isSpanish ? "Hubo un problema al enviar su mensaje." : "There was a problem sending your message.");
+      } catch (error) {
+        console.error("Unable to submit contact form to Firestore:", error);
+        alert(
+          isSpanish
+            ? "Hubo un problema al enviar su mensaje. Inténtelo de nuevo más tarde."
+            : "There was a problem sending your message. Please try again later.",
+        );
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert(isSpanish ? "Hubo un problema al enviar su mensaje." : "There was a problem sending your message.");
-    }
-  });
+    });
+  }
 </script>
