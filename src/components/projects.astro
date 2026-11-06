@@ -408,6 +408,23 @@ const isSpanish = Astro.currentLocale === "es";
               ? `<a class="text-sm text-[var(--sec)] underline underline-offset-4" href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer">${isSpanish ? "Ver proyecto" : "View project"}</a>`
               : "";
 
+            if (/matchtime pro|iron pulse/i.test(project.title)) {
+              const secondaryImage = project.image
+                ? `<img class="w-full h-auto max-h-[300px] object-contain object-center" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
+                : "";
+
+              return `
+                <article class="project-card project-card--secondary font-body reveal is-visible w-full grid grid-cols-1 md:grid-cols-[40%_60%] gap-6 items-center p-6 bg-[#16161a] rounded-2xl border border-white/10 ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
+                  <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
+                  <div class="w-full flex justify-center items-center p-2">${secondaryImage}</div>
+                  <div class="w-full flex flex-col justify-center gap-4">
+                    <h3>${title}</h3>
+                    ${caseStudy}
+                    ${link}
+                  </div>
+                </article>`;
+            }
+
             return `
               <article class="project-card font-body reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
                 <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
@@ -1107,6 +1124,22 @@ const isSpanish = Astro.currentLocale === "es";
 
     .project-card__asset {
       min-height: 10rem;
+    }
+  }
+
+  .project-card.project-card--secondary {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-color: rgb(255 255 255 / 10%);
+    border-radius: 1rem;
+    background: #16161a;
+  }
+
+  @media (min-width: 768px) {
+    .project-card.project-card--secondary {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
     }
   }
 
