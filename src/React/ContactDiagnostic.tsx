@@ -22,22 +22,22 @@ const projectPhases = [
   {
     value: "discovery_phase",
     label: {
-      en: "I want to talk about my business idea",
-      es: "Quiero hablar sobre mi idea de negocio",
+      en: "Validate a business idea",
+      es: "Validar idea de negocio",
     },
   },
   {
     value: "scale_phase",
     label: {
-      en: "Optimize / Automate existing software",
-      es: "Optimizar / Automatizar un software existente",
+      en: "Scale a working product",
+      es: "Escalar producto funcional",
     },
   },
   {
     value: "enterprise_phase",
     label: {
-      en: "Structure Enterprise Architecture",
-      es: "Estructurar Arquitectura Enterprise",
+      en: "Create new revenue streams / Enterprise",
+      es: "Crear nuevas líneas de ingreso / Corporativo",
     },
   },
 ];
@@ -153,28 +153,48 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
         <fieldset className="contact-diagnostic__qualifier">
           <legend>{isSpanish ? "Etapa del proyecto" : "Project phase"}</legend>
           <div
-            className="contact-diagnostic__chips"
+            className="grid grid-cols-1 gap-3 md:grid-cols-3"
             role="radiogroup"
             aria-label={isSpanish ? "Etapa del proyecto" : "Project phase"}
           >
-            {projectPhases.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                role="radio"
-                aria-checked={budgetRange === option.value}
-                disabled={isBusy || isComplete}
-                className={`contact-diagnostic__chip ${
-                  budgetRange === option.value ? "is-selected" : ""
-                }`}
-                onClick={() => {
-                  setBudgetRange(option.value);
-                  if (phase === "error") setPhase("idle");
-                }}
-              >
-                {option.label[isSpanish ? "es" : "en"]}
-              </button>
-            ))}
+            {projectPhases.map((option) => {
+              const isSelected = budgetRange === option.value;
+              const isEnterprise = option.value === "enterprise_phase";
+
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  disabled={isBusy || isComplete}
+                  className={`flex w-full min-w-0 items-center justify-between gap-2 rounded-lg border bg-slate-900/70 px-3 py-2.5 text-left text-sm leading-snug text-slate-200 transition-colors hover:border-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${
+                    isEnterprise
+                      ? `border-slate-700 focus-visible:ring-[#97CC04] ${
+                          isSelected
+                            ? "border-[#97CC04] bg-[#97CC04]/10 text-white shadow-[0_0_0_1px_#97CC04,0_0_14px_rgba(151,204,4,0.18)]"
+                            : ""
+                        }`
+                      : `border-slate-700 focus-visible:ring-[#9985F9] ${
+                          isSelected
+                            ? "border-[#9985F9] bg-[#9985F9]/10 text-white shadow-[0_0_0_1px_#9985F9,0_0_14px_rgba(153,133,249,0.18)]"
+                            : ""
+                        }`
+                  }`}
+                  onClick={() => {
+                    setBudgetRange(option.value);
+                    if (phase === "error") setPhase("idle");
+                  }}
+                >
+                  <span>{option.label[isSpanish ? "es" : "en"]}</span>
+                  {isEnterprise && (
+                    <span className="shrink-0 rounded-full border border-slate-600 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-300">
+                      High-Value
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </fieldset>
 
