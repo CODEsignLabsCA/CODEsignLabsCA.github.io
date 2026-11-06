@@ -57,7 +57,20 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
     event.preventDefault();
     if (isBusy || isComplete) return;
 
-    if (!projectType || !budgetRange) {
+    const firestoreProjectType: Record<string, string> = {
+      "MVP Móvil": "MVP",
+      "Web Enterprise": "Enterprise_Web",
+      "Arquitectura Cloud": "Cloud_Architecture",
+    };
+    const firestoreBudgetRange: Record<string, string> = {
+      discovery_phase: "discovery_phase",
+      scale_phase: "scale_phase",
+      enterprise_phase: "enterprise_phase",
+    };
+    const normalizedProjectType = firestoreProjectType[projectType];
+    const normalizedBudgetRange = firestoreBudgetRange[budgetRange];
+
+    if (!normalizedProjectType || !normalizedBudgetRange) {
       setPhase("error");
       setErrorMessage(
         isSpanish
@@ -79,8 +92,8 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
       await addDoc(collection(db, "contacts"), {
         name,
         email,
-        projectType,
-        budgetRange,
+        projectType: normalizedProjectType,
+        budgetRange: normalizedBudgetRange,
         message,
         createdAt: serverTimestamp(),
       });
