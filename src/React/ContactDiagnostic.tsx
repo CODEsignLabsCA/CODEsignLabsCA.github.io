@@ -159,7 +159,6 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
           >
             {projectPhases.map((option) => {
               const isSelected = budgetRange === option.value;
-              const isEnterprise = option.value === "enterprise_phase";
 
               return (
                 <button
@@ -168,18 +167,10 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
                   role="radio"
                   aria-checked={isSelected}
                   disabled={isBusy || isComplete}
-                  className={`flex w-full min-w-0 items-center justify-center gap-2 rounded-full border border-white/15 bg-[#1414149c] px-3 py-2.5 text-center text-sm leading-snug text-slate-200 transition-colors hover:border-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${
-                    isEnterprise
-                      ? `border-slate-700 focus-visible:ring-[#97CC04] ${
-                          isSelected
-                            ? "border-[#97CC04] bg-[#97CC04]/10 text-white shadow-[0_0_0_1px_#97CC04,0_0_14px_rgba(151,204,4,0.18)]"
-                            : ""
-                        }`
-                      : `border-slate-700 focus-visible:ring-[#9985F9] ${
-                          isSelected
-                            ? "border-[#9985F9] bg-[#9985F9]/10 text-white shadow-[0_0_0_1px_#9985F9,0_0_14px_rgba(153,133,249,0.18)]"
-                            : ""
-                        }`
+                  className={`flex w-full min-w-0 items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-center text-sm leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ccff00] focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${
+                    isSelected
+                      ? "border-[#ccff00] bg-[#ccff00] text-[#121212]"
+                      : "border-white/15 bg-[#1414149c] text-[#d3d3d8] hover:border-[#ccff00]"
                   }`}
                   onClick={() => {
                     setBudgetRange(option.value);
