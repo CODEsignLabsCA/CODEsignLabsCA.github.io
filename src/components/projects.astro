@@ -56,6 +56,12 @@ const isSpanish = Astro.currentLocale === "es";
     title: string;
     description: string;
     descriptionEN: string;
+    businessImpact: string;
+    businessImpactEN: string;
+    coreArchitecture: string;
+    coreArchitectureEN: string;
+    technicalWin: string;
+    technicalWinEN: string;
     link: string;
     image: string;
     screensDesktop: string[];
@@ -139,6 +145,20 @@ const isSpanish = Astro.currentLocale === "es";
     description: typeof data.description === "string" ? data.description : "",
     descriptionEN:
       typeof data.descriptionEN === "string" ? data.descriptionEN : "",
+    businessImpact:
+      typeof data.businessImpact === "string" ? data.businessImpact : "",
+    businessImpactEN:
+      typeof data.businessImpactEN === "string" ? data.businessImpactEN : "",
+    coreArchitecture:
+      typeof data.coreArchitecture === "string" ? data.coreArchitecture : "",
+    coreArchitectureEN:
+      typeof data.coreArchitectureEN === "string"
+        ? data.coreArchitectureEN
+        : "",
+    technicalWin:
+      typeof data.technicalWin === "string" ? data.technicalWin : "",
+    technicalWinEN:
+      typeof data.technicalWinEN === "string" ? data.technicalWinEN : "",
     link: safeLinkUrl(data.link),
     image: safeAssetUrl(data.image),
     screensDesktop: toScreenArray(
@@ -347,20 +367,54 @@ const isSpanish = Astro.currentLocale === "es";
               ? project.description || ""
               : project.descriptionEN || project.description || "";
             const description = escapeHtml(displayDescription);
+            const caseStudyItems = [
+              {
+                label: isSpanish
+                  ? "🚀 Impacto de negocio"
+                  : "🚀 Business Impact",
+                text: isSpanish
+                  ? project.businessImpact || project.businessImpactEN
+                  : project.businessImpactEN || project.businessImpact,
+              },
+              {
+                label: isSpanish
+                  ? "🛠️ Arquitectura principal"
+                  : "🛠️ Core Architecture",
+                text: isSpanish
+                  ? project.coreArchitecture || project.coreArchitectureEN
+                  : project.coreArchitectureEN || project.coreArchitecture,
+              },
+              {
+                label: isSpanish ? "📊 Logro técnico" : "📊 Technical Win",
+                text: isSpanish
+                  ? project.technicalWin || project.technicalWinEN
+                  : project.technicalWinEN || project.technicalWin,
+              },
+            ].filter((item) => item.text.trim());
+            const caseStudy = caseStudyItems.length
+              ? `<ul class="project-card__case-study">${caseStudyItems
+                  .map(
+                    (item) => `<li>
+                      <span class="project-card__case-label">${escapeHtml(item.label)}</span>
+                      <span class="project-card__case-text">${escapeHtml(item.text)}</span>
+                    </li>`,
+                  )
+                  .join("")}</ul>`
+              : `<p class="project-card__description font-body line-clamp-3">${description}</p>`;
             const image = project.image
-              ? `<img class="h-full w-full object-cover" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
+              ? `<img class="h-full w-full object-cover object-top" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
               : "";
             const link = project.link
               ? `<a class="text-sm text-[var(--sec)] underline underline-offset-4" href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer">${isSpanish ? "Ver proyecto" : "View project"}</a>`
               : "";
 
             return `
-              <article class="project-card reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
+              <article class="project-card font-body reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
                 <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-                <div class="project-card__asset overflow-hidden border border-zinc-800 bg-zinc-900 p-0">${image}</div>
+                <div class="project-card__asset h-48 w-full overflow-hidden border border-zinc-800 bg-zinc-900 p-0 md:h-56 lg:h-60">${image}</div>
                 <div class="project-card__details">
                   <h3>${title}</h3>
-                  <p class="project-card__description">${description}</p>
+                  ${caseStudy}
                   ${link}
                 </div>
               </article>`;
@@ -588,6 +642,7 @@ const isSpanish = Astro.currentLocale === "es";
     overflow: hidden;
     min-width: 0;
     display: grid;
+    align-items: start;
     grid-template-columns: minmax(13rem, 0.75fr) minmax(0, 1.25fr);
     gap: clamp(1.25rem, 3vw, 2.5rem);
     padding: clamp(1.25rem, 3vw, 2rem);
@@ -936,12 +991,16 @@ const isSpanish = Astro.currentLocale === "es";
   }
 
   .project-card__asset {
-    display: grid;
-    min-height: 14rem;
-    place-items: center;
-    padding: 1.25rem;
+    min-width: 0;
     border-radius: 1rem;
-    text-align: center;
+  }
+
+  .project-card__asset img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
   }
 
   .project-card__asset span {
@@ -978,6 +1037,35 @@ const isSpanish = Astro.currentLocale === "es";
     color: var(--white-icon);
     font-size: 0.9rem;
     line-height: 1.7;
+  }
+
+  .project-card__case-study {
+    display: grid;
+    gap: 0.6rem;
+    color: var(--white-icon);
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .project-card__case-study li {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .project-card__case-label {
+    color: var(--sec);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .project-card__case-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 
   .project-card__technologies {
