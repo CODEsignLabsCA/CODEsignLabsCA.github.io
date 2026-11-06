@@ -18,7 +18,29 @@ const projectTypes = [
   },
 ];
 
-const budgetRanges = ["< $3K", "$3K - $8K", "> $8K"];
+const projectPhases = [
+  {
+    value: "discovery_phase",
+    label: {
+      en: "I want to talk about my business idea",
+      es: "Quiero hablar sobre mi idea de negocio",
+    },
+  },
+  {
+    value: "scale_phase",
+    label: {
+      en: "Optimize / Automate existing software",
+      es: "Optimizar / Automatizar un software existente",
+    },
+  },
+  {
+    value: "enterprise_phase",
+    label: {
+      en: "Structure Enterprise Architecture",
+      es: "Estructurar Arquitectura Enterprise",
+    },
+  },
+];
 
 export default function ContactDiagnostic({ isSpanish }: Props) {
   const [projectType, setProjectType] = useState("");
@@ -39,8 +61,8 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
       setPhase("error");
       setErrorMessage(
         isSpanish
-          ? "Seleccione el tipo de proyecto y el presupuesto estimado."
-          : "Select a project type and estimated budget.",
+          ? "Seleccione el tipo de proyecto y la etapa del proyecto."
+          : "Select a project type and project phase.",
       );
       return;
     }
@@ -116,28 +138,28 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
         </fieldset>
 
         <fieldset className="contact-diagnostic__qualifier">
-          <legend>{isSpanish ? "Presupuesto estimado" : "Estimated budget"}</legend>
+          <legend>{isSpanish ? "Etapa del proyecto" : "Project phase"}</legend>
           <div
             className="contact-diagnostic__chips"
             role="radiogroup"
-            aria-label={isSpanish ? "Presupuesto estimado" : "Estimated budget"}
+            aria-label={isSpanish ? "Etapa del proyecto" : "Project phase"}
           >
-            {budgetRanges.map((range) => (
+            {projectPhases.map((option) => (
               <button
-                key={range}
+                key={option.value}
                 type="button"
                 role="radio"
-                aria-checked={budgetRange === range}
+                aria-checked={budgetRange === option.value}
                 disabled={isBusy || isComplete}
                 className={`contact-diagnostic__chip ${
-                  budgetRange === range ? "is-selected" : ""
+                  budgetRange === option.value ? "is-selected" : ""
                 }`}
                 onClick={() => {
-                  setBudgetRange(range);
+                  setBudgetRange(option.value);
                   if (phase === "error") setPhase("idle");
                 }}
               >
-                {range}
+                {option.label[isSpanish ? "es" : "en"]}
               </button>
             ))}
           </div>
