@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import brandLogo from "../assets/iso_codesignlabs.png";
+
 interface NavItem {
   label: string;
   href: string;
@@ -60,12 +63,14 @@ const localizedNavItems = isSpanish
       aria-label={isSpanish ? "CODEsignLabs, inicio" : "CODEsignLabs, home"}
     >
       <span class="nav-brand__mark">
-        <img
-          src="/svg/iso_codesignlabs_2x.png"
+        <Image
+          src={brandLogo}
           alt=""
-          width="40"
-          height="40"
+          width={40}
+          height={40}
           class="nav-brand__logo"
+          loading="eager"
+          decoding="async"
         />
         <span class="nav-brand__shine" aria-hidden="true"></span>
       </span>
