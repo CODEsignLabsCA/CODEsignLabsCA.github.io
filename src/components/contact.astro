@@ -1,4 +1,6 @@
 ---
+import ContactDiagnostic from "../React/ContactDiagnostic";
+
 const isSpanish = Astro.currentLocale === "es";
 ---
 
@@ -9,136 +11,151 @@ const isSpanish = Astro.currentLocale === "es";
         <h2 class="mb-2 text-lg text-[var(--sec)] shiny-sec">
           {isSpanish ? "Hablemos" : "Let's talk"}
         </h2>
-        <h3 class="mb-6 text-4xl font-medium text-[var(--white)] md:text-5xl">
+        <h3 class="mb-6 font-display text-4xl font-medium text-[var(--white)] md:text-5xl">
           {isSpanish ? "Contacto" : "Contact"}
         </h3>
-        <form
-          id="contact-form"
-          data-locale={isSpanish ? "es" : "en"}
-          class="flex flex-col gap-4"
-        >
-          <input
-            type="text"
-            name="from_name"
-            placeholder={isSpanish ? "Nombre" : "Name"}
-            required
-            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
-          />
-          <input
-            type="email"
-            name="reply_to"
-            placeholder={isSpanish ? "Correo electrónico" : "Email"}
-            required
-            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
-          />
-          <input
-            type="text"
-            name="company"
-            placeholder={isSpanish ? "Empresa / Asunto" : "Company / Subject"}
-            required
-            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)]"
-          />
-          <textarea
-            name="message"
-            placeholder={isSpanish ? "Mensaje" : "Message"}
-            rows="6"
-            required
-            class="px-4 py-2 bg-[#1414149c] text-[var(--white)] border border-[var(--white-icon-tr)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--sec)] resize-none"
-          ></textarea>
-          <button
-            type="submit"
-            class="contact-submit rounded-full border-4 border-transparent px-9 py-4 font-semibold"
-          >
-            <svg
-              class="contact-submit-arrow contact-submit-arrow--incoming"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M16.17 11 10.81 5.64l1.41-1.42L20 12l-7.78 7.78-1.41-1.42L16.17 13H4v-2h12.17Z"></path>
-            </svg>
-            <span class="contact-submit-label">
-              {isSpanish ? "CONSTRUYAMOS EL FUTURO" : "LET'S BUILD THE FUTURE"}
-            </span>
-            <span class="contact-submit-circle" aria-hidden="true"></span>
-            <svg
-              class="contact-submit-arrow contact-submit-arrow--outgoing"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M16.17 11 10.81 5.64l1.41-1.42L20 12l-7.78 7.78-1.41-1.42L16.17 13H4v-2h12.17Z"></path>
-            </svg>
-          </button>
-        </form>
-        <div class="mt-6 space-y-3 border-t border-zinc-800/80 pt-6">
+        <ContactDiagnostic client:load isSpanish={isSpanish} />
+        <div class="mt-6 space-y-3 border-t border-zinc-800/80 pt-6 font-body">
           <a
             href="https://wa.link/ya7q1a"
             target="_blank"
             rel="noopener noreferrer"
-            class="block text-sm text-zinc-400 transition-colors hover:text-[#97CC04]"
+            class="block text-sm text-zinc-400 transition-colors hover:text-[#CCFF00]"
           >
             {isSpanish ? "Conéctese por WhatsApp" : "Connect via WhatsApp"} &rarr;
           </a>
         </div>
-        <div
-          id="form-message"
-          role="status"
-          aria-live="polite"
-          class="hidden justify-center items-center mt-4 text-[var(--white)] text-lg"
-        >
-          {isSpanish ? "✅ Gracias por su mensaje." : "✅ Thank you for your message!"}
-        </div>
       </div>
 
       <div class="contact-form-panel flex h-full flex-col justify-center space-y-6 text-left">
-        <div class="border-l-4 border-[#97CC04] pl-4">
-          <p class="font-mono text-xs font-semibold uppercase tracking-widest text-zinc-400">
+        <div class="border-l-4 border-[#CCFF00] pl-4 font-body">
+          <p class="text-xs font-semibold uppercase tracking-widest text-zinc-400">
             {isSpanish ? "Valoración empresarial" : "Business Valuation"}
           </p>
           <h3 class="mt-2 text-lg font-bold leading-relaxed text-white md:text-xl">
-            {isSpanish
-              ? "Crear software es fácil. Generar valor empresarial real y abrir nuevas fuentes de ingresos no lo es."
-              : "Building software is easy. Creating real business value and unlocking new revenue streams is not."}
+            {isSpanish ? (
+              <>
+                Crear software es fácil. Generar{" "}
+                <span class="text-[#CCFF00]">valor empresarial</span> real y abrir{" "}
+                <span class="text-[#CCFF00]">nuevas fuentes de ingresos</span> no lo es.
+              </>
+            ) : (
+              <>
+                Building software is easy. Creating real{" "}
+                <span class="text-[#CCFF00]">business value</span> and unlocking{" "}
+                <span class="text-[#CCFF00]">new revenue streams</span> is not.
+              </>
+            )}
           </h3>
         </div>
 
         <div class="py-2">
-          <h2 class="text-4xl font-black leading-none tracking-tight text-white md:text-5xl">
+          <h2 class="font-display text-4xl font-black leading-none tracking-tight text-white md:text-5xl">
             {isSpanish ? "¿LISTO PARA " : "READY TO "}
-            <span class="text-[#97CC04]">{isSpanish ? "ESCALAR?" : "SCALE?"}</span>
+            <span class="text-[#CCFF00]">{isSpanish ? "ESCALAR?" : "SCALE?"}</span>
           </h2>
-          <p class="mt-3 max-w-md text-sm text-zinc-400">
+          <p class="mt-3 max-w-md font-body text-sm text-zinc-400">
             {isSpanish
               ? "Construyamos hoy el futuro de su producto digital. Envíe un mensaje y recibirá un diagnóstico técnico en menos de 24 horas."
               : "Let's build the future of your digital product today. Leave a message to get a technical diagnostic in less than 24 hours."}
           </p>
         </div>
 
-        <div class="border-t border-zinc-800/80 pt-4">
+        <div class="border-t border-zinc-800/80 pt-4 font-body">
           <p class="text-xs font-medium text-zinc-500">
             {isSpanish ? "¿Prefiere agendar directamente?" : "Prefer direct scheduling?"}
           </p>
-          <a
-            href="https://cal.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group mt-1.5 inline-flex items-center gap-2 text-sm font-semibold text-[#97CC04] transition-colors hover:text-white"
+          <button
+            type="button"
+            data-cal-popup
+            class="group mt-1.5 inline-flex items-center gap-2 text-left text-sm font-semibold text-[#CCFF00] transition-colors hover:text-white"
           >
             <span>
               {isSpanish
                 ? "Agende una llamada de exploración de 15 min en Cal.com"
                 : "Book a 15-min discovery call via Cal.com"}
             </span>
-            <span class="transform transition-transform group-hover:translate-x-1">
+            <span class="transform transition-transform group-hover:translate-x-1" aria-hidden="true">
               &rarr;
             </span>
-          </a>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<style>
+<script>
+  type CalFunction = ((...args: unknown[]) => void) & {
+    loaded?: boolean;
+    ns?: Record<string, CalFunction>;
+    q?: unknown[][];
+  };
+
+  declare global {
+    interface Window {
+      Cal?: CalFunction;
+    }
+  }
+
+  const namespace = "contact";
+  const calLink = "codesignlabs/15min";
+
+  function initializeCal(): CalFunction {
+    const calWindow = window as Window & { Cal?: CalFunction };
+    if (calWindow.Cal) return calWindow.Cal;
+
+    const cal = function (...args: unknown[]) {
+      const instance = cal as CalFunction;
+      const enqueue = (target: CalFunction, values: unknown[]) => {
+        target.q = target.q ?? [];
+        target.q.push(values);
+      };
+
+      if (!instance.loaded) {
+        instance.ns = {};
+        instance.q = [];
+        const script = document.createElement("script");
+        script.src = "https://app.cal.com/embed/embed.js";
+        script.async = true;
+        script.onerror = () => console.error("Failed to load the Cal.com embed.");
+        document.head.appendChild(script);
+        instance.loaded = true;
+      }
+
+      if (args[0] === "init") {
+        const calNamespace = args[1];
+        if (typeof calNamespace === "string") {
+          const api = function (...namespaceArgs: unknown[]) {
+            enqueue(api as CalFunction, namespaceArgs);
+          } as CalFunction;
+          api.q = [];
+          instance.ns![calNamespace] = api;
+          enqueue(instance, ["initNamespace", calNamespace]);
+          return;
+        }
+      }
+
+      enqueue(instance, args);
+    } as CalFunction;
+
+    calWindow.Cal = cal;
+    return cal;
+  }
+
+  document.querySelectorAll<HTMLButtonElement>("[data-cal-popup]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const Cal = initializeCal();
+      Cal("init", namespace, { origin: "https://app.cal.com" });
+      Cal("ui", {
+        styles: { branding: { brandColor: "#CCFF00" } },
+      });
+      Cal.ns?.[namespace]("modal", { calLink });
+    });
+  });
+</script>
+
+<style is:global>
   .contact-layout {
     display: grid;
     align-items: stretch;
@@ -150,105 +167,157 @@ const isSpanish = Astro.currentLocale === "es";
     min-width: 0;
   }
 
+  .contact-diagnostic {
+    position: relative;
+    min-height: 24rem;
+    color: var(--white);
+  }
+
+  .contact-diagnostic__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-diagnostic__qualifier {
+    min-width: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  .contact-diagnostic__qualifier legend,
+  .contact-diagnostic__field > span {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #b6b6bd;
+    font-size: 0.76rem;
+    font-weight: 600;
+  }
+
+  .contact-diagnostic__chips {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    padding: 0.1rem 0 0.3rem;
+    scrollbar-width: thin;
+  }
+
+  .contact-diagnostic__chip {
+    flex: 0 0 auto;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: 9999px;
+    background: #1414149c;
+    color: #d3d3d8;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      color 180ms ease;
+  }
+
+  .contact-diagnostic__chip:hover {
+    border-color: #ccff00;
+  }
+
+  .contact-diagnostic__chip.is-selected {
+    border-color: #ccff00;
+    background: #ccff00;
+    color: #121212;
+  }
+
+  .contact-diagnostic__chip:focus-visible,
+  .contact-diagnostic__field input:focus-visible,
+  .contact-diagnostic__field textarea:focus-visible {
+    outline: 2px solid #ccff00;
+    outline-offset: 2px;
+  }
+
+  .contact-diagnostic__field input,
+  .contact-diagnostic__field textarea {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--white-icon-tr);
+    border-radius: 0.5rem;
+    background: #1414149c;
+    padding: 0.65rem 0.85rem;
+    color: var(--white);
+    font-size: 0.85rem;
+  }
+
+  .contact-diagnostic__field textarea {
+    resize: vertical;
+  }
+
+  .contact-diagnostic__field input::placeholder,
+  .contact-diagnostic__field textarea::placeholder {
+    color: #777780;
+  }
+
+  .contact-diagnostic__error {
+    color: #ff9a9a;
+    font-size: 0.82rem;
+  }
+
+  .contact-diagnostic__loader {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgb(204 255 0 / 35%);
+    border-top-color: #ccff00;
+    border-radius: 50%;
+    animation: contact-spin 700ms linear infinite;
+  }
+
+  .contact-diagnostic__success {
+    top: 50%;
+    width: 100%;
+    color: var(--white);
+    font-size: 1rem;
+    line-height: 1.7;
+    transform: translateY(-50%);
+  }
+
   .contact-submit {
     position: relative;
     display: flex;
+    min-height: 3.5rem;
     align-items: center;
-    gap: 4px;
-    overflow: hidden;
+    justify-content: center;
+    gap: 0.6rem;
     align-self: center;
+    overflow: hidden;
     background-color: transparent;
-    color: #97cc04;
-    box-shadow: 0 0 0 2px #97cc04;
+    color: #ccff00;
+    box-shadow: 0 0 0 2px #ccff00;
     cursor: pointer;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      box-shadow 200ms ease,
+      opacity 200ms ease;
   }
 
-  .contact-submit-label {
-    position: relative;
-    z-index: 1;
-    white-space: nowrap;
-    transform: translateX(-12px);
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .contact-submit-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #97cc04;
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .contact-submit-arrow {
-    position: absolute;
-    z-index: 9;
-    width: 24px;
-    fill: #97cc04;
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .contact-submit-arrow--incoming {
-    left: -25%;
-  }
-
-  .contact-submit-arrow--outgoing {
-    right: 16px;
-  }
-
-  .contact-submit:hover {
-    color: #151c1e;
-    box-shadow: 0 0 0 12px transparent;
-  }
-
-  .contact-submit:hover .contact-submit-label {
-    transform: translateX(12px);
-  }
-
-  .contact-submit:hover .contact-submit-circle {
-    opacity: 1;
-    width: 400px;
-    height: 400px;
-  }
-
-  .contact-submit:hover .contact-submit-arrow--incoming {
-    left: 16px;
-  }
-
-  .contact-submit:hover .contact-submit-arrow--outgoing {
-    right: -25%;
-  }
-
-  .contact-submit:hover .contact-submit-arrow {
-    fill: #151c1e;
-  }
-
-  .contact-submit:active {
-    transform: scale(0.95);
-    box-shadow: 0 0 0 4px #97cc04;
+  .contact-submit:hover:not(:disabled) {
+    background: #ccff00;
+    color: #121212;
+    box-shadow: 0 0 0 2px #ccff00;
   }
 
   .contact-submit:focus-visible {
-    outline: 2px solid #97cc04;
+    outline: 2px solid #ccff00;
     outline-offset: 4px;
   }
 
   .contact-submit:disabled {
     cursor: wait;
+    opacity: 0.72;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .contact-submit,
-    .contact-submit-label,
-    .contact-submit-circle,
-    .contact-submit-arrow {
-      transition: none;
+  @keyframes contact-spin {
+    to {
+      transform: rotate(360deg);
     }
   }
 
@@ -266,60 +335,15 @@ const isSpanish = Astro.currentLocale === "es";
       padding-top: 0.75rem;
     }
   }
-</style>
 
-<script>
-  import { addDoc, collection } from "firebase/firestore";
-  import { db } from "../firebase";
+  @media (prefers-reduced-motion: reduce) {
+    .contact-diagnostic__chip,
+    .contact-submit {
+      transition: none;
+    }
 
-  const form = document.querySelector<HTMLFormElement>("#contact-form");
-  const formMessage = document.querySelector<HTMLDivElement>("#form-message");
-
-  if (form && formMessage) {
-    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-    const submitLabel = submitButton?.querySelector<HTMLElement>(".contact-submit-label");
-    const isSpanish = form.dataset.locale === "es";
-    const originalButtonText = submitLabel?.textContent?.trim() ?? "";
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      if (!submitButton || !submitLabel) {
-        console.error("Contact form submit button or label was not found.");
-        return;
-      }
-
-      const formData = new FormData(form);
-      const name = String(formData.get("from_name") ?? "").trim();
-      const email = String(formData.get("reply_to") ?? "").trim();
-      const company = String(formData.get("company") ?? "").trim();
-      const message = String(formData.get("message") ?? "").trim();
-
-      submitButton.disabled = true;
-      submitLabel.textContent = isSpanish ? "Enviando..." : "Sending...";
-
-      try {
-        await addDoc(collection(db, "contacts"), {
-          name,
-          email,
-          company,
-          message,
-          createdAt: new Date(),
-        });
-
-        form.reset();
-        form.style.display = "none";
-        formMessage.classList.remove("hidden");
-      } catch (error) {
-        console.error("Unable to submit contact form to Firestore:", error);
-        alert(
-          isSpanish
-            ? "Hubo un problema al enviar su mensaje. Inténtelo de nuevo más tarde."
-            : "There was a problem sending your message. Please try again later.",
-        );
-        submitButton.disabled = false;
-        submitLabel.textContent = originalButtonText;
-      }
-    });
+    .contact-diagnostic__loader {
+      animation-duration: 1400ms;
+    }
   }
-</script>
+</style>
