@@ -402,7 +402,7 @@ const isSpanish = Astro.currentLocale === "es";
                   .join("")}</ul>`
               : `<p class="project-card__description font-body">${description}</p>`;
             const image = project.image
-              ? `<img class="h-full w-full object-cover object-top" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
+              ? `<img class="h-auto w-full object-contain object-center" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
               : "";
             const link = project.link
               ? `<a class="text-sm text-[var(--sec)] underline underline-offset-4" href="${escapeHtml(project.link)}" target="_blank" rel="noopener noreferrer">${isSpanish ? "Ver proyecto" : "View project"}</a>`
@@ -411,7 +411,7 @@ const isSpanish = Astro.currentLocale === "es";
             return `
               <article class="project-card font-body reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
                 <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-                <div class="project-card__asset h-48 w-full min-w-[140px] overflow-hidden border border-zinc-800 bg-zinc-900 p-0 md:h-56 md:min-w-[180px] lg:h-60">${image}</div>
+                <div class="project-card__asset w-full min-w-[150px] overflow-hidden border border-zinc-800 bg-zinc-900 p-0 md:min-w-[200px]">${image}</div>
                 <div class="project-card__details">
                   <h3>${title}</h3>
                   ${caseStudy}
@@ -642,7 +642,7 @@ const isSpanish = Astro.currentLocale === "es";
     overflow: hidden;
     min-width: 0;
     display: grid;
-    align-items: start;
+    align-items: center;
     grid-template-columns: minmax(13rem, 0.75fr) minmax(0, 1.25fr);
     gap: clamp(1.25rem, 3vw, 2.5rem);
     padding: clamp(1.25rem, 3vw, 2rem);
@@ -997,10 +997,10 @@ const isSpanish = Astro.currentLocale === "es";
 
   .project-card__asset img {
     display: block;
-    height: 100%;
     width: 100%;
-    object-fit: cover;
-    object-position: top;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
   }
 
   .project-card__asset span {
