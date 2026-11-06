@@ -1,4 +1,5 @@
-import { useState, type SyntheticEvent } from "react";
+import Cal, { getCalApi } from "@calcom/embed-react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -52,6 +53,39 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
 
   const isBusy = phase === "submitting" || phase === "fading";
   const isComplete = phase === "success";
+
+  useEffect(() => {
+    let isMounted = true;
+    let removePopupListeners = () => {};
+
+    void getCalApi().then((cal) => {
+      cal("ui", {
+        theme: "dark",
+        layout: "month_view",
+        hideEventTypeDetails: true,
+      });
+
+      if (!isMounted) return;
+
+      const popupButtons =
+        document.querySelectorAll<HTMLButtonElement>("[data-cal-popup]");
+      const openPopup = () =>
+        cal("modal", { calLink: "codesignlabs/15min" });
+
+      popupButtons.forEach((button) =>
+        button.addEventListener("click", openPopup),
+      );
+      removePopupListeners = () =>
+        popupButtons.forEach((button) =>
+          button.removeEventListener("click", openPopup),
+        );
+    });
+
+    return () => {
+      isMounted = false;
+      removePopupListeners();
+    };
+  }, []);
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -246,6 +280,20 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
           {isBusy && <span className="contact-diagnostic__loader" aria-hidden="true" />}
         </button>
       </form>
+
+      <section className="mt-8 rounded-2xl border border-neutral-800 bg-neutral-950 p-4 sm:p-6">
+        <h3 className="text-lg font-semibold text-white">
+          Reserva tu Consultoría Técnica
+        </h3>
+        <p className="mb-4 mt-1 text-sm text-neutral-400">
+          Elige el horario que mejor se adapte a ti para conversar sobre tu proyecto.
+        </p>
+        <Cal
+          calLink="codesignlabs"
+          config={{ hideEventTypeDetails: "true" }}
+          style={{ width: "100%", minHeight: "600px" }}
+        />
+      </section>
 
       <p
         className={`contact-diagnostic__success font-body transition-opacity duration-500 ${
