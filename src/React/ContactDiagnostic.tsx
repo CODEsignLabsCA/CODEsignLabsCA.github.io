@@ -22,22 +22,22 @@ const projectPhases = [
   {
     value: "discovery_phase",
     label: {
-      en: "Validate a business idea",
-      es: "Validar idea de negocio",
+      en: "I want to talk about my business idea",
+      es: "Quiero hablar sobre mi idea de negocio",
     },
   },
   {
     value: "scale_phase",
     label: {
-      en: "Scale a working product",
-      es: "Escalar producto funcional",
+      en: "Optimize / Automate existing software",
+      es: "Optimizar / Automatizar un software existente",
     },
   },
   {
     value: "enterprise_phase",
     label: {
-      en: "Create new revenue streams / Enterprise",
-      es: "Crear nuevas líneas de ingreso / Corporativo",
+      en: "Structure Enterprise Architecture",
+      es: "Estructurar Arquitectura Enterprise",
     },
   },
 ];
@@ -168,7 +168,7 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
                   role="radio"
                   aria-checked={isSelected}
                   disabled={isBusy || isComplete}
-                  className={`flex w-full min-w-0 items-center justify-between gap-2 rounded-lg border bg-slate-900/70 px-3 py-2.5 text-left text-sm leading-snug text-slate-200 transition-colors hover:border-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${
+                  className={`flex w-full min-w-0 items-center justify-center gap-2 rounded-full border border-white/15 bg-[#1414149c] px-3 py-2.5 text-center text-sm leading-snug text-slate-200 transition-colors hover:border-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 disabled:cursor-not-allowed disabled:opacity-60 ${
                     isEnterprise
                       ? `border-slate-700 focus-visible:ring-[#97CC04] ${
                           isSelected
@@ -187,11 +187,6 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
                   }}
                 >
                   <span>{option.label[isSpanish ? "es" : "en"]}</span>
-                  {isEnterprise && (
-                    <span className="shrink-0 rounded-full border border-slate-600 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-slate-300">
-                      High-Value
-                    </span>
-                  )}
                 </button>
               );
             })}
