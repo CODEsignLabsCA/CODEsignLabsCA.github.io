@@ -1,5 +1,10 @@
 import Cal, { getCalApi } from "@calcom/embed-react";
-import { useEffect, useState, type SyntheticEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type SyntheticEvent,
+} from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -53,39 +58,6 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
 
   const isBusy = phase === "submitting" || phase === "fading";
   const isComplete = phase === "success";
-
-  useEffect(() => {
-    let isMounted = true;
-    let removePopupListeners = () => {};
-
-    void getCalApi().then((cal) => {
-      cal("ui", {
-        theme: "dark",
-        layout: "month_view",
-        hideEventTypeDetails: true,
-      });
-
-      if (!isMounted) return;
-
-      const popupButtons =
-        document.querySelectorAll<HTMLButtonElement>("[data-cal-popup]");
-      const openPopup = () =>
-        cal("modal", { calLink: "codesignlabs/15min" });
-
-      popupButtons.forEach((button) =>
-        button.addEventListener("click", openPopup),
-      );
-      removePopupListeners = () =>
-        popupButtons.forEach((button) =>
-          button.removeEventListener("click", openPopup),
-        );
-    });
-
-    return () => {
-      isMounted = false;
-      removePopupListeners();
-    };
-  }, []);
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -281,20 +253,6 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
         </button>
       </form>
 
-      <section className="mt-8 rounded-2xl border border-neutral-800 bg-neutral-950 p-4 sm:p-6">
-        <h3 className="text-lg font-semibold text-white">
-          Reserva tu Consultoría Técnica
-        </h3>
-        <p className="mb-4 mt-1 text-sm text-neutral-400">
-          Elige el horario que mejor se adapte a ti para conversar sobre tu proyecto.
-        </p>
-        <Cal
-          calLink="codesignlabs"
-          config={{ hideEventTypeDetails: "true" }}
-          style={{ width: "100%", minHeight: "600px" }}
-        />
-      </section>
-
       <p
         className={`contact-diagnostic__success font-body transition-opacity duration-500 ${
           isComplete ? "opacity-100" : "pointer-events-none absolute opacity-0"
@@ -306,6 +264,110 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
           ? "✅ Gracias por su mensaje. Analizaremos sus requisitos técnicos."
           : "✅ Thank you for your message! We will analyze your technical requirements."}
       </p>
+    </div>
+  );
+}
+
+export function CalPopover({ isSpanish }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    void getCalApi().then((cal) => {
+      cal("ui", {
+        theme: "dark",
+        layout: "month_view",
+        hideEventTypeDetails: true,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      if (
+        event.target instanceof Node &&
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setIsOpen(false);
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  return (
+    <div ref={popoverRef} className="relative inline-block">
+      <button
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls="cal-scheduler-popover"
+        className="group mt-1.5 inline-flex items-center gap-2 text-left text-sm font-semibold text-[#CCFF00] transition-colors hover:text-white"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>
+          {isSpanish
+            ? "Agende una llamada de exploración de 15 min en Cal.com"
+            : "Book a 15-min discovery call via Cal.com"}
+        </span>
+        <span
+          className="transform transition-transform group-hover:translate-x-1"
+          aria-hidden="true"
+        >
+          &rarr;
+        </span>
+      </button>
+
+      {isOpen && (
+        <div
+          id="cal-scheduler-popover"
+          className="absolute right-0 z-50 mt-2 max-h-[85vh] w-[400px] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border border-neutral-800 bg-neutral-950 p-4 shadow-2xl md:left-0 md:w-[450px]"
+        >
+          <div className="mb-3 flex items-start justify-between gap-4">
+            <div>
+              <h3 className="text-base font-semibold text-white">
+                {isSpanish
+                  ? "Reserva tu Consultoría Técnica"
+                  : "Book Your Technical Consultation"}
+              </h3>
+              <p className="mt-1 text-xs text-neutral-400">
+                {isSpanish
+                  ? "Elige un horario para conversar sobre tu proyecto."
+                  : "Choose a time to discuss your project."}
+              </p>
+            </div>
+            <button
+              type="button"
+              className="rounded-md p-1 text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CCFF00]"
+              aria-label={isSpanish ? "Cerrar calendario" : "Close calendar"}
+              onClick={() => setIsOpen(false)}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <Cal
+            calLink="codesignlabs/15min"
+            config={{
+              layout: "month_view",
+              theme: "dark",
+              hideEventTypeDetails: "true",
+            }}
+            style={{ width: "100%", minHeight: "600px" }}
+          />
+        </div>
+      )}
     </div>
   );
 }

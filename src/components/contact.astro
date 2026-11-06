@@ -1,5 +1,5 @@
 ---
-import ContactDiagnostic from "../React/ContactDiagnostic";
+import ContactDiagnostic, { CalPopover } from "../React/ContactDiagnostic";
 
 const isSpanish = Astro.currentLocale === "es";
 ---
@@ -65,20 +65,7 @@ const isSpanish = Astro.currentLocale === "es";
           <p class="text-xs font-medium text-zinc-500">
             {isSpanish ? "¿Prefiere agendar directamente?" : "Prefer direct scheduling?"}
           </p>
-          <button
-            type="button"
-            data-cal-popup
-            class="group mt-1.5 inline-flex items-center gap-2 text-left text-sm font-semibold text-[#CCFF00] transition-colors hover:text-white"
-          >
-            <span>
-              {isSpanish
-                ? "Agende una llamada de exploración de 15 min en Cal.com"
-                : "Book a 15-min discovery call via Cal.com"}
-            </span>
-            <span class="transform transition-transform group-hover:translate-x-1" aria-hidden="true">
-              &rarr;
-            </span>
-          </button>
+          <CalPopover client:load isSpanish={isSpanish} />
         </div>
       </div>
     </div>
