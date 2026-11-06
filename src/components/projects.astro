@@ -392,7 +392,7 @@ const isSpanish = Astro.currentLocale === "es";
               },
             ].filter((item) => item.text.trim());
             const caseStudy = caseStudyItems.length
-              ? `<ul class="project-card__case-study">${caseStudyItems
+              ? `<ul class="project-card__case-study font-body">${caseStudyItems
                   .map(
                     (item) => `<li>
                       <span class="project-card__case-label">${escapeHtml(item.label)}</span>
@@ -400,7 +400,7 @@ const isSpanish = Astro.currentLocale === "es";
                     </li>`,
                   )
                   .join("")}</ul>`
-              : `<p class="project-card__description font-body line-clamp-3">${description}</p>`;
+              : `<p class="project-card__description font-body">${description}</p>`;
             const image = project.image
               ? `<img class="h-full w-full object-cover object-top" src="${escapeHtml(project.image)}" alt="${title}" loading="lazy" />`
               : "";
@@ -411,7 +411,7 @@ const isSpanish = Astro.currentLocale === "es";
             return `
               <article class="project-card font-body reveal is-visible ${index === 0 ? "is-active" : ""}" data-project-card="${index}">
                 <span class="project-card__index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
-                <div class="project-card__asset h-48 w-full overflow-hidden border border-zinc-800 bg-zinc-900 p-0 md:h-56 lg:h-60">${image}</div>
+                <div class="project-card__asset h-48 w-full min-w-[140px] overflow-hidden border border-zinc-800 bg-zinc-900 p-0 md:h-56 md:min-w-[180px] lg:h-60">${image}</div>
                 <div class="project-card__details">
                   <h3>${title}</h3>
                   ${caseStudy}
@@ -1061,11 +1061,7 @@ const isSpanish = Astro.currentLocale === "es";
   }
 
   .project-card__case-text {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    overflow-wrap: anywhere;
   }
 
   .project-card__technologies {
