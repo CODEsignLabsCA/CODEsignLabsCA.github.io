@@ -10,7 +10,8 @@ export const ui = {
     "hero.role": "Lead Product & Full-Stack Architect",
     "hero.name": "Hi, I'm Jairo Fernando",
     "hero.description.start": "We transform ideas into",
-    "hero.description.highlight1": "interactive and seamless digital experiences",
+    "hero.description.highlight1":
+      "interactive and seamless digital experiences",
     "hero.description.middle1": "through",
     "hero.description.highlight2": "cutting-edge Full-Stack development",
     "hero.description.middle2": ", creating high-value",
@@ -75,7 +76,8 @@ export const ui = {
     "hero.role": "Lead Product & Full-Stack Architect",
     "hero.name": "Hola, soy Jairo Fernando",
     "hero.description.start": "Transformamos ideas en",
-    "hero.description.highlight1": "experiencias digitales interactivas y fluidas",
+    "hero.description.highlight1":
+      "experiencias digitales interactivas y fluidas",
     "hero.description.middle1": "mediante",
     "hero.description.highlight2": "desarrollo Full-Stack de vanguardia",
     "hero.description.middle2": ", creando",
@@ -84,25 +86,25 @@ export const ui = {
     "hero.description.highlight4": "nuevas oportunidades de negocio e ingresos",
     "hero.description.end": "para su empresa.",
     "common.email": "Correo electrónico",
-    "core.title": "Core Capabilities",
-    "core.items.0.title": "Enterprise Web Architecture",
-    "core.items.0.subtitle": "Sistemas Backend Escalables y de Alta Demanda",
+    "core.title": "Capacidades principales",
+    "core.items.0.title": "Arquitectura web empresarial",
+    "core.items.0.subtitle": "Sistemas backend escalables y de alta demanda",
     "core.items.0.content.0":
       "**Aplicaciones Web Escalables:** Diseño e implementación de aplicaciones robustas de página única (SPA) y sistemas renderizados en el servidor (SSR) con Next.js, React y Vue.",
     "core.items.0.content.1":
       "**Plataformas de aterrizaje de alta conversión:** Activos web empresariales optimizados para un rendimiento extremo, métricas mínimas de Core Web Vitals e integraciones fluidas con terceros.",
     "core.items.0.content.2":
       "**Integración segura de API y backend:** Arquitecturas backend de alta demanda con Supabase, Node.js y bases de datos relacionales (PostgreSQL/MySQL), con aislamiento de datos multi-tenant.",
-    "core.items.1.title": "Multiplatform Mobile Engineering",
-    "core.items.1.subtitle": "Flujos de Trabajo Nativos y de Núcleo Compartido",
+    "core.items.1.title": "Ingeniería móvil multiplataforma",
+    "core.items.1.subtitle": "Flujos de trabajo nativos y de núcleo compartido",
     "core.items.1.content.0":
       "**Desarrollo de aplicaciones multiplataforma:** Diseño arquitectónico y despliegue de aplicaciones móviles de alta fidelidad para iOS y Android con Flutter, Dart y React Native.",
     "core.items.1.content.1":
       "**Sistemas de núcleo lógico compartido:** Estrategias multiplataforma avanzadas, como Kotlin Multiplatform, para unificar la gestión de estado y los algoritmos, reduciendo a la mitad el tiempo de lanzamiento.",
     "core.items.1.content.2":
       "**Arquitecturas offline-first y de seguridad:** Flujos móviles fiables con cifrado local de datos, autenticación biométrica automatizada y sincronización sin conexión en tiempo real.",
-    "core.items.2.title": "UI/UX Product Engineering",
-    "core.items.2.subtitle": "Sistemas de Diseño de Alta Densidad y MVPs",
+    "core.items.2.title": "Ingeniería de producto UI/UX",
+    "core.items.2.subtitle": "Sistemas de diseño de alta densidad y MVPs",
     "core.items.2.content.0":
       "**Gobernanza de sistemas de diseño:** Creación y escalado de componentes modulares unificados en Figma (con el estándar Stitch) para garantizar coherencia visual en plataformas complejas.",
     "core.items.2.content.1":

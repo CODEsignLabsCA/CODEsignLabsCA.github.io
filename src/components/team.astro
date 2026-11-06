@@ -10,10 +10,16 @@ const isSpanish = Astro.currentLocale === "es";
 >
   <div class="max-w-5xl mx-auto">
     <AnimatedHeading
-      eyebrow={isSpanish ? "El talento detrás de la ingeniería" : "The talent behind the engineering"}
-      title={isSpanish
-        ? "De la idea al liderazgo del mercado: productos digitales que transforman industrias e impulsan un crecimiento significativo."
-        : "From Idea to Market Leadership: Architecting digital products that reshape industries and drive meaningful growth."}
+      eyebrow={
+        isSpanish
+          ? "El talento detrás de la ingeniería"
+          : "The talent behind the engineering"
+      }
+      title={
+        isSpanish
+          ? "De la idea al liderazgo del mercado: productos digitales que transforman industrias e impulsan un crecimiento significativo."
+          : "From Idea to Market Leadership: Architecting digital products that reshape industries and drive meaningful growth."
+      }
       headingClass="team-heading text-center uppercase"
     />
 
@@ -32,36 +38,42 @@ const isSpanish = Astro.currentLocale === "es";
       <div class="team-profile__content">
         <h3 class="text-2xl font-medium">Jairo Fernando Ramos G</h3>
         <p class="mt-2 text-lg font-bold text-[var(--sec)]">
-          {isSpanish ? "Líder de Producto y Arquitecto Full-Stack" : "Lead Product & Full-Stack Architect"}
+          {isSpanish
+            ? "Líder de Producto y Arquitecto Full-Stack"
+            : "Lead Product & Full-Stack Architect"}
         </p>
-        <ul class="team-expertise mt-2 space-y-5">
+        <ul class="team-expertise mt-2 space-y-5 font-body">
           <li>
-            <strong>{isSpanish ? "Diseño de producto:" : "Product Design:"}</strong>{" "}
-            {isSpanish ? "Especialista en conceptualizar " : "Specialist in conceptualizing "}
-            {isSpanish ? "experiencias interactivas y " : "interactive "}
-            <strong class="text-[#97CC04]">
-              {isSpanish ? "MVPs en Figma con el sistema de diseño modular Stitch" : "MVPS in Figma using the Stitch modular design system"}
+            <strong class="font-bold text-[#97CC04]">
+              {isSpanish ? "Diseño de producto:" : "Product Design:"}
             </strong>{" "}
-            {!isSpanish && "."}
+            <span>
+              {isSpanish
+                ? "Especialista en conceptualizar experiencias interactivas y MVPs en Figma con el sistema de diseño modular Stitch."
+                : "Specialist in conceptualizing interactive experiences and MVPs in Figma using the Stitch modular design system."}
+            </span>
           </li>
           <li>
-            <strong>{isSpanish ? "Ingeniería multiplataforma:" : "Cross-Platform Engineering:"}</strong>{" "}
-            {isSpanish ? "Arquitectura y despliegue nativo con " : "Architecture and native deployment using "}
-            <strong class="text-[#97CC04]">
+            <strong class="font-bold text-[#97CC04]">
               {isSpanish
-                ? "Kotlin Multiplatform, Flutter, Dart y Swift."
-                : "Kotlin Multiplatform, Flutter, Dart, and Swift."}
-            </strong>
+                ? "Ingeniería multiplataforma:"
+                : "Cross-Platform Engineering:"}
+            </strong>{" "}
+            <span>
+              {isSpanish
+                ? "Arquitectura y despliegue nativo con Kotlin Multiplatform, Flutter, Dart y Swift."
+                : "Architecture and native deployment with Kotlin Multiplatform, Flutter, Dart, and Swift."}
+            </span>
           </li>
           <li>
-            <strong>{isSpanish ? "Estrategia de negocio:" : "Business Strategy:"}</strong>{" "}
-            {isSpanish ? "Integración robusta de datos con " : "Robust data integration using "}
-            <strong class="text-[#97CC04]">
-              {isSpanish
-                ? "PostgreSQL y Supabase, junto con automatización avanzada con IA"
-                : "PostgreSQL and Supabase, combined with advanced AI automation"}
+            <strong class="font-bold text-[#97CC04]">
+              {isSpanish ? "Estrategia de negocio:" : "Business Strategy:"}
             </strong>{" "}
-            {isSpanish ? "para abrir nuevas fuentes de ingresos empresariales." : "to unlock new corporate revenue streams."}
+            <span>
+              {isSpanish
+                ? "Integración robusta de datos con PostgreSQL y Supabase, junto con automatización avanzada con IA para abrir nuevas fuentes de ingresos empresariales."
+                : "Robust data integration with PostgreSQL and Supabase, combined with advanced AI automation to unlock new corporate revenue streams."}
+            </span>
           </li>
         </ul>
       </div>
@@ -73,9 +85,10 @@ const isSpanish = Astro.currentLocale === "es";
   .team-heading {
     max-width: 58rem;
     margin-inline: auto;
-    font-size: clamp(1.2rem, 2.4vw, 1.65rem) !important;
+    font-size: clamp(2.25rem, 5vw, 3.75rem) !important;
     font-weight: 700 !important;
-    line-height: 1.2 !important;
+    letter-spacing: -0.04em;
+    line-height: 1.1 !important;
   }
 
   .team-profile {
@@ -93,7 +106,9 @@ const isSpanish = Astro.currentLocale === "es";
     padding: 0;
   }
 
-  html.motion-enabled .team-photo.reveal-media:not(.is-visible) .team-photo__image {
+  html.motion-enabled
+    .team-photo.reveal-media:not(.is-visible)
+    .team-photo__image {
     opacity: 0;
     transform: translateX(-3rem);
   }

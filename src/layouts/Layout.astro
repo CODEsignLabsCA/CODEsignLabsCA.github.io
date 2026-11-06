@@ -1,4 +1,6 @@
 ---
+import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/space-grotesk";
 import LanguagePicker from "../components/LanguagePicker.astro";
 
 interface Props {
@@ -6,17 +8,19 @@ interface Props {
   lang?: string;
 }
 
-const { title = "CODEsignLabs | Lead Product & Full-Stack Software Architecture", lang } =
-  Astro.props;
+const {
+  title = "CODEsignLabs | Lead Product & Full-Stack Software Architecture",
+  lang,
+} = Astro.props;
 const currentLocale = lang ?? Astro.currentLocale ?? "en";
 const isSpanish = currentLocale === "es";
 const siteUrl = Astro.site?.origin ?? "https://codesignlabsca.github.io";
 const pathname = Astro.url.pathname;
-const cleanPath = pathname
-  .replace(/^\/es(?=\/|$)/, "")
-  .replace(/\/+$/, "");
+const cleanPath = pathname.replace(/^\/es(?=\/|$)/, "").replace(/\/+$/, "");
 const enPath = cleanPath || "/";
-const esPath = cleanPath ? `/es${cleanPath.startsWith("/") ? "" : "/"}${cleanPath}` : "/es/";
+const esPath = cleanPath
+  ? `/es${cleanPath.startsWith("/") ? "" : "/"}${cleanPath}`
+  : "/es/";
 const enUrl = new URL(enPath, siteUrl).href;
 const esUrl = new URL(esPath, siteUrl).href;
 const canonicalUrl = new URL(pathname, siteUrl).href;
@@ -34,9 +38,11 @@ const canonicalUrl = new URL(pathname, siteUrl).href;
     <title>{title}</title>
     <meta
       name="description"
-      content={isSpanish
-        ? "Activos de software de alto rendimiento, ingeniería multiplataforma y arquitectura backend escalable de CODEsignLabs."
-        : "High-performance software assets, premium cross-platform engineering, and scalable backend infrastructure by CODEsignLabs."}
+      content={
+        isSpanish
+          ? "Activos de software de alto rendimiento, ingeniería multiplataforma y arquitectura backend escalable de CODEsignLabs."
+          : "High-performance software assets, premium cross-platform engineering, and scalable backend infrastructure by CODEsignLabs."
+      }
     />
     <meta
       name="keywords"
@@ -49,13 +55,6 @@ const canonicalUrl = new URL(pathname, siteUrl).href;
     <link rel="alternate" hreflang="es" href={esUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
 
-    <link
-      rel="preload"
-      href="/fonts/montserrat-latin-wght-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -156,15 +155,6 @@ const canonicalUrl = new URL(pathname, siteUrl).href;
 </html>
 
 <style is:global>
-  @font-face {
-    font-family: "Montserrat Variable";
-    src: url("/fonts/montserrat-latin-wght-normal.woff2")
-      format("woff2-variations");
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-  }
-
   :root {
     --background: #101010;
     --component-bg: #171717;
@@ -172,6 +162,17 @@ const canonicalUrl = new URL(pathname, siteUrl).href;
     --white: #dfdfdf;
     --white-icon: #f3f3f398;
     --white-icon-tr: #f3f3f310;
+    --font-body: "Plus Jakarta Sans Variable", sans-serif;
+    --font-display: "Space Grotesk Variable", sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
   }
 
   html {
@@ -231,11 +232,6 @@ const canonicalUrl = new URL(pathname, siteUrl).href;
   }
 
   * {
-    font-family:
-      "Montserrat Variable",
-      -apple-system,
-      system-ui,
-      sans-serif;
     box-sizing: border-box;
     padding: 0;
     margin: 0;

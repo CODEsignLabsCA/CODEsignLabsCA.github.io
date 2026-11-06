@@ -1,16 +1,22 @@
 ---
 const advantages = [
   {
-    title: Astro.currentLocale === "es" ? "Desarrollo multiplataforma" : "Multiplatform Development",
-    description: Astro.currentLocale === "es"
-      ? "Soluciones nativas e híbridas de alta fidelidad."
-      : "High-fidelity native and hybrid solutions.",
+    title:
+      Astro.currentLocale === "es"
+        ? "Desarrollo multiplataforma"
+        : "Multiplatform Development",
+    description:
+      Astro.currentLocale === "es"
+        ? "Soluciones nativas e híbridas de alta fidelidad."
+        : "High-fidelity native and hybrid solutions.",
   },
   {
-    title: Astro.currentLocale === "es" ? "Tiempo de lanzamiento" : "Time-to-Market",
-    description: Astro.currentLocale === "es"
-      ? "Automatización de código asistida por IA."
-      : "AI-assisted code automation.",
+    title:
+      Astro.currentLocale === "es" ? "Tiempo de lanzamiento" : "Time-to-Market",
+    description:
+      Astro.currentLocale === "es"
+        ? "Automatización de código asistida por IA."
+        : "AI-assisted code automation.",
   },
 ];
 const isSpanish = Astro.currentLocale === "es";
@@ -35,7 +41,11 @@ const advantageHeading = isSpanish
     <div class="advantages-heading">
       <h2
         class="advantages-title display-heading"
-        aria-label={isSpanish ? "Descubre las ventajas clave" : "Discover the key advantages"}
+        aria-label={
+          isSpanish
+            ? "Descubre las ventajas clave"
+            : "Discover the key advantages"
+        }
       >
         <span class="display-heading__visual" aria-hidden="true">
           <span class="advantages-title-line">
@@ -71,9 +81,11 @@ const advantageHeading = isSpanish
     <figure class="advantages-primary advantage-artwork advantage-artwork--primary">
       <img
         src="/images/service-sections/Discover the Key Advantages_1.webp"
-        alt={isSpanish
-          ? "Desarrollador de software trabajando en una laptop dentro de un marco de diamante de neón"
-          : "A software developer working at a laptop inside a neon diamond frame"}
+        alt={
+          isSpanish
+            ? "Desarrollador de software trabajando en una laptop dentro de un marco de diamante de neón"
+            : "A software developer working at a laptop inside a neon diamond frame"
+        }
         class="h-auto w-full object-contain"
         width="583"
         height="583"
@@ -93,9 +105,11 @@ const advantageHeading = isSpanish
     <figure class="advantages-secondary advantage-artwork advantage-artwork--secondary">
       <img
         src="/images/service-sections/Discover the Key Advantages_2.webp"
-        alt={isSpanish
-          ? "Desarrollador con camisa verde revisando la arquitectura de software en un monitor"
-          : "A developer in a green shirt reviewing software architecture on a monitor"}
+        alt={
+          isSpanish
+            ? "Desarrollador con camisa verde revisando la arquitectura de software en un monitor"
+            : "A developer in a green shirt reviewing software architecture on a monitor"
+        }
         class="h-auto w-full object-contain"
         width="356"
         height="331"
@@ -136,7 +150,6 @@ const advantageHeading = isSpanish
   .advantages-title {
     margin: 0;
     color: #fff;
-    font-family: "Montserrat Variable", sans-serif;
     font-size: clamp(2.1rem, 4vw, 2.65rem);
     font-weight: 800;
     letter-spacing: -0.035em;

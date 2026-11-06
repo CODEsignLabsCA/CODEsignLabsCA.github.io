@@ -3,26 +3,31 @@ export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Space Grotesk Variable", "sans-serif"],
+        body: ["Plus Jakarta Sans Variable", "sans-serif"],
+        display: ["Space Grotesk Variable", "sans-serif"],
+      },
       scale: {
         115: "1.15",
       },
       keyframes: {
         scaleAnim: {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.1)' },
-          '100%': { transform: 'scale(1)' },
+          "0%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)" },
         },
-        'heart-pulse': {
-          '0%': { transform: 'scale(1)' },
-          '25%': { transform: 'scale(1.1)' },
-          '50%': { transform: 'scale(1)' },
-          '75%': { transform: 'scale(1.06)' },
-          '100%': { transform: 'scale(1)' },
+        "heart-pulse": {
+          "0%": { transform: "scale(1)" },
+          "25%": { transform: "scale(1.1)" },
+          "50%": { transform: "scale(1)" },
+          "75%": { transform: "scale(1.06)" },
+          "100%": { transform: "scale(1)" },
         },
       },
       animation: {
-        scale: 'scaleAnim 300ms ease-in-out',
-        'heart-pulse': 'heart-pulse 0.6s ease-in-out',
+        scale: "scaleAnim 300ms ease-in-out",
+        "heart-pulse": "heart-pulse 0.6s ease-in-out",
       },
     },
   },

@@ -18,14 +18,15 @@ const { eyebrow, title, headingClass = "" } = Astro.props;
           ? "Aprovechando la innovación"
           : Astro.currentLocale === "es" && eyebrow === "Measurable success"
             ? "Éxito medible"
-            : Astro.currentLocale === "es" && eyebrow === "The talent behind the engineering"
+            : Astro.currentLocale === "es" &&
+                eyebrow === "The talent behind the engineering"
               ? "El talento detrás de la ingeniería"
               : Astro.currentLocale === "es" && eyebrow === "Real feedback"
                 ? "Opiniones reales"
                 : eyebrow}
   </p>
   <h2
-    class={`display-heading text-4xl md:text-5xl font-medium text-[var(--white)] ${headingClass}`}
+    class={`display-heading font-display text-4xl md:text-5xl font-medium text-[var(--white)] ${headingClass}`}
     aria-label={title}
   >
     <span class="display-heading__visual" aria-hidden="true">

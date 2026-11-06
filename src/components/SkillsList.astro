@@ -1,5 +1,4 @@
 ---
-
 import { defaultLang } from "../i18n/ui";
 import { useTranslations } from "../i18n/utils";
 
@@ -42,20 +41,21 @@ const capabilities = [
 
 function formatContent(text: string) {
   return text.split(/(\*\*.*?\*\*)/g).map((part) => ({
-    text: part.startsWith("**") && part.endsWith("**")
-      ? part.slice(2, -2)
-      : part,
+    text:
+      part.startsWith("**") && part.endsWith("**") ? part.slice(2, -2) : part,
     bold: part.startsWith("**") && part.endsWith("**"),
   }));
 }
 ---
 
-<section class="w-full max-w-4xl mx-auto py-12 px-4 text-left">
-  <h3 class="text-[var(--white)] text-3xl md:text-4xl font-semibold md:mb-6">
-    {t("core.title")}
-  </h3>
+<section class="w-full max-w-5xl mx-auto py-16 px-4 text-left md:py-20">
+  <div class="mb-8">
+    <h2 class="display-heading font-display text-4xl font-medium text-[var(--white)] md:text-5xl">
+      {t("core.title")}
+    </h2>
+  </div>
   <div
-    class="capabilities-accordion w-full max-w-2xl mx-auto bg-neutral-900/40 border border-neutral-800 rounded-2xl overflow-hidden backdrop-blur-md"
+    class="capabilities-accordion w-full bg-neutral-900/40 border border-neutral-800 rounded-2xl overflow-hidden backdrop-blur-md"
     data-allows-multiple-expanded={String(allowsMultipleExpanded)}
   >
     <ul>
@@ -68,7 +68,7 @@ function formatContent(text: string) {
             <button
               id={triggerId}
               type="button"
-              class="flex items-center gap-4 p-5 transition-all duration-200 hover:bg-neutral-800/40 text-left w-full"
+              class="flex w-full items-center gap-4 p-5 text-left transition-all duration-200 hover:bg-neutral-800/40 md:p-6"
               aria-expanded="false"
               aria-controls={panelId}
               data-accordion-trigger
@@ -80,7 +80,7 @@ function formatContent(text: string) {
                 {item.iconName}
               </span>
               <span class="min-w-0">
-                <span class="block font-medium text-lg leading-5 text-neutral-100">
+                <span class="block text-xl font-medium leading-snug text-neutral-100">
                   {item.title}
                 </span>
                 <span class="block text-sm font-normal text-neutral-400 mt-1">
