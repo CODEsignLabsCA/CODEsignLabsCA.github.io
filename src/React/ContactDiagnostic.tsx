@@ -1,10 +1,5 @@
 import Cal, { getCalApi } from "@calcom/embed-react";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type SyntheticEvent,
-} from "react";
+import { useEffect, useState, type SyntheticEvent } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -52,16 +47,30 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
   const [projectType, setProjectType] = useState("");
   const [budgetRange, setBudgetRange] = useState("");
   const [phase, setPhase] = useState<
-    "idle" | "submitting" | "fading" | "success" | "error"
+    "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLeadSaved, setIsLeadSaved] = useState(false);
 
-  const isBusy = phase === "submitting" || phase === "fading";
+  const isBusy = phase === "submitting";
   const isComplete = phase === "success";
+
+  useEffect(() => {
+    if (!isLeadSaved) return;
+
+    void getCalApi().then((cal) => {
+      cal("ui", {
+        theme: "dark",
+        layout: "month_view",
+        hideEventTypeDetails: true,
+      });
+      cal("modal", { calLink: "codesignlabs/15min" });
+    });
+  }, [isLeadSaved]);
 
   async function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (isBusy || isComplete) return;
+    if (isBusy || isComplete || isLeadSaved) return;
 
     const firestoreProjectType: Record<string, string> = {
       "MVP Móvil": "MVP",
@@ -101,11 +110,12 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
         projectType: normalizedProjectType,
         budgetRange: normalizedBudgetRange,
         message,
+        verified: false,
         createdAt: serverTimestamp(),
       });
 
-      setPhase("fading");
-      window.setTimeout(() => setPhase("success"), 350);
+      setPhase("success");
+      setIsLeadSaved(true);
     } catch (error) {
       console.error("Unable to submit contact form to Firestore:", error);
       setPhase("error");
@@ -121,12 +131,12 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
     <div className="contact-diagnostic font-body">
       <form
         className={`contact-diagnostic__form transition-opacity duration-300 ${
-          isComplete || phase === "fading"
-            ? "pointer-events-none opacity-0"
+          isLeadSaved
+            ? "pointer-events-none absolute inset-x-0 top-0 opacity-0"
             : "opacity-100"
         }`}
         onSubmit={handleSubmit}
-        aria-hidden={isComplete}
+        aria-hidden={isLeadSaved}
       >
         <fieldset className="contact-diagnostic__qualifier">
           <legend>{isSpanish ? "Tipo de proyecto" : "Project type"}</legend>
@@ -253,110 +263,22 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
         </button>
       </form>
 
-      <p
-        className={`contact-diagnostic__success font-body transition-opacity duration-500 ${
-          isComplete ? "opacity-100" : "pointer-events-none absolute opacity-0"
-        }`}
-        role="status"
-        aria-live="polite"
-      >
-        {isSpanish
-          ? "✅ Gracias por su mensaje. Analizaremos sus requisitos técnicos."
-          : "✅ Thank you for your message! We will analyze your technical requirements."}
-      </p>
-    </div>
-  );
-}
-
-export function CalPopover({ isSpanish }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    void getCalApi().then((cal) => {
-      cal("ui", {
-        theme: "dark",
-        layout: "month_view",
-        hideEventTypeDetails: true,
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    function handlePointerDown(event: PointerEvent) {
-      if (
-        event.target instanceof Node &&
-        popoverRef.current &&
-        !popoverRef.current.contains(event.target)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setIsOpen(false);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
-  return (
-    <div ref={popoverRef} className="relative inline-block">
-      <button
-        type="button"
-        aria-expanded={isOpen}
-        aria-controls="cal-scheduler-popover"
-        className="group mt-1.5 inline-flex items-center gap-2 text-left text-sm font-semibold text-[#CCFF00] transition-colors hover:text-white"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span>
-          {isSpanish
-            ? "Agende una llamada de exploración de 15 min en Cal.com"
-            : "Book a 15-min discovery call via Cal.com"}
-        </span>
-        <span
-          className="transform transition-transform group-hover:translate-x-1"
-          aria-hidden="true"
-        >
-          &rarr;
-        </span>
-      </button>
-
-      {isOpen && (
+      {isLeadSaved && (
         <div
-          id="cal-scheduler-popover"
-          className="absolute right-0 z-50 mt-2 max-h-[85vh] w-[400px] max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border border-neutral-800 bg-neutral-950 p-4 shadow-2xl md:left-0 md:w-[450px]"
+          className="contact-diagnostic__scheduler"
+          role="region"
+          aria-label={isSpanish ? "Agenda de Cal.com" : "Cal.com scheduler"}
         >
-          <div className="mb-3 flex items-start justify-between gap-4">
-            <div>
-              <h3 className="text-base font-semibold text-white">
-                {isSpanish
-                  ? "Reserva tu Consultoría Técnica"
-                  : "Book Your Technical Consultation"}
-              </h3>
-              <p className="mt-1 text-xs text-neutral-400">
-                {isSpanish
-                  ? "Elige un horario para conversar sobre tu proyecto."
-                  : "Choose a time to discuss your project."}
-              </p>
-            </div>
-            <button
-              type="button"
-              className="rounded-md p-1 text-neutral-400 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CCFF00]"
-              aria-label={isSpanish ? "Cerrar calendario" : "Close calendar"}
-              onClick={() => setIsOpen(false)}
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+          <h3 className="mb-3 text-base font-semibold text-white">
+            {isSpanish
+              ? "Reserva tu Consultoría Técnica"
+              : "Book Your Technical Consultation"}
+          </h3>
+          <p className="mb-4 text-sm text-neutral-400">
+            {isSpanish
+              ? "Elige un horario para conversar sobre tu proyecto."
+              : "Choose a time to discuss your project."}
+          </p>
           <Cal
             calLink="codesignlabs/15min"
             config={{

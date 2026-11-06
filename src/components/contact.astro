@@ -1,5 +1,5 @@
 ---
-import ContactDiagnostic, { CalPopover } from "../React/ContactDiagnostic";
+import ContactDiagnostic from "../React/ContactDiagnostic";
 
 const isSpanish = Astro.currentLocale === "es";
 ---
@@ -59,13 +59,6 @@ const isSpanish = Astro.currentLocale === "es";
               ? "Construyamos hoy el futuro de su producto digital. Envíe un mensaje y recibirá un diagnóstico técnico en menos de 24 horas."
               : "Let's build the future of your digital product today. Leave a message to get a technical diagnostic in less than 24 hours."}
           </p>
-        </div>
-
-        <div class="border-t border-zinc-800/80 pt-4 font-body">
-          <p class="text-xs font-medium text-zinc-500">
-            {isSpanish ? "¿Prefiere agendar directamente?" : "Prefer direct scheduling?"}
-          </p>
-          <CalPopover client:load isSpanish={isSpanish} />
         </div>
       </div>
     </div>
@@ -187,13 +180,20 @@ const isSpanish = Astro.currentLocale === "es";
     animation: contact-spin 700ms linear infinite;
   }
 
-  .contact-diagnostic__success {
-    top: 50%;
-    width: 100%;
-    color: var(--white);
-    font-size: 1rem;
-    line-height: 1.7;
-    transform: translateY(-50%);
+  .contact-diagnostic__scheduler {
+    animation: contact-scheduler-in 300ms ease-out both;
+  }
+
+  @keyframes contact-scheduler-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .contact-submit {
@@ -257,6 +257,10 @@ const isSpanish = Astro.currentLocale === "es";
     .contact-diagnostic__chip,
     .contact-submit {
       transition: none;
+    }
+
+    .contact-diagnostic__scheduler {
+      animation: none;
     }
 
     .contact-diagnostic__loader {
