@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { doc, onSnapshot, setDoc, increment } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -12,9 +12,12 @@ const LikeButton = () => {
   useEffect(() => {
     setIsClient(true);
 
-    const storedIsLiked = localStorage.getItem("websiteIsLiked");
-    if (storedIsLiked) {
-      setIsLiked(storedIsLiked === "true");
+    try {
+      if (localStorage.getItem("websiteIsLiked") === "true") {
+        setIsLiked(true);
+      }
+    } catch (error) {
+      console.warn("Unable to read the stored like state:", error);
     }
 
     // Listen for realtime updates from Firestore
@@ -23,10 +26,7 @@ const LikeButton = () => {
       if (docSnap.exists()) {
         const currentLikes = docSnap.data().likes;
         // Only update if the server value is different (prevents overwrite during optimistic update)
-        setLikes((prev) => {
-          const newLikes = Math.max(0, currentLikes);
-          return newLikes;
-        });
+        setLikes(Math.max(0, currentLikes));
       }
     });
 
@@ -41,23 +41,34 @@ const LikeButton = () => {
     setLikes((prev) => prev + 1);
     setIsLiked(true);
     setIsAnimating(true);
-    localStorage.setItem("websiteIsLiked", "true");
-
     // Reset animation after it finishes
     setTimeout(() => setIsAnimating(false), 600);
 
     try {
       setIsProcessing(true);
       const likeDocRef = doc(db, "likes", "counter");
-      await setDoc(likeDocRef, {
-        likes: increment(1),
-      }, { merge: true });
+      await setDoc(
+        likeDocRef,
+        {
+          likes: increment(1),
+        },
+        { merge: true },
+      );
+      try {
+        localStorage.setItem("websiteIsLiked", "true");
+      } catch (error) {
+        console.warn("Unable to store the like state:", error);
+      }
     } catch (error) {
       console.error("Error updating likes:", error);
       // Rollback on error
       setLikes(previousLikes);
       setIsLiked(false);
-      localStorage.removeItem("websiteIsLiked");
+      try {
+        localStorage.removeItem("websiteIsLiked");
+      } catch (storageError) {
+        console.warn("Unable to clear the stored like state:", storageError);
+      }
     } finally {
       setIsProcessing(false);
     }
