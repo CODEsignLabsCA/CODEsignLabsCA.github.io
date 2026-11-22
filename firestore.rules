@@ -51,6 +51,11 @@ service cloud.firestore {
           && request.resource.data.createdAt == request.time;
     }
 
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
