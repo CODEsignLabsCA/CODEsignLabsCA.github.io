@@ -53,6 +53,9 @@ jobs:
         with:
           path: ./dist
 
+      - name: Install Firebase Functions dependencies
+        run: npm --prefix functions ci
+
       # Desplegar los mismos archivos compilados directamente a tu Firebase Hosting
       - name: Deploy to Firebase
         run: pnpm dlx firebase-tools deploy --project codesignlabs-portfolio --token "${{ secrets.FIREBASE_TOKEN }}" --only hosting,functions,firestore:rules
