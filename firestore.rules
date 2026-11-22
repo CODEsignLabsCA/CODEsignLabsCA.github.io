@@ -58,7 +58,9 @@ service cloud.firestore {
 
     match /likes/{docId} {
       allow read: if true;
-      allow create: if false;
+      allow create: if docId == 'counter'
+                    && request.resource.data.keys().hasOnly(['likes'])
+                    && request.resource.data.likes == 1;
       allow delete: if false;
       allow update: if docId == 'counter'
                     && resource.data.likes is number

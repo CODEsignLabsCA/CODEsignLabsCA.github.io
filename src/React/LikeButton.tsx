@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { doc, onSnapshot, updateDoc, increment } from "firebase/firestore";
+import { doc, onSnapshot, setDoc, increment } from "firebase/firestore";
 import { db } from "../firebase";
 
 const LikeButton = () => {
@@ -49,9 +49,9 @@ const LikeButton = () => {
     try {
       setIsProcessing(true);
       const likeDocRef = doc(db, "likes", "counter");
-      await updateDoc(likeDocRef, {
+      await setDoc(likeDocRef, {
         likes: increment(1),
-      });
+      }, { merge: true });
     } catch (error) {
       console.error("Error updating likes:", error);
       // Rollback on error
