@@ -56,9 +56,15 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    match /likes/{likeId} {
+    match /likes/{docId} {
       allow read: if true;
-      allow write: if false;
+      allow create: if false;
+      allow delete: if false;
+      allow update: if docId == 'counter'
+                    && resource.data.likes is number
+                    && request.resource.data.likes is number
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+                    && request.resource.data.likes == resource.data.likes + 1;
     }
 
     match /{document=**} {
