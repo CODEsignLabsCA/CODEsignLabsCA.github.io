@@ -2,6 +2,10 @@
 import ContactDiagnostic from "../React/ContactDiagnostic";
 
 const isSpanish = Astro.currentLocale === "es";
+const whatsappMessage = isSpanish
+  ? "Hola CODEsignLabs, me gustaría conversar sobre un proyecto."
+  : "Hi CODEsignLabs, I'd like to discuss a project.";
+const whatsappHref = `https://wa.me/584123574763?text=${encodeURIComponent(whatsappMessage).replace(/'/g, "%27")}`;
 ---
 
 <section id="contact" class="w-full border-t border-[#ffffff10] py-16 md:py-20">
@@ -17,7 +21,7 @@ const isSpanish = Astro.currentLocale === "es";
         <ContactDiagnostic client:load isSpanish={isSpanish} />
         <div class="mt-6 space-y-3 border-t border-zinc-800/80 pt-6 font-body">
           <a
-            href="https://wa.link/ya7q1a"
+            href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
             class="block text-sm text-zinc-400 transition-colors hover:text-[#CCFF00]"
