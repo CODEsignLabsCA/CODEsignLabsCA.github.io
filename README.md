@@ -30,6 +30,14 @@
 
 ## **Configuration Guides**
 
+### **Firebase App Check (contact form)**
+
+Add the reCAPTCHA Enterprise **site key** as `PUBLIC_RECAPTCHA_SITE_KEY` in your local
+`.env` file and as a repository Actions secret with the same name for production
+builds. This is a public site key; never put the reCAPTCHA secret key in
+frontend configuration. Deploy Firestore rules with
+`firebase deploy --project codesignlabs-portfolio --only firestore:rules`.
+
 ### **Show your favorite Spotify album (or your own)** ![Spotify](https://img.shields.io/badge/Spotify-06cc1a?logo=spotify&logoColor=white)
 1. Choose your Spotify album
 2. Access the share options

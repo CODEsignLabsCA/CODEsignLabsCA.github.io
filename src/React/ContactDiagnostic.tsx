@@ -207,6 +207,7 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
             name="name"
             autoComplete="name"
             placeholder={isSpanish ? "Su nombre" : "Your name"}
+            maxLength={150}
             required
             disabled={isBusy || isComplete}
           />
@@ -219,16 +220,20 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
             name="email"
             autoComplete="email"
             placeholder={isSpanish ? "usted@empresa.com" : "you@company.com"}
+            maxLength={150}
             required
             disabled={isBusy || isComplete}
           />
         </label>
 
         <label className="contact-diagnostic__field">
-          <span>{isSpanish ? "Requisitos técnicos" : "Technical requirements"}</span>
+          <span>
+            {isSpanish ? "Requisitos técnicos" : "Technical requirements"}
+          </span>
           <textarea
             name="message"
             rows={5}
+            maxLength={2000}
             placeholder={
               isSpanish
                 ? "¿Qué problema necesita resolver?"
@@ -259,7 +264,9 @@ export default function ContactDiagnostic({ isSpanish }: Props) {
                 ? "CONSTRUYAMOS EL FUTURO"
                 : "LET'S BUILD THE FUTURE"}
           </span>
-          {isBusy && <span className="contact-diagnostic__loader" aria-hidden="true" />}
+          {isBusy && (
+            <span className="contact-diagnostic__loader" aria-hidden="true" />
+          )}
         </button>
       </form>
 
